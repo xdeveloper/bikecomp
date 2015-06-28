@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="70sp"
         android:text="0.0"
         android:id="@+id/textView"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center|fill_horizontal|fill_vertical" />
+
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="1.5"
+        android:gravity="center|fill_horizontal|fill_vertical"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -21,14 +26,18 @@
         android:gravity="center_horizontal">
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/avg_speed"
-            android:gravity="center|top" />
+            android:gravity="center|top"
+            android:textSize="12sp"
+            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="( Km/h )"
             android:gravity="center|top"
-            android:id="@+id/textView2" />
+            android:id="@+id/textView2"
+            android:textSize="12sp"
+            />
     </LinearLayout>
 
 </LinearLayout>
