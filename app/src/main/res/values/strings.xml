@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Bike Comp</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="avg_speed">Avg. Speed</string>
+    <string name="speed">Speed</string>
+</resources>

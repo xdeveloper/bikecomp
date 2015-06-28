@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="app_name">BikeComp</string>
-
-    <string name="speed">Speed</string>
-    <string name="avg_speed">Average Speed</string>
-</resources>
