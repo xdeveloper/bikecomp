@@ -8,8 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="70sp"
-        android:text="12:30:35"
-        android:id="@+id/textView"
+        android:text="00:00:00"
+        android:id="@+id/clockTextView"
         android:gravity="center|fill_horizontal|fill_vertical"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal" />
