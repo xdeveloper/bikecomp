@@ -8,6 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ua.com.abakumov.bikecomp.fragment.AverageSpeedFragment;
+import ua.com.abakumov.bikecomp.fragment.ClockFragment;
+import ua.com.abakumov.bikecomp.fragment.ElapsedTimeFragment;
+import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
 import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
 
 
@@ -25,15 +28,20 @@ public class MainActivity extends Activity {
         // Add some fragments
         Fragment speedFragment = new SpeedFragment();
         Fragment averageSpeedFragment = new AverageSpeedFragment();
+        Fragment clockFragment = new ClockFragment();
+        Fragment elapsedTimeFragment = new ElapsedTimeFragment();
+        Fragment hrFragment = new HeartRateFragment();
 
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
                 .add(R.id.mainLayout, speedFragment)
                 .add(R.id.mainLayout, averageSpeedFragment)
+                .add(R.id.mainLayout, clockFragment)
+                .add(R.id.mainLayout, elapsedTimeFragment)
+                .add(R.id.mainLayout, hrFragment)
                 .show(speedFragment)
                 .show(averageSpeedFragment)
                 .commit();
-
     }
 
     @Override

@@ -5,4 +5,8 @@
     <string name="action_settings">Settings</string>
     <string name="avg_speed">Avg. Speed</string>
     <string name="speed">Speed</string>
+    <string name="clock">Clock</string>
+    <string name="elapsedtime">Elapsed TIme</string>
+    <string name="action_google_play">Google Play</string>
+    <string name="heartrate">Heart Rate</string>
 </resources>
