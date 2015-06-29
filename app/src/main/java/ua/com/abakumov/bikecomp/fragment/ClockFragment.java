@@ -20,8 +20,12 @@ import ua.com.abakumov.bikecomp.R;
  */
 public class ClockFragment extends Fragment {
 
+    @SuppressWarnings("FieldCanBeLocal")
+    private int SECOUND = 1000;
+
     private Timer timer;
 
+    @SuppressWarnings("FieldCanBeLocal")
     private ClockFragmentTimerTask task;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
@@ -33,20 +37,32 @@ public class ClockFragment extends Fragment {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    TextView textView = (TextView) getActivity().findViewById(R.id.clockTextView);
-                    textView.setText(simpleDateFormat.format(Calendar.getInstance().getTime()));
+                    updateTime();
                 }
             });
         }
+    }
+
+    private void updateTime() {
+        TextView textView = (TextView) getActivity().findViewById(R.id.clockTextView);
+        textView.setText(getTime());
+    }
+
+    private String getTime() {
+        return simpleDateFormat.format(Calendar.getInstance().getTime());
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
+        // Show time immediately
+        updateTime();
+
+        // Schedule periodical update
         timer = new Timer();
         task = new ClockFragmentTimerTask();
-        timer.schedule(task, 1000, 1000);
+        timer.schedule(task, SECOUND, SECOUND);
     }
 
     @Override
