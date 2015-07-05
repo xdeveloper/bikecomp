@@ -9,8 +9,11 @@
     <string name="elapsedtime">Elapsed Time</string>
     <string name="action_google_play">Google Play</string>
     <string name="heartrate">Heart Rate</string>
-    <string name="catch_gps_signal">Catch GPS Signal</string>
+    <string name="catch_gps_signal">Caught GPS Signal</string>
     <string name="lost_gps_signal">Lost GPS Signal</string>
     <string name="kmh">(Km/H)</string>
     <string name="status_changed">Status changed</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="stop">Stop</string>
 </resources>

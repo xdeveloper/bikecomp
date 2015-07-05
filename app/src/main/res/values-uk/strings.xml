@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Велосипедний комп\'ютер</string>
+    <string name="app_name">Велокомп</string>
 
     <string name="hello_world">Hello світ!</string>
     <string name="action_settings">Настройки</string>
@@ -13,4 +13,7 @@
     <string name="catch_gps_signal">Впіймано GPS сигнал</string>
     <string name="lost_gps_signal">Втрачено GPS сигнал</string>
     <string name="status_changed">Статус змінився</string>
+    <string name="start">Старт</string>
+    <string name="pause">Пауза</string>
+    <string name="stop">Стоп</string>
 </resources>
