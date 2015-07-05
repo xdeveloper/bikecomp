@@ -1,15 +1,16 @@
 <resources>
-    <string name="app_name">Велокомп</string>
+    <string name="app_name">Велосипедний комп\'ютер</string>
 
     <string name="hello_world">Hello світ!</string>
     <string name="action_settings">Настройки</string>
     <string name="avg_speed">Середня швидкість</string>
     <string name="speed">Швидкість</string>
+    <string name="kmh">(км/год)</string>
     <string name="clock">Годинник</string>
     <string name="elapsedtime">В дорозі</string>
     <string name="action_google_play">Гугл Плей</string>
     <string name="heartrate">Пульс</string>
     <string name="catch_gps_signal">Впіймано GPS сигнал</string>
     <string name="lost_gps_signal">Втрачено GPS сигнал</string>
-    <string name="kmh">(км/год)</string>
+    <string name="status_changed">Статус змінився</string>
 </resources>

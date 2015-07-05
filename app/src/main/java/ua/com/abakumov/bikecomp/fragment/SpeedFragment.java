@@ -16,6 +16,7 @@ import android.widget.Toast;
 import java.text.DecimalFormat;
 import java.util.Formatter;
 
+import ua.com.abakumov.bikecomp.Constants;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.Utils;
 
@@ -49,6 +50,7 @@ public class SpeedFragment extends Fragment {
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
+                showToast(R.string.status_changed, getActivity().getApplicationContext());
             }
 
             public void onProviderEnabled(String provider) {
@@ -64,7 +66,8 @@ public class SpeedFragment extends Fragment {
     }
 
     private void makeUseOfNewLocation(Location location) {
-        Log.v("Location received:", String.valueOf(location.getSpeed()));
+        Log.v(Constants.BIKECOMP_TAG, "Location received:" + String.valueOf(location.getSpeed()));
+
         TextView speedTextView = (TextView) getActivity().findViewById(R.id.speedTextView);
         speedTextView.setText(formatSpeed(metersPerSecoundToKilometersPerHour(location.getSpeed())));
     }

@@ -12,4 +12,5 @@
     <string name="catch_gps_signal">Catch GPS Signal</string>
     <string name="lost_gps_signal">Lost GPS Signal</string>
     <string name="kmh">(Km/H)</string>
+    <string name="status_changed">Status changed</string>
 </resources>

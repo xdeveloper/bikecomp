@@ -2,8 +2,8 @@ package ua.com.abakumov.bikecomp;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -24,6 +24,13 @@ public class MainActivity extends Activity {
         addFragments();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.v(Constants.BIKECOMP_TAG, "Main activity resumed");
+    }
+
     private void addFragments() {
         // Add some fragments
         Fragment speedFragment = new SpeedFragment();
@@ -32,8 +39,7 @@ public class MainActivity extends Activity {
         Fragment elapsedTimeFragment = new ElapsedTimeFragment();
         Fragment hrFragment = new HeartRateFragment();
 
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
+        getFragmentManager().beginTransaction()
                 .add(R.id.mainLayout, speedFragment)
                 .add(R.id.mainLayout, averageSpeedFragment)
                 .add(R.id.mainLayout, clockFragment)
