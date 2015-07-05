@@ -33,7 +33,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="( Km/h )"
+            android:text="@string/kmh"
             android:gravity="center|top"
             android:id="@+id/textView2"
             android:textSize="12sp"

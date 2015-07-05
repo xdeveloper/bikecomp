@@ -6,12 +6,22 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DecimalFormat;
+import java.util.Formatter;
 
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.Utils;
+
+import static ua.com.abakumov.bikecomp.Utils.formatSpeed;
+import static ua.com.abakumov.bikecomp.Utils.metersPerSecoundToKilometersPerHour;
+import static ua.com.abakumov.bikecomp.Utils.showToast;
 
 /**
  * <Class Name>
@@ -31,13 +41,10 @@ public class SpeedFragment extends Fragment {
     }
 
     private void calcSpeed() {
-        // Acquire a reference to the system Location Manager
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        // Define a listener that responds to location updates
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
-                // Called when a new location is found by the network location provider.
                 makeUseOfNewLocation(location);
             }
 
@@ -45,22 +52,21 @@ public class SpeedFragment extends Fragment {
             }
 
             public void onProviderEnabled(String provider) {
+                showToast(R.string.catch_gps_signal, getActivity().getApplicationContext());
             }
 
             public void onProviderDisabled(String provider) {
+                showToast(R.string.lost_gps_signal, getActivity().getApplicationContext());
             }
         };
 
-        // Register the listener with the Location Manager to receive location updates
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, locationListener);
     }
 
     private void makeUseOfNewLocation(Location location) {
-        float speed = location.getSpeed();
-
+        Log.v("Location received:", String.valueOf(location.getSpeed()));
         TextView speedTextView = (TextView) getActivity().findViewById(R.id.speedTextView);
-
-        speedTextView.setText(String.valueOf(speed));
+        speedTextView.setText(formatSpeed(metersPerSecoundToKilometersPerHour(location.getSpeed())));
     }
 
 }

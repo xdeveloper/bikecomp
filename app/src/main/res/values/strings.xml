@@ -6,7 +6,10 @@
     <string name="avg_speed">Avg. Speed</string>
     <string name="speed">Speed</string>
     <string name="clock">Clock</string>
-    <string name="elapsedtime">Elapsed TIme</string>
+    <string name="elapsedtime">Elapsed Time</string>
     <string name="action_google_play">Google Play</string>
     <string name="heartrate">Heart Rate</string>
+    <string name="catch_gps_signal">Catch GPS Signal</string>
+    <string name="lost_gps_signal">Lost GPS Signal</string>
+    <string name="kmh">(Km/H)</string>
 </resources>
