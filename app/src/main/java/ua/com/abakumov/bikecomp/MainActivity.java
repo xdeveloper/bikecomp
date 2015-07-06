@@ -2,6 +2,10 @@ package ua.com.abakumov.bikecomp;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,16 +17,87 @@ import ua.com.abakumov.bikecomp.fragment.ClockFragment;
 import ua.com.abakumov.bikecomp.fragment.ElapsedTimeFragment;
 import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
 import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
+import ua.com.abakumov.bikecomp.service.GpsService;
+
+import static ua.com.abakumov.bikecomp.Actions.BROADCAST_ACTION;
+import static ua.com.abakumov.bikecomp.Actions.PARCEL_NAME;
+import static ua.com.abakumov.bikecomp.Actions.SESSION_START;
+import static ua.com.abakumov.bikecomp.Utils.showToast;
 
 
 public class MainActivity extends Activity {
+
+    private Intent gpsServiceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        gpsServiceIntent = new Intent(this, GpsService.class);
+
         addFragments();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // GPS provider service
+        startService(gpsServiceIntent);
+
+        subscribeBroadcastEvents();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        
+        stopService(gpsServiceIntent);
+    }
+
+    private void subscribeBroadcastEvents() {
+        IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
+
+        registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                String action = intent.getStringExtra(PARCEL_NAME);
+
+
+                if (action.equals(SESSION_START)) {
+                    showToast(R.string.session_started, getApplicationContext());
+                }
+
+                if (action.equals(Actions.SESSION_STOP)) {
+                    showToast(R.string.session_stopped, getApplicationContext());
+                }
+
+                // On - Off
+                if (action.equals(Actions.GPS_PROVIDER_ENABLED)) {
+                    showToast(R.string.enabled_gps_provider, getApplicationContext());
+                }
+                if (action.equals(Actions.GPS_PROVIDER_DISABLED)) {
+                    showToast(R.string.disabled_gps_provider, getApplicationContext());
+                }
+
+
+                // Receive - temp down - down
+                if (action.equals(Actions.GPS_PROVIDER_AVAILABLE)) {
+                    showToast(R.string.status_available, getApplicationContext());
+                }
+
+                if (action.equals(Actions.GPS_PROVIDER_TEMPORARILY_UNAVAILABLE)) {
+                    showToast(R.string.status_temporary_unavailable, getApplicationContext());
+                }
+
+                if (action.equals(Actions.GPS_PROVIDER_OUT_OF_SERVICE)) {
+                    showToast(R.string.status_out_of_service, getApplicationContext());
+                }
+
+            }
+        }, intentFilter);
     }
 
     @Override
@@ -46,7 +121,7 @@ public class MainActivity extends Activity {
                 .add(R.id.mainLayout, averageSpeedFragment)
                 .add(R.id.mainLayout, clockFragment)
                 .add(R.id.mainLayout, elapsedTimeFragment)
-                //.add(R.id.mainLayout, hrFragment)
+                        //.add(R.id.mainLayout, hrFragment)
                 .add(R.id.mainLayout, buttonsFragment)
                 .show(buttonsFragment)
                 .commit();

@@ -1,31 +1,29 @@
 package ua.com.abakumov.bikecomp.fragment;
 
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.text.DecimalFormat;
-import java.util.Formatter;
-
+import ua.com.abakumov.bikecomp.Actions;
 import ua.com.abakumov.bikecomp.Constants;
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.Utils;
 
+import static ua.com.abakumov.bikecomp.Actions.BROADCAST_ACTION;
 import static ua.com.abakumov.bikecomp.Utils.formatSpeed;
 import static ua.com.abakumov.bikecomp.Utils.metersPerSecoundToKilometersPerHour;
-import static ua.com.abakumov.bikecomp.Utils.showToast;
 
 /**
- * <Class Name>
+ * Fragment that shows speed on the screen
+ * <p/>
  * Created by oabakumov on 26.06.2015.
  */
 public class SpeedFragment extends Fragment {
@@ -38,34 +36,26 @@ public class SpeedFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        calcSpeed();
-    }
+        IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
 
-    private void calcSpeed() {
-        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                makeUseOfNewLocation(location);
+        getActivity().registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String parcelName = intent.getStringExtra(Actions.PARCEL_NAME);
+                if (parcelName.equals(Actions.GPS_LOCATION_CHANGED)) {
+                    Location location = intent.getParcelableExtra(Actions.GPS_LOCATION_CHANGED_DATA);
+                    makeUseOfNewLocation(location);
+                }
             }
-
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-                showToast(R.string.status_changed, getActivity().getApplicationContext());
-            }
-
-            public void onProviderEnabled(String provider) {
-                showToast(R.string.catch_gps_signal, getActivity().getApplicationContext());
-            }
-
-            public void onProviderDisabled(String provider) {
-                showToast(R.string.lost_gps_signal, getActivity().getApplicationContext());
-            }
-        };
-
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 1, locationListener);
+        }, intentFilter);
     }
 
     private void makeUseOfNewLocation(Location location) {
+        if (location == null) {
+            Log.e(Constants.BIKECOMP_TAG, "Location is null");
+            return;
+        }
+
         Log.v(Constants.BIKECOMP_TAG, "Location received:" + String.valueOf(location.getSpeed()));
 
         TextView speedTextView = (TextView) getActivity().findViewById(R.id.speedTextView);

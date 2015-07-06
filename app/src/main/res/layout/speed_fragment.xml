@@ -4,40 +4,59 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="70sp"
-        android:text="0.0"
-        android:id="@+id/speedTextView"
-
-        android:shadowDx="3"
-        android:shadowDy="3"
-        android:shadowRadius="1.5"
-        android:gravity="center|fill_horizontal|fill_vertical"
-        android:textStyle="bold"
-        android:layout_gravity="center_horizontal" />
-
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal">
+        android:layout_gravity="center_horizontal">
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/speed"
-            android:gravity="center|top"
-            android:textSize="12sp"
-            />
-
-        <TextView
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/kmh"
-            android:gravity="center|top"
-            android:id="@+id/textView2"
-            android:textSize="12sp"
-            />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="70sp"
+                android:text="0.0"
+                android:id="@+id/speedTextView"
+
+                android:shadowDx="3"
+                android:shadowDy="3"
+                android:shadowRadius="1.5"
+                android:gravity="center|fill_horizontal|fill_vertical"
+                android:textStyle="bold"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/speed"
+                android:gravity="center|top"
+                android:textSize="12sp"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/kmh"
+                android:gravity="center|top"
+                android:id="@+id/textView2"
+                android:textSize="12sp"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="15dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/gps_satelite"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

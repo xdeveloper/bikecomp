@@ -10,10 +10,19 @@
     <string name="elapsedtime">В дорозі</string>
     <string name="action_google_play">Гугл Плей</string>
     <string name="heartrate">Пульс</string>
-    <string name="catch_gps_signal">Впіймано GPS сигнал</string>
-    <string name="lost_gps_signal">Втрачено GPS сигнал</string>
-    <string name="status_changed">Статус змінився</string>
-    <string name="start">Старт</string>
+
+    <!-- Location -->
+    <string name="enabled_gps_provider">GPS приймач ввімкнено</string>
+    <string name="disabled_gps_provider">GPS приймач вимкнено</string>
+
+    <string name="status_available">Впіймано GPS сигнал</string>
+    <string name="status_out_of_service">Втрачено GPS сигнал</string>
+    <string name="status_temporary_unavailable">GPS тимчасово недоступний</string>
+
+    <string name="start">Почати</string>
     <string name="pause">Пауза</string>
-    <string name="stop">Стоп</string>
+    <string name="stop">Фініш</string>
+
+    <string name="session_started">Поїхали</string>
+    <string name="session_stopped">Зупинка</string>
 </resources>
