@@ -52,12 +52,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        
+
         stopService(gpsServiceIntent);
     }
 
     private void subscribeBroadcastEvents() {
-        IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
 
         registerReceiver(new BroadcastReceiver() {
             @Override
@@ -97,7 +96,7 @@ public class MainActivity extends Activity {
                 }
 
             }
-        }, intentFilter);
+        }, new IntentFilter(BROADCAST_ACTION));
     }
 
     @Override

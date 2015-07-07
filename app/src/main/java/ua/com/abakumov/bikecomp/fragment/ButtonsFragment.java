@@ -11,9 +11,14 @@ import android.view.ViewGroup;
 import ua.com.abakumov.bikecomp.Actions;
 import ua.com.abakumov.bikecomp.R;
 
+import static android.media.MediaPlayer.create;
 import static ua.com.abakumov.bikecomp.Actions.BROADCAST_ACTION;
 import static ua.com.abakumov.bikecomp.Actions.PARCEL_NAME;
 import static ua.com.abakumov.bikecomp.Actions.SESSION_START;
+import static ua.com.abakumov.bikecomp.R.id.buttonStart;
+import static ua.com.abakumov.bikecomp.R.id.buttonStop;
+import static ua.com.abakumov.bikecomp.R.raw.start;
+import static ua.com.abakumov.bikecomp.R.raw.stop;
 
 /**
  * <Class Name and Purpose>
@@ -34,10 +39,10 @@ public class ButtonsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        mediaPlayerStart = MediaPlayer.create(getActivity().getApplicationContext(), R.raw.start);
-        mediaPlayerStop = MediaPlayer.create(getActivity().getApplicationContext(), R.raw.stop);
+        mediaPlayerStart = create(getActivity().getApplicationContext(), start);
+        mediaPlayerStop = create(getActivity().getApplicationContext(), stop);
 
-        getActivity().findViewById(R.id.buttonStart).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(buttonStart).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mediaPlayerStart.start();
@@ -47,7 +52,7 @@ public class ButtonsFragment extends Fragment {
             }
         });
 
-        getActivity().findViewById(R.id.buttonStop).setOnClickListener(new View.OnClickListener() {
+        getActivity().findViewById(buttonStop).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mediaPlayerStop.start();
