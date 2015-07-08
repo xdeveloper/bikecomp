@@ -1,11 +1,6 @@
 package ua.com.abakumov.bikecomp.fragment;
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,13 +9,18 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import ua.com.abakumov.bikecomp.Actions;
+import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.Constants;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderAvailableEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderDisabledEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderEnabledEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderIsOutOfServiceEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderLocationChangedEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderTemporaryUnavailableEvent;
 
-import static ua.com.abakumov.bikecomp.Actions.BROADCAST_ACTION;
 import static ua.com.abakumov.bikecomp.Utils.formatSpeed;
-import static ua.com.abakumov.bikecomp.Utils.metersPerSecoundToKilometersPerHour;
+
 
 /**
  * Fragment that shows speed on the screen
@@ -28,6 +28,9 @@ import static ua.com.abakumov.bikecomp.Utils.metersPerSecoundToKilometersPerHour
  * Created by oabakumov on 26.06.2015.
  */
 public class SpeedFragment extends Fragment {
+
+    private EventBus eventBus;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.speed_fragment, container, false);
@@ -37,45 +40,40 @@ public class SpeedFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
+    }
 
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String parcelName = intent.getStringExtra(Actions.PARCEL_NAME);
+    @SuppressWarnings(value = "unused")
+    public void onEvent(LocationProviderEnabledEvent event) {
+        gpsEnabled(true);
+    }
 
-                if (parcelName.equals(Actions.GPS_PROVIDER_ENABLED)) {
-                    gpsEnabled(true);
-                    return;
-                }
+    @SuppressWarnings(value = "unused")
+    public void onEvent(LocationProviderDisabledEvent event) {
+        gpsEnabled(false);
+    }
 
-                if (parcelName.equals(Actions.GPS_PROVIDER_DISABLED)) {
-                    gpsEnabled(false);
-                    return;
-                }
+    @SuppressWarnings(value = "unused")
+    public void onEvent(LocationProviderAvailableEvent event) {
+        gpsAvailable(true);
+    }
 
-                if (parcelName.equals(Actions.GPS_PROVIDER_AVAILABLE)) {
-                    gpsAvailable(true);
-                    return;
-                }
+    @SuppressWarnings(value = "unused")
+    public void onEvent(LocationProviderTemporaryUnavailableEvent event) {
+        gpsAvailable(false);
+    }
 
-                if (parcelName.equals(Actions.GPS_PROVIDER_TEMPORARILY_UNAVAILABLE)) {
-                    gpsAvailable(false);
-                    return;
-                }
+    @SuppressWarnings(value = "unused")
+    public void onEvent(LocationProviderIsOutOfServiceEvent event) {
+        gpsAvailable(false);
+    }
 
-                if (parcelName.equals(Actions.GPS_PROVIDER_OUT_OF_SERVICE)) {
-                    gpsAvailable(false);
-                    return;
-                }
-
-                if (parcelName.equals(Actions.GPS_LOCATION_CHANGED)) {
-                    Location location = intent.getParcelableExtra(Actions.GPS_LOCATION_CHANGED_DATA);
-                    makeUseOfNewLocation(location);
-                    return;
-                }
-            }
-        }, intentFilter);
+    @SuppressWarnings(value = "unused")
+    public void onEvent(LocationProviderLocationChangedEvent event) {
+        double kmphSpeed = event.getKmphSpeed();
+        Log.v(Constants.BIKECOMP_TAG, "Location received:" + String.valueOf(kmphSpeed));
+        ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(kmphSpeed));
     }
 
     private void gpsEnabled(boolean enabled) {
@@ -88,18 +86,6 @@ public class SpeedFragment extends Fragment {
         ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
         satellite.setImageResource(R.drawable.gps_satellite_green);
         satellite.setImageAlpha(available ? 100 : 60);
-    }
-
-    private void makeUseOfNewLocation(Location location) {
-        if (location == null) {
-            Log.e(Constants.BIKECOMP_TAG, "Location is null");
-            return;
-        }
-
-        Log.v(Constants.BIKECOMP_TAG, "Location received:" + String.valueOf(location.getSpeed()));
-
-        TextView speedTextView = (TextView) getActivity().findViewById(R.id.speedTextView);
-        speedTextView.setText(formatSpeed(metersPerSecoundToKilometersPerHour(location.getSpeed())));
     }
 
 }

@@ -1,10 +1,6 @@
 package ua.com.abakumov.bikecomp.fragment;
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +10,11 @@ import android.widget.TextView;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import ua.com.abakumov.bikecomp.Actions;
+import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.Event;
+import ua.com.abakumov.bikecomp.event.SessionStartEvent;
+import ua.com.abakumov.bikecomp.event.SessionStopEvent;
 
 /*
  * Created by oabakumov on 26.06.2015.
@@ -23,10 +22,17 @@ import ua.com.abakumov.bikecomp.R;
 public class ElapsedTimeFragment extends Fragment {
 
     private static final long SECOUND = 1000;
+
     private Timer timer;
+
     private ElapsedTimeFragmentTask task;
+
     private boolean started;
+
     private int counter;
+
+    private EventBus eventBus;
+
 
     private class ElapsedTimeFragmentTask extends TimerTask {
         @Override
@@ -55,41 +61,31 @@ public class ElapsedTimeFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
+
         task = new ElapsedTimeFragmentTask();
-
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                String stringExtra = intent.getStringExtra(Actions.PARCEL_NAME);
-
-                // Start !
-                if (stringExtra.equals(Actions.SESSION_START)) {
-
-                    if (started) {
-                        return;
-                    }
-
-                    started = true;
-                    counter = 0;
-                    updateElapsedTime();
-
-                    timer = new Timer();
-                    task = new ElapsedTimeFragmentTask();
-                    timer.schedule(task, SECOUND, SECOUND);
-                }
-
-
-                // Stop !
-                if (stringExtra.equals(Actions.SESSION_STOP)) {
-                    started = false;
-
-                    timer.cancel();
-                }
-
-            }
-        }, new IntentFilter(Actions.BROADCAST_ACTION));
     }
 
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStartEvent event) {
+        if (started) {
+            return;
+        }
 
+        started = true;
+        counter = 0;
+        updateElapsedTime();
+
+        timer = new Timer();
+        task = new ElapsedTimeFragmentTask();
+        timer.schedule(task, SECOUND, SECOUND);
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStopEvent event) {
+        started = false;
+
+        timer.cancel();
+    }
 }

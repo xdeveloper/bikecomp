@@ -1,25 +1,19 @@
 package ua.com.abakumov.bikecomp.fragment;
 
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import ua.com.abakumov.bikecomp.Actions;
+import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.Utils;
-
-import static ua.com.abakumov.bikecomp.Actions.BROADCAST_ACTION;
-import static ua.com.abakumov.bikecomp.Actions.PARCEL_NAME;
-import static ua.com.abakumov.bikecomp.Actions.SESSION_START;
-import static ua.com.abakumov.bikecomp.Actions.SESSION_STOP;
+import ua.com.abakumov.bikecomp.event.Event;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderLocationChangedEvent;
+import ua.com.abakumov.bikecomp.event.SessionStartEvent;
+import ua.com.abakumov.bikecomp.event.SessionStopEvent;
 
 /**
  * Shows distance on the screen
@@ -32,6 +26,8 @@ public class DistanceFragment extends Fragment {
 
     private boolean sessionStarted;
 
+    private EventBus eventBus;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,45 +38,36 @@ public class DistanceFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        IntentFilter intentFilter = new IntentFilter(BROADCAST_ACTION);
-
-        getActivity().registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                String parcelName = intent.getStringExtra(Actions.PARCEL_NAME);
-
-                if (parcelName.equals(SESSION_START)) {
-                    sessionStarted = true;
-                    resetDistance();
-                    calcDistance(0);
-                }
-
-                if (parcelName.equals(SESSION_STOP)) {
-                    sessionStarted = false;
-                }
-
-                if (parcelName.equals(Actions.GPS_LOCATION_CHANGED)) {
-                    if (!sessionStarted) {
-                        return;
-                    }
-
-                    Location location = intent.getParcelableExtra(Actions.GPS_LOCATION_CHANGED_DATA);
-                    calcDistance(location.getSpeed());
-                    return;
-                }
-
-            }
-        }, intentFilter);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
     }
+
 
     private void resetDistance() {
         distance = 0;
     }
 
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStartEvent event) {
+        sessionStarted = true;
+        resetDistance();
+        calcDistance(0);
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStopEvent event) {
+        sessionStarted = false;
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(LocationProviderLocationChangedEvent event) {
+        calcDistance(event.getMpsSpeed());
+    }
+
     private void calcDistance(float speed) {
         distance += speed;
 
-        ((TextView)getActivity().findViewById(R.id.distanceTextView)).setText(Utils.formatDistance(distance));
+        ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(Utils.formatDistance(distance));
     }
 
 

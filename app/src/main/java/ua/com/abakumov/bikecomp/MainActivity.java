@@ -2,15 +2,17 @@ package ua.com.abakumov.bikecomp;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import de.greenrobot.event.EventBus;
+import ua.com.abakumov.bikecomp.event.SessionStartEvent;
+import ua.com.abakumov.bikecomp.event.SessionStopEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderDisabledEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderEnabledEvent;
 import ua.com.abakumov.bikecomp.fragment.AverageSpeedFragment;
 import ua.com.abakumov.bikecomp.fragment.ButtonsFragment;
 import ua.com.abakumov.bikecomp.fragment.ClockFragment;
@@ -20,70 +22,57 @@ import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
 import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
 import ua.com.abakumov.bikecomp.service.GpsService;
 
-import static ua.com.abakumov.bikecomp.Actions.BROADCAST_ACTION;
-import static ua.com.abakumov.bikecomp.Actions.PARCEL_NAME;
-import static ua.com.abakumov.bikecomp.Actions.SESSION_START;
 import static ua.com.abakumov.bikecomp.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.Utils.showToast;
 
 
 public class MainActivity extends Activity {
 
-    private Intent gpsServiceIntent;
+    private EventBus eventBus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        gpsServiceIntent = new Intent(this, GpsService.class);
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
 
         addFragments();
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(LocationProviderEnabledEvent event) {
+        showToast(R.string.enabled_gps_provider, getApplicationContext());
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(LocationProviderDisabledEvent event) {
+        showToast(R.string.disabled_gps_provider, getApplicationContext());
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStartEvent event) {
+        showShortToast(R.string.session_started, getApplicationContext());
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStopEvent event) {
+        showShortToast(R.string.session_stopped, getApplicationContext());
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        // GPS provider service
-        startService(gpsServiceIntent);
-
-        subscribeBroadcastEvents();
+        startService(new Intent(this, GpsService.class));
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
-        stopService(gpsServiceIntent);
-    }
-
-    private void subscribeBroadcastEvents() {
-
-        registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-
-                String action = intent.getStringExtra(PARCEL_NAME);
-
-                if (action.equals(SESSION_START)) {
-                    showShortToast(R.string.session_started, getApplicationContext());
-                }
-
-                if (action.equals(Actions.SESSION_STOP)) {
-                    showShortToast(R.string.session_stopped, getApplicationContext());
-                }
-
-                // On - Off
-                if (action.equals(Actions.GPS_PROVIDER_ENABLED)) {
-                    showToast(R.string.enabled_gps_provider, getApplicationContext());
-                }
-                if (action.equals(Actions.GPS_PROVIDER_DISABLED)) {
-                    showToast(R.string.disabled_gps_provider, getApplicationContext());
-                }
-
-            }
-        }, new IntentFilter(BROADCAST_ACTION));
+        stopService(new Intent(this, GpsService.class));
     }
 
     @Override
@@ -106,7 +95,7 @@ public class MainActivity extends Activity {
         getFragmentManager().beginTransaction()
                 .add(R.id.mainLayout, speedFragment)
                 .add(R.id.mainLayout, averageSpeedFragment)
-                //.add(R.id.mainLayout, clockFragment)
+                        //.add(R.id.mainLayout, clockFragment)
                 .add(R.id.mainLayout, elapsedTimeFragment)
                 .add(R.id.mainLayout, distanceFragment)
                 .add(R.id.mainLayout, buttonsFragment)

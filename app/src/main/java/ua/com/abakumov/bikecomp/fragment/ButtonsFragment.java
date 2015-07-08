@@ -1,20 +1,18 @@
 package ua.com.abakumov.bikecomp.fragment;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ua.com.abakumov.bikecomp.Actions;
+import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.SessionStartEvent;
+import ua.com.abakumov.bikecomp.event.SessionStopEvent;
 
 import static android.media.MediaPlayer.create;
-import static ua.com.abakumov.bikecomp.Actions.BROADCAST_ACTION;
-import static ua.com.abakumov.bikecomp.Actions.PARCEL_NAME;
-import static ua.com.abakumov.bikecomp.Actions.SESSION_START;
 import static ua.com.abakumov.bikecomp.R.id.buttonStart;
 import static ua.com.abakumov.bikecomp.R.id.buttonStop;
 import static ua.com.abakumov.bikecomp.R.raw.start;
@@ -28,7 +26,10 @@ import static ua.com.abakumov.bikecomp.R.raw.stop;
 public class ButtonsFragment extends Fragment {
 
     private MediaPlayer mediaPlayerStart;
+
     private MediaPlayer mediaPlayerStop;
+
+    private EventBus eventBus;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class ButtonsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        eventBus = EventBus.getDefault();
+
         mediaPlayerStart = create(getActivity().getApplicationContext(), start);
         mediaPlayerStop = create(getActivity().getApplicationContext(), stop);
 
@@ -47,8 +50,7 @@ public class ButtonsFragment extends Fragment {
             public void onClick(View v) {
                 mediaPlayerStart.start();
 
-                getActivity().sendBroadcast(new Intent(BROADCAST_ACTION).
-                        putExtra(PARCEL_NAME, SESSION_START));
+                eventBus.post(new SessionStartEvent());
             }
         });
 
@@ -57,8 +59,7 @@ public class ButtonsFragment extends Fragment {
             public void onClick(View v) {
                 mediaPlayerStop.start();
 
-                getActivity().sendBroadcast(new Intent(BROADCAST_ACTION)
-                        .putExtra(PARCEL_NAME, Actions.SESSION_STOP));
+                eventBus.post(new SessionStopEvent());
             }
         });
     }

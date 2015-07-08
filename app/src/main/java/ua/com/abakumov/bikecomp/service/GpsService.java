@@ -11,14 +11,16 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.Actions;
 import ua.com.abakumov.bikecomp.Constants;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderAvailableEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderDisabledEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderEnabledEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderIsOutOfServiceEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderTemporaryUnavailableEvent;
 
 import static ua.com.abakumov.bikecomp.Actions.BROADCAST_ACTION;
-import static ua.com.abakumov.bikecomp.Actions.GPS_PROVIDER_AVAILABLE;
-import static ua.com.abakumov.bikecomp.Actions.GPS_PROVIDER_DISABLED;
-import static ua.com.abakumov.bikecomp.Actions.GPS_PROVIDER_ENABLED;
-import static ua.com.abakumov.bikecomp.Actions.GPS_PROVIDER_OUT_OF_SERVICE;
 import static ua.com.abakumov.bikecomp.Actions.PARCEL_NAME;
 import static ua.com.abakumov.bikecomp.Constants.BIKECOMP_TAG;
 
@@ -29,15 +31,19 @@ import static ua.com.abakumov.bikecomp.Constants.BIKECOMP_TAG;
  */
 public class GpsService extends Service {
 
+    private EventBus eventBus;
+
     public void onCreate() {
         super.onCreate();
         Log.v(BIKECOMP_TAG, "onCreate");
+
+        eventBus = EventBus.getDefault();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(BIKECOMP_TAG, "onStartCommand");
 
-        task();
+        doJob();
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -55,10 +61,8 @@ public class GpsService extends Service {
     /**
      * Work is here
      */
-    private void task() {
-
+    private void doJob() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         LocationListener locationListener = new LocationListener() {
 
             @Override
@@ -71,23 +75,18 @@ public class GpsService extends Service {
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
                 switch (status) {
-                    case LocationProvider.AVAILABLE: {
-                        sendBroadcast(new Intent(BROADCAST_ACTION)
-                                .putExtra(PARCEL_NAME, GPS_PROVIDER_AVAILABLE));
-                    }
+                    case LocationProvider.AVAILABLE:
+                        eventBus.post(new LocationProviderAvailableEvent());
+                        break;
 
-                    break;
-                    case LocationProvider.TEMPORARILY_UNAVAILABLE: {
-                        sendBroadcast(new Intent(BROADCAST_ACTION)
-                                .putExtra(PARCEL_NAME, Actions.GPS_PROVIDER_TEMPORARILY_UNAVAILABLE));
-                    }
+                    case LocationProvider.TEMPORARILY_UNAVAILABLE:
+                        eventBus.post(new LocationProviderTemporaryUnavailableEvent());
+                        break;
 
-                    break;
-                    case LocationProvider.OUT_OF_SERVICE: {
-                        sendBroadcast(new Intent(BROADCAST_ACTION)
-                                .putExtra(PARCEL_NAME, GPS_PROVIDER_OUT_OF_SERVICE));
-                    }
-                    break;
+                    case LocationProvider.OUT_OF_SERVICE:
+                        eventBus.post(new LocationProviderIsOutOfServiceEvent());
+                        break;
+
                     default:
                         Log.w(Constants.BIKECOMP_TAG, "Unknown status");
                         break;
@@ -96,18 +95,15 @@ public class GpsService extends Service {
 
             @Override
             public void onProviderEnabled(String provider) {
-                sendBroadcast(new Intent(BROADCAST_ACTION)
-                        .putExtra(PARCEL_NAME, GPS_PROVIDER_ENABLED));
+                eventBus.post(new LocationProviderEnabledEvent());
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                sendBroadcast(new Intent(BROADCAST_ACTION)
-                        .putExtra(PARCEL_NAME, GPS_PROVIDER_DISABLED));
+                eventBus.post(new LocationProviderDisabledEvent());
             }
         };
 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
-
     }
 }
