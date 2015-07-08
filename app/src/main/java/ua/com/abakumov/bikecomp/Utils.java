@@ -15,6 +15,9 @@ public final class Utils {
 
     private static DecimalFormat USUAL_FORMAT = new DecimalFormat("##.0");
 
+    private static DecimalFormat DISTANCE_FORMAT = new DecimalFormat("##.#");
+
+
     /**
      * Format speed parameter (with locale-dependent decimal separator)
      * <p/>
@@ -31,6 +34,10 @@ public final class Utils {
         return (speed == 0 ? ZERO_FORMAT.format(0) : USUAL_FORMAT.format(speed));
     }
 
+    public static String formatDistance(float distance) {
+        return DISTANCE_FORMAT.format(distance);
+    }
+
     /**
      * M/s to Km/ph
      *
@@ -43,5 +50,9 @@ public final class Utils {
 
     public static void showToast(int resId, Context context) {
         Toast.makeText(context, resId, Toast.LENGTH_LONG).show();
+    }
+
+    public static void showShortToast(int resId, Context context) {
+        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
     }
 }

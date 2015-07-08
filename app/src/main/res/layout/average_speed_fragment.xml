@@ -16,7 +16,8 @@
         android:shadowRadius="1.5"
         android:gravity="center|fill_horizontal|fill_vertical"
         android:textStyle="bold"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="-10dp" />
 
     <LinearLayout
         android:orientation="horizontal"

@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import ua.com.abakumov.bikecomp.fragment.AverageSpeedFragment;
 import ua.com.abakumov.bikecomp.fragment.ButtonsFragment;
 import ua.com.abakumov.bikecomp.fragment.ClockFragment;
+import ua.com.abakumov.bikecomp.fragment.DistanceFragment;
 import ua.com.abakumov.bikecomp.fragment.ElapsedTimeFragment;
 import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
 import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
@@ -22,6 +23,7 @@ import ua.com.abakumov.bikecomp.service.GpsService;
 import static ua.com.abakumov.bikecomp.Actions.BROADCAST_ACTION;
 import static ua.com.abakumov.bikecomp.Actions.PARCEL_NAME;
 import static ua.com.abakumov.bikecomp.Actions.SESSION_START;
+import static ua.com.abakumov.bikecomp.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.Utils.showToast;
 
 
@@ -64,13 +66,12 @@ public class MainActivity extends Activity {
 
                 String action = intent.getStringExtra(PARCEL_NAME);
 
-
                 if (action.equals(SESSION_START)) {
-                    showToast(R.string.session_started, getApplicationContext());
+                    showShortToast(R.string.session_started, getApplicationContext());
                 }
 
                 if (action.equals(Actions.SESSION_STOP)) {
-                    showToast(R.string.session_stopped, getApplicationContext());
+                    showShortToast(R.string.session_stopped, getApplicationContext());
                 }
 
                 // On - Off
@@ -79,20 +80,6 @@ public class MainActivity extends Activity {
                 }
                 if (action.equals(Actions.GPS_PROVIDER_DISABLED)) {
                     showToast(R.string.disabled_gps_provider, getApplicationContext());
-                }
-
-
-                // Receive - temp down - down
-                if (action.equals(Actions.GPS_PROVIDER_AVAILABLE)) {
-                    showToast(R.string.status_available, getApplicationContext());
-                }
-
-                if (action.equals(Actions.GPS_PROVIDER_TEMPORARILY_UNAVAILABLE)) {
-                    showToast(R.string.status_temporary_unavailable, getApplicationContext());
-                }
-
-                if (action.equals(Actions.GPS_PROVIDER_OUT_OF_SERVICE)) {
-                    showToast(R.string.status_out_of_service, getApplicationContext());
                 }
 
             }
@@ -113,14 +100,15 @@ public class MainActivity extends Activity {
         Fragment clockFragment = new ClockFragment();
         Fragment elapsedTimeFragment = new ElapsedTimeFragment();
         Fragment hrFragment = new HeartRateFragment();
+        Fragment distanceFragment = new DistanceFragment();
         Fragment buttonsFragment = new ButtonsFragment();
 
         getFragmentManager().beginTransaction()
                 .add(R.id.mainLayout, speedFragment)
                 .add(R.id.mainLayout, averageSpeedFragment)
-                .add(R.id.mainLayout, clockFragment)
+                //.add(R.id.mainLayout, clockFragment)
                 .add(R.id.mainLayout, elapsedTimeFragment)
-                        //.add(R.id.mainLayout, hrFragment)
+                .add(R.id.mainLayout, distanceFragment)
                 .add(R.id.mainLayout, buttonsFragment)
                 .show(buttonsFragment)
                 .commit();
@@ -128,16 +116,12 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

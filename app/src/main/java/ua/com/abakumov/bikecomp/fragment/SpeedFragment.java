@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import ua.com.abakumov.bikecomp.Actions;
@@ -42,12 +43,51 @@ public class SpeedFragment extends Fragment {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String parcelName = intent.getStringExtra(Actions.PARCEL_NAME);
+
+                if (parcelName.equals(Actions.GPS_PROVIDER_ENABLED)) {
+                    gpsEnabled(true);
+                    return;
+                }
+
+                if (parcelName.equals(Actions.GPS_PROVIDER_DISABLED)) {
+                    gpsEnabled(false);
+                    return;
+                }
+
+                if (parcelName.equals(Actions.GPS_PROVIDER_AVAILABLE)) {
+                    gpsAvailable(true);
+                    return;
+                }
+
+                if (parcelName.equals(Actions.GPS_PROVIDER_TEMPORARILY_UNAVAILABLE)) {
+                    gpsAvailable(false);
+                    return;
+                }
+
+                if (parcelName.equals(Actions.GPS_PROVIDER_OUT_OF_SERVICE)) {
+                    gpsAvailable(false);
+                    return;
+                }
+
                 if (parcelName.equals(Actions.GPS_LOCATION_CHANGED)) {
                     Location location = intent.getParcelableExtra(Actions.GPS_LOCATION_CHANGED_DATA);
                     makeUseOfNewLocation(location);
+                    return;
                 }
             }
         }, intentFilter);
+    }
+
+    private void gpsEnabled(boolean enabled) {
+        ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
+        satellite.setImageResource(R.drawable.gps_satellite);
+        satellite.setImageAlpha(enabled ? 100 : 60);
+    }
+
+    private void gpsAvailable(boolean available) {
+        ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
+        satellite.setImageResource(R.drawable.gps_satellite_green);
+        satellite.setImageAlpha(available ? 100 : 60);
     }
 
     private void makeUseOfNewLocation(Location location) {

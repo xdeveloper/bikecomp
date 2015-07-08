@@ -27,7 +27,8 @@
                 android:shadowRadius="1.5"
                 android:gravity="center|fill_horizontal|fill_vertical"
                 android:textStyle="bold"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="-10dp" />
 
             <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/speed"
                 android:gravity="center|top"
@@ -39,7 +40,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/kmh"
                 android:gravity="center|top"
-                android:id="@+id/textView2"
                 android:textSize="12sp"
                 android:layout_gravity="center_horizontal" />
 
@@ -51,10 +51,10 @@
             android:layout_marginTop="15dp">
 
             <ImageView
+                android:id="@+id/gpsSateliteImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageView"
-                android:src="@drawable/gps_satelite"
+                android:src="@drawable/gps_satellite"
                 android:layout_gravity="center_horizontal" />
         </LinearLayout>
     </LinearLayout>

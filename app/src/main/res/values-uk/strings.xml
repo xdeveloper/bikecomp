@@ -10,6 +10,8 @@
     <string name="elapsedtime">В дорозі</string>
     <string name="action_google_play">Гугл Плей</string>
     <string name="heartrate">Пульс</string>
+    <string name="distance">Дистанція</string>
+    <string name="km">(км)</string>
 
     <!-- Location -->
     <string name="enabled_gps_provider">GPS приймач ввімкнено</string>
@@ -25,4 +27,5 @@
 
     <string name="session_started">Поїхали</string>
     <string name="session_stopped">Зупинка</string>
+
 </resources>

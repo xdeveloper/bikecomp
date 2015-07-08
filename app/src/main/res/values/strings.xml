@@ -10,6 +10,8 @@
     <string name="elapsedtime">Elapsed Time</string>
     <string name="action_google_play">Google Play</string>
     <string name="heartrate">Heart Rate</string>
+    <string name="distance">Distance</string>
+    <string name="km">(Km)</string>
 
     <!-- Location -->
     <string name="enabled_gps_provider">GPS receiver on</string>
@@ -25,4 +27,5 @@
 
     <string name="session_started">Let\'s go</string>
     <string name="session_stopped">Stopped</string>
+
 </resources>

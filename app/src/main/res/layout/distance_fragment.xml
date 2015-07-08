@@ -8,11 +8,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="70sp"
-        android:text="00:00:00"
-        android:id="@+id/clockTextView"
+        android:text="0.0"
+        android:id="@+id/distanceTextView"
         android:gravity="center|fill_horizontal|fill_vertical"
-        android:textStyle="bold"
         android:layout_gravity="center_horizontal"
+        android:textStyle="bold"
         android:layout_marginBottom="-10dp" />
 
     <LinearLayout
@@ -22,10 +22,16 @@
         android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal">
 
-        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/clock"
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/distance"
             android:gravity="center|top"
-            android:textSize="12sp"
-            />
+            android:textSize="12sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/km"
+            android:gravity="center|top"
+            android:textSize="12sp" />
     </LinearLayout>
 
 </LinearLayout>
