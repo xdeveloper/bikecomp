@@ -12,6 +12,7 @@ import java.util.TimerTask;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.Utils;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
@@ -47,11 +48,6 @@ public class ElapsedTimeFragment extends Fragment {
                 }
             });
         }
-    }
-
-    private void updateUi() {
-        TextView elapsedTimeTextView = (TextView) getActivity().findViewById(R.id.elapsedTimeTextView);
-        elapsedTimeTextView.setText(String.valueOf(counter));
     }
 
     @Override
@@ -96,5 +92,10 @@ public class ElapsedTimeFragment extends Fragment {
         eventBus.unregister(this);
 
         super.onStop();
+    }
+
+    private void updateUi() {
+        TextView elapsedTimeTextView = (TextView) getActivity().findViewById(R.id.elapsedTimeTextView);
+        elapsedTimeTextView.setText(Utils.formatElapsedTime(counter));
     }
 }

@@ -4,6 +4,9 @@ import android.content.Context;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Formatter;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Useful utilities
@@ -11,12 +14,11 @@ import java.text.DecimalFormat;
  * Created by Oleksandr Abakumov on 7/4/15.
  */
 public final class Utils {
-    private static DecimalFormat ZERO_FORMAT = new DecimalFormat("0.0");
+    private static NumberFormat ZERO_FORMAT = new DecimalFormat("0.0");
 
-    private static DecimalFormat USUAL_FORMAT = new DecimalFormat("##.0");
+    private static NumberFormat USUAL_FORMAT = new DecimalFormat("##.0");
 
-    private static DecimalFormat DISTANCE_FORMAT = new DecimalFormat("##.#");
-
+    private static NumberFormat DISTANCE_FORMAT = new DecimalFormat("##.#");
 
     /**
      * Format speed parameter (with locale-dependent decimal separator)
@@ -36,6 +38,47 @@ public final class Utils {
 
     public static String formatDistance(float distance) {
         return DISTANCE_FORMAT.format(distance);
+    }
+
+    public static String formatElapsedTime(int seconds) {
+        if (seconds < 60) {
+            return lessThanMinute(seconds);
+        }
+
+        if (seconds >= 60 && seconds < 3600) {
+            return lessThanHour(seconds);
+        }
+
+        // seconds >= 3600)
+        return hourAndMore(seconds);
+    }
+
+    private static String hourAndMore(long seconds) {
+        // H
+        long hours = TimeUnit.SECONDS.toHours(seconds);
+
+        // M
+        seconds = seconds - TimeUnit.HOURS.toSeconds(hours);
+        long minutes = TimeUnit.SECONDS.toMinutes(seconds);
+
+        // S
+        seconds = seconds - TimeUnit.MINUTES.toSeconds(minutes);
+
+        return normalizeNumber(hours) + ":" + normalizeNumber(minutes) + normalizeNumber(seconds);
+    }
+
+    private static String lessThanHour(long secounds) {
+        long minutes = TimeUnit.SECONDS.toMinutes(secounds);
+        secounds = secounds - TimeUnit.MINUTES.toSeconds(minutes);
+        return minutes + ":" + normalizeNumber(secounds);
+    }
+
+    private static String lessThanMinute(long seconds) {
+        return "0:" + normalizeNumber(seconds);
+    }
+
+    private static String normalizeNumber(long number) {
+        return number < 10 ? "0" + number : String.valueOf(number);
     }
 
     /**
