@@ -12,16 +12,14 @@ import android.os.IBinder;
 import android.util.Log;
 
 import de.greenrobot.event.EventBus;
-import ua.com.abakumov.bikecomp.Actions;
 import ua.com.abakumov.bikecomp.Constants;
 import ua.com.abakumov.bikecomp.event.gps.LocationProviderAvailableEvent;
 import ua.com.abakumov.bikecomp.event.gps.LocationProviderDisabledEvent;
 import ua.com.abakumov.bikecomp.event.gps.LocationProviderEnabledEvent;
 import ua.com.abakumov.bikecomp.event.gps.LocationProviderIsOutOfServiceEvent;
+import ua.com.abakumov.bikecomp.event.gps.LocationProviderLocationChangedEvent;
 import ua.com.abakumov.bikecomp.event.gps.LocationProviderTemporaryUnavailableEvent;
 
-import static ua.com.abakumov.bikecomp.Actions.BROADCAST_ACTION;
-import static ua.com.abakumov.bikecomp.Actions.PARCEL_NAME;
 import static ua.com.abakumov.bikecomp.Constants.BIKECOMP_TAG;
 
 /**
@@ -69,9 +67,7 @@ public class GpsService extends Service {
 
             @Override
             public void onLocationChanged(Location location) {
-                sendBroadcast(new Intent(BROADCAST_ACTION)
-                        .putExtra(PARCEL_NAME, Actions.GPS_LOCATION_CHANGED)
-                        .putExtra(Actions.GPS_LOCATION_CHANGED_DATA, location));
+                eventBus.post(new LocationProviderLocationChangedEvent(location.getSpeed()));
             }
 
             @Override
