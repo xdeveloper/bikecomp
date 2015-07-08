@@ -9,11 +9,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="70sp"
-        android:text="--:--:--"
+        android:text="00:00:00"
         android:gravity="center|fill_horizontal|fill_vertical"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="-10dp" />
+        android:layout_marginBottom="-15dp" />
 
     <LinearLayout
         android:orientation="horizontal"
