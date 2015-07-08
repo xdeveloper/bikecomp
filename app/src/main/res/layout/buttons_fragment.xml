@@ -10,7 +10,7 @@
         android:id="@+id/buttonStart"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_margin="2dp"
+        android:layout_margin="3dp"
         android:background="@drawable/button_selector"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/start" />
@@ -30,7 +30,7 @@
         android:id="@+id/buttonStop"
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:layout_margin="2dp"
+        android:layout_margin="3dp"
         android:background="@drawable/button_selector"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/stop" />

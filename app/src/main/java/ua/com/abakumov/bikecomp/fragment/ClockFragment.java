@@ -28,7 +28,7 @@ public class ClockFragment extends Fragment {
     @SuppressWarnings("FieldCanBeLocal")
     private ClockFragmentTimerTask task;
 
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm.ss", Locale.getDefault());
 
 
     private class ClockFragmentTimerTask extends TimerTask {

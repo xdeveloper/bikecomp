@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
@@ -40,7 +41,10 @@ public class ButtonsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        buttonsInitialState();
+
         eventBus = EventBus.getDefault();
+        eventBus.register(this);
 
         mediaPlayerStart = create(getActivity().getApplicationContext(), start);
         mediaPlayerStop = create(getActivity().getApplicationContext(), stop);
@@ -62,5 +66,45 @@ public class ButtonsFragment extends Fragment {
                 eventBus.post(new SessionStop());
             }
         });
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStart event) {
+        hide(getStartButton());
+        show(getPauseButton());
+        show(getStopButton());
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStop event) {
+        show(getStartButton());
+        hide(getPauseButton());
+        hide(getStopButton());
+    }
+
+    private void buttonsInitialState() {
+        show(getStartButton());
+        hide(getPauseButton());
+        hide(getStopButton());
+    }
+
+    private Button getStartButton() {
+        return (Button) getActivity().findViewById(R.id.buttonStart);
+    }
+
+    private Button getPauseButton() {
+        return (Button) getActivity().findViewById(R.id.buttonPause);
+    }
+
+    private Button getStopButton() {
+        return (Button) getActivity().findViewById(R.id.buttonStop);
+    }
+
+    private void hide(Button button) {
+        button.setVisibility(View.GONE);
+    }
+
+    private void show(Button button) {
+        button.setVisibility(View.VISIBLE);
     }
 }

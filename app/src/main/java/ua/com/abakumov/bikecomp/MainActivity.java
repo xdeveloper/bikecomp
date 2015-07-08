@@ -97,11 +97,10 @@ public class MainActivity extends Activity {
         getFragmentManager().beginTransaction()
                 .add(R.id.mainLayout, speedFragment)
                 .add(R.id.mainLayout, averageSpeedFragment)
-                        //.add(R.id.mainLayout, clockFragment)
+                .add(R.id.mainLayout, clockFragment)
                 .add(R.id.mainLayout, elapsedTimeFragment)
                 .add(R.id.mainLayout, distanceFragment)
                 .add(R.id.mainLayout, buttonsFragment)
-                .show(buttonsFragment)
                 .commit();
     }
 
