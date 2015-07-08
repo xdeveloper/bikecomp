@@ -70,5 +70,12 @@ public class DistanceFragment extends Fragment {
         ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(Utils.formatDistance(distance));
     }
 
+    @Override
+    public void onStop() {
+        eventBus.unregister(this);
+
+        super.onStop();
+    }
+
 
 }

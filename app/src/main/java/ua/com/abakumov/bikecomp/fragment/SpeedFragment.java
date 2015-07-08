@@ -88,4 +88,11 @@ public class SpeedFragment extends Fragment {
         satellite.setImageAlpha(available ? 100 : 60);
     }
 
+    @Override
+    public void onStop() {
+        eventBus.unregister(this);
+
+        super.onStop();
+    }
+
 }

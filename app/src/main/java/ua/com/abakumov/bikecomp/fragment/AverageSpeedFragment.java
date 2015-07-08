@@ -36,6 +36,13 @@ public class AverageSpeedFragment extends Fragment {
         eventBus.register(this);
     }
 
+    @Override
+    public void onStop() {
+        eventBus.unregister(this);
+        
+        super.onStop();
+    }
+
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStartEvent event) {

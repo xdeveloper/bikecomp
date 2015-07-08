@@ -88,4 +88,11 @@ public class ElapsedTimeFragment extends Fragment {
 
         timer.cancel();
     }
+
+    @Override
+    public void onStop() {
+        eventBus.unregister(this);
+
+        super.onStop();
+    }
 }

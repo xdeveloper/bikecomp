@@ -72,6 +72,8 @@ public class MainActivity extends Activity {
     protected void onStop() {
         super.onStop();
 
+        eventBus.unregister(this);
+
         stopService(new Intent(this, GpsService.class));
     }
 

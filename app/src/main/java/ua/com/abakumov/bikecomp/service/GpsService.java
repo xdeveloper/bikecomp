@@ -49,6 +49,8 @@ public class GpsService extends Service {
     }
 
     public void onDestroy() {
+        eventBus.unregister(this);
+
         super.onDestroy();
         Log.d(BIKECOMP_TAG, "onDestroy");
     }
