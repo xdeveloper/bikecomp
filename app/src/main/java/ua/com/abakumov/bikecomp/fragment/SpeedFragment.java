@@ -12,12 +12,12 @@ import android.widget.TextView;
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.Constants;
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderAvailableEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderDisabledEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderEnabledEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderIsOutOfServiceEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderLocationChangedEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderTemporaryUnavailableEvent;
+import ua.com.abakumov.bikecomp.event.gps.Available;
+import ua.com.abakumov.bikecomp.event.gps.Disabled;
+import ua.com.abakumov.bikecomp.event.gps.Enabled;
+import ua.com.abakumov.bikecomp.event.gps.OutOfService;
+import ua.com.abakumov.bikecomp.event.gps.NewLocation;
+import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 
 import static ua.com.abakumov.bikecomp.Utils.formatSpeed;
 
@@ -45,32 +45,32 @@ public class SpeedFragment extends Fragment {
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(LocationProviderEnabledEvent event) {
+    public void onEvent(Enabled event) {
         gpsEnabled(true);
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(LocationProviderDisabledEvent event) {
+    public void onEvent(Disabled event) {
         gpsEnabled(false);
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(LocationProviderAvailableEvent event) {
+    public void onEvent(Available event) {
         gpsAvailable(true);
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(LocationProviderTemporaryUnavailableEvent event) {
+    public void onEvent(TemporaryUnavailable event) {
         gpsAvailable(false);
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(LocationProviderIsOutOfServiceEvent event) {
+    public void onEvent(OutOfService event) {
         gpsAvailable(false);
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(LocationProviderLocationChangedEvent event) {
+    public void onEvent(NewLocation event) {
         double kmphSpeed = event.getKmphSpeed();
         Log.v(Constants.BIKECOMP_TAG, "Location received:" + String.valueOf(kmphSpeed));
         ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(kmphSpeed));

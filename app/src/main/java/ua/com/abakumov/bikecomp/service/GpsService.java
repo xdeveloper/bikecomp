@@ -13,12 +13,12 @@ import android.util.Log;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.Constants;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderAvailableEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderDisabledEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderEnabledEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderIsOutOfServiceEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderLocationChangedEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderTemporaryUnavailableEvent;
+import ua.com.abakumov.bikecomp.event.gps.Available;
+import ua.com.abakumov.bikecomp.event.gps.Disabled;
+import ua.com.abakumov.bikecomp.event.gps.Enabled;
+import ua.com.abakumov.bikecomp.event.gps.OutOfService;
+import ua.com.abakumov.bikecomp.event.gps.NewLocation;
+import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 
 import static ua.com.abakumov.bikecomp.Constants.BIKECOMP_TAG;
 
@@ -67,22 +67,22 @@ public class GpsService extends Service {
 
             @Override
             public void onLocationChanged(Location location) {
-                eventBus.post(new LocationProviderLocationChangedEvent(location.getSpeed()));
+                eventBus.post(new NewLocation(location.getSpeed()));
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
                 switch (status) {
                     case LocationProvider.AVAILABLE:
-                        eventBus.post(new LocationProviderAvailableEvent());
+                        eventBus.post(new Available());
                         break;
 
                     case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                        eventBus.post(new LocationProviderTemporaryUnavailableEvent());
+                        eventBus.post(new TemporaryUnavailable());
                         break;
 
                     case LocationProvider.OUT_OF_SERVICE:
-                        eventBus.post(new LocationProviderIsOutOfServiceEvent());
+                        eventBus.post(new OutOfService());
                         break;
 
                     default:
@@ -93,12 +93,12 @@ public class GpsService extends Service {
 
             @Override
             public void onProviderEnabled(String provider) {
-                eventBus.post(new LocationProviderEnabledEvent());
+                eventBus.post(new Enabled());
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                eventBus.post(new LocationProviderDisabledEvent());
+                eventBus.post(new Disabled());
             }
         };
 

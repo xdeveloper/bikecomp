@@ -12,9 +12,9 @@ import java.util.TimerTask;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.event.Event;
-import ua.com.abakumov.bikecomp.event.SessionStartEvent;
-import ua.com.abakumov.bikecomp.event.SessionStopEvent;
+import ua.com.abakumov.bikecomp.event.NewElapsedTime;
+import ua.com.abakumov.bikecomp.event.SessionStart;
+import ua.com.abakumov.bikecomp.event.SessionStop;
 
 /*
  * Created by oabakumov on 26.06.2015.
@@ -41,13 +41,15 @@ public class ElapsedTimeFragment extends Fragment {
                 @Override
                 public void run() {
                     counter++;
-                    updateElapsedTime();
+                    updateUi();
+
+                    eventBus.post(new NewElapsedTime(counter));
                 }
             });
         }
     }
 
-    private void updateElapsedTime() {
+    private void updateUi() {
         TextView elapsedTimeTextView = (TextView) getActivity().findViewById(R.id.elapsedTimeTextView);
         elapsedTimeTextView.setText(String.valueOf(counter));
     }
@@ -68,14 +70,14 @@ public class ElapsedTimeFragment extends Fragment {
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(SessionStartEvent event) {
+    public void onEvent(SessionStart event) {
         if (started) {
             return;
         }
 
         started = true;
         counter = 0;
-        updateElapsedTime();
+        updateUi();
 
         timer = new Timer();
         task = new ElapsedTimeFragmentTask();
@@ -83,7 +85,7 @@ public class ElapsedTimeFragment extends Fragment {
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(SessionStopEvent event) {
+    public void onEvent(SessionStop event) {
         started = false;
 
         timer.cancel();

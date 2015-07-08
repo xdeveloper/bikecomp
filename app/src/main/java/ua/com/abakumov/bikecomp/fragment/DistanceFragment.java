@@ -10,10 +10,10 @@ import android.widget.TextView;
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.Utils;
-import ua.com.abakumov.bikecomp.event.Event;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderLocationChangedEvent;
-import ua.com.abakumov.bikecomp.event.SessionStartEvent;
-import ua.com.abakumov.bikecomp.event.SessionStopEvent;
+import ua.com.abakumov.bikecomp.event.gps.NewDistance;
+import ua.com.abakumov.bikecomp.event.gps.NewLocation;
+import ua.com.abakumov.bikecomp.event.SessionStart;
+import ua.com.abakumov.bikecomp.event.SessionStop;
 
 /**
  * Shows distance on the screen
@@ -28,7 +28,6 @@ public class DistanceFragment extends Fragment {
 
     private EventBus eventBus;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.distance_fragment, container, false);
@@ -42,32 +41,25 @@ public class DistanceFragment extends Fragment {
         eventBus.register(this);
     }
 
-
-    private void resetDistance() {
-        distance = 0;
-    }
-
     @SuppressWarnings(value = "unused")
-    public void onEvent(SessionStartEvent event) {
+    public void onEvent(SessionStart event) {
         sessionStarted = true;
         resetDistance();
         calcDistance(0);
+        uiUpdateDistance();
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(SessionStopEvent event) {
+    public void onEvent(SessionStop event) {
         sessionStarted = false;
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(LocationProviderLocationChangedEvent event) {
+    public void onEvent(NewLocation event) {
         calcDistance(event.getMpsSpeed());
-    }
+        uiUpdateDistance();
 
-    private void calcDistance(float speed) {
-        distance += speed;
-
-        ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(Utils.formatDistance(distance));
+        eventBus.post(new NewDistance(distance));
     }
 
     @Override
@@ -75,6 +67,18 @@ public class DistanceFragment extends Fragment {
         eventBus.unregister(this);
 
         super.onStop();
+    }
+
+    private void calcDistance(float speed) {
+        distance += speed;
+    }
+
+    private void resetDistance() {
+        distance = 0;
+    }
+
+    private void uiUpdateDistance() {
+        ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(Utils.formatDistance(distance));
     }
 
 

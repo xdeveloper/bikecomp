@@ -9,10 +9,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import de.greenrobot.event.EventBus;
-import ua.com.abakumov.bikecomp.event.SessionStartEvent;
-import ua.com.abakumov.bikecomp.event.SessionStopEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderDisabledEvent;
-import ua.com.abakumov.bikecomp.event.gps.LocationProviderEnabledEvent;
+import ua.com.abakumov.bikecomp.event.SessionStart;
+import ua.com.abakumov.bikecomp.event.SessionStop;
+import ua.com.abakumov.bikecomp.event.gps.Disabled;
+import ua.com.abakumov.bikecomp.event.gps.Enabled;
 import ua.com.abakumov.bikecomp.fragment.AverageSpeedFragment;
 import ua.com.abakumov.bikecomp.fragment.ButtonsFragment;
 import ua.com.abakumov.bikecomp.fragment.ClockFragment;
@@ -42,22 +42,22 @@ public class MainActivity extends Activity {
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(LocationProviderEnabledEvent event) {
+    public void onEvent(Enabled event) {
         showToast(R.string.enabled_gps_provider, getApplicationContext());
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(LocationProviderDisabledEvent event) {
+    public void onEvent(Disabled event) {
         showToast(R.string.disabled_gps_provider, getApplicationContext());
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(SessionStartEvent event) {
+    public void onEvent(SessionStart event) {
         showShortToast(R.string.session_started, getApplicationContext());
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(SessionStopEvent event) {
+    public void onEvent(SessionStop event) {
         showShortToast(R.string.session_stopped, getApplicationContext());
     }
 

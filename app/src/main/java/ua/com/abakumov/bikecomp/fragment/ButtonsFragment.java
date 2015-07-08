@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.event.SessionStartEvent;
-import ua.com.abakumov.bikecomp.event.SessionStopEvent;
+import ua.com.abakumov.bikecomp.event.SessionStart;
+import ua.com.abakumov.bikecomp.event.SessionStop;
 
 import static android.media.MediaPlayer.create;
 import static ua.com.abakumov.bikecomp.R.id.buttonStart;
@@ -50,7 +50,7 @@ public class ButtonsFragment extends Fragment {
             public void onClick(View v) {
                 mediaPlayerStart.start();
 
-                eventBus.post(new SessionStartEvent());
+                eventBus.post(new SessionStart());
             }
         });
 
@@ -59,7 +59,7 @@ public class ButtonsFragment extends Fragment {
             public void onClick(View v) {
                 mediaPlayerStop.start();
 
-                eventBus.post(new SessionStopEvent());
+                eventBus.post(new SessionStop());
             }
         });
     }
