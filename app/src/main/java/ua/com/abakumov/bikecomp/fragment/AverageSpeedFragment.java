@@ -40,6 +40,7 @@ public class AverageSpeedFragment extends Fragment {
 
         eventBus = EventBus.getDefault();
         eventBus.register(this);
+
     }
 
     @Override

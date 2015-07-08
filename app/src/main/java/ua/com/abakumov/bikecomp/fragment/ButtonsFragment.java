@@ -41,10 +41,10 @@ public class ButtonsFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        buttonsInitialState();
-
         eventBus = EventBus.getDefault();
         eventBus.register(this);
+
+        buttonsInitialState();
 
         mediaPlayerStart = create(getActivity().getApplicationContext(), start);
         mediaPlayerStop = create(getActivity().getApplicationContext(), stop);
@@ -66,6 +66,13 @@ public class ButtonsFragment extends Fragment {
                 eventBus.post(new SessionStop());
             }
         });
+    }
+
+    @Override
+    public void onStop() {
+        eventBus.unregister(this);
+
+        super.onStop();
     }
 
     @SuppressWarnings(value = "unused")
