@@ -14,6 +14,7 @@ import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.Utils;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
+import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 
@@ -28,13 +29,12 @@ public class ElapsedTimeFragment extends Fragment {
 
     private ElapsedTimeFragmentTask task;
 
-    private boolean started;
+    private boolean paused = false;
 
     private int counter;
 
+
     private EventBus eventBus;
-
-
     private class ElapsedTimeFragmentTask extends TimerTask {
         @Override
         public void run() {
@@ -48,6 +48,7 @@ public class ElapsedTimeFragment extends Fragment {
                 }
             });
         }
+
     }
 
     @Override
@@ -67,24 +68,30 @@ public class ElapsedTimeFragment extends Fragment {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
-        if (started) {
-            return;
-        }
-
-        started = true;
         counter = 0;
         updateUi();
-
-        timer = new Timer();
-        task = new ElapsedTimeFragmentTask();
-        timer.schedule(task, SECOUND, SECOUND);
+        setupAndLaunchTimer();
     }
+
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
-        started = false;
-
         timer.cancel();
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionPauseResume event) {
+
+        if (paused) {
+            // Resume
+            paused = false;
+            timer.cancel();
+            setupAndLaunchTimer();
+
+        } else {
+            paused = true;
+            timer.cancel();
+        }
     }
 
     @Override
@@ -97,5 +104,11 @@ public class ElapsedTimeFragment extends Fragment {
     private void updateUi() {
         TextView elapsedTimeTextView = (TextView) getActivity().findViewById(R.id.elapsedTimeTextView);
         elapsedTimeTextView.setText(Utils.formatElapsedTime(counter));
+    }
+
+    private void setupAndLaunchTimer() {
+        timer = new Timer();
+        task = new ElapsedTimeFragmentTask();
+        timer.schedule(task, SECOUND, SECOUND);
     }
 }

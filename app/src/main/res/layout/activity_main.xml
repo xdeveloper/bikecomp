@@ -1,13 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<tools:GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mainLayout"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_gravity="center"
-    android:columnCount="1"
-    android:orientation="horizontal">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-</tools:GridLayout>
 
+    <!-- Widgets are here -->
+    <LinearLayout
+        android:id="@+id/mainArea"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_gravity="top"
+        android:layout_weight="1" />
+
+
+    <!-- Container for buttons -->
+    <LinearLayout
+        android:id="@+id/buttonsArea"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:layout_gravity="bottom|right"
+        android:layout_weight="6"
+        android:gravity="bottom">
+
+        <!-- Buttons -->
+        <fragment
+            android:name="ua.com.abakumov.bikecomp.fragment.ButtonsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

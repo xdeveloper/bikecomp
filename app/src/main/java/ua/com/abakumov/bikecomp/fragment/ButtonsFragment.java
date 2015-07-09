@@ -10,10 +10,12 @@ import android.widget.Button;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 
 import static android.media.MediaPlayer.create;
+import static ua.com.abakumov.bikecomp.R.id.buttonPause;
 import static ua.com.abakumov.bikecomp.R.id.buttonStart;
 import static ua.com.abakumov.bikecomp.R.id.buttonStop;
 import static ua.com.abakumov.bikecomp.R.raw.start;
@@ -30,7 +32,18 @@ public class ButtonsFragment extends Fragment {
 
     private MediaPlayer mediaPlayerStop;
 
+    private MediaPlayer mediaPlayerPause;
+
     private EventBus eventBus;
+
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+
+        mediaPlayerStart = create(getActivity().getApplicationContext(), start);
+        mediaPlayerStop = create(getActivity().getApplicationContext(), stop);
+        mediaPlayerPause = create(getActivity().getApplicationContext(), stop);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,9 +58,6 @@ public class ButtonsFragment extends Fragment {
         eventBus.register(this);
 
         buttonsInitialState();
-
-        mediaPlayerStart = create(getActivity().getApplicationContext(), start);
-        mediaPlayerStop = create(getActivity().getApplicationContext(), stop);
 
         getActivity().findViewById(buttonStart).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +74,15 @@ public class ButtonsFragment extends Fragment {
                 mediaPlayerStop.start();
 
                 eventBus.post(new SessionStop());
+            }
+        });
+
+        getActivity().findViewById(buttonPause).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayerPause.start();
+
+                eventBus.post(new SessionPauseResume());
             }
         });
     }

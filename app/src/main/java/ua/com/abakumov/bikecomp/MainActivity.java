@@ -92,15 +92,13 @@ public class MainActivity extends Activity {
         Fragment elapsedTimeFragment = new ElapsedTimeFragment();
         Fragment hrFragment = new HeartRateFragment();
         Fragment distanceFragment = new DistanceFragment();
-        Fragment buttonsFragment = new ButtonsFragment();
 
         getFragmentManager().beginTransaction()
-                .add(R.id.mainLayout, speedFragment)
-                .add(R.id.mainLayout, averageSpeedFragment)
-                .add(R.id.mainLayout, clockFragment)
-                .add(R.id.mainLayout, elapsedTimeFragment)
-                .add(R.id.mainLayout, distanceFragment)
-                .add(R.id.mainLayout, buttonsFragment)
+                .add(R.id.mainArea, speedFragment)
+                .add(R.id.mainArea, averageSpeedFragment)
+                .add(R.id.mainArea, clockFragment)
+                .add(R.id.mainArea, elapsedTimeFragment)
+                .add(R.id.mainArea, distanceFragment)
                 .commit();
     }
 
