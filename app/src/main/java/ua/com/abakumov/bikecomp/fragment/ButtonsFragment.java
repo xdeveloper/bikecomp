@@ -36,9 +36,20 @@ public class ButtonsFragment extends Fragment {
 
     private EventBus eventBus;
 
+    private boolean sessionStarted;
+
+    @Override
+    public void onSaveInstanceState(Bundle out) {
+        // Save state
+        out.putBoolean("SESS_ST", this.sessionStarted);
+    }
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
+
+        // Restore state
+        this.sessionStarted = bundle != null && bundle.getBoolean("SESS_ST");
 
         mediaPlayerStart = create(getActivity().getApplicationContext(), start);
         mediaPlayerStop = create(getActivity().getApplicationContext(), stop);
@@ -56,8 +67,6 @@ public class ButtonsFragment extends Fragment {
 
         eventBus = EventBus.getDefault();
         eventBus.register(this);
-
-        buttonsInitialState();
 
         getActivity().findViewById(buttonStart).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,6 +94,8 @@ public class ButtonsFragment extends Fragment {
                 eventBus.post(new SessionPauseResume());
             }
         });
+
+        buttonsState();
     }
 
     @Override
@@ -96,22 +107,28 @@ public class ButtonsFragment extends Fragment {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
-        hide(getStartButton());
-        show(getPauseButton());
-        show(getStopButton());
+        this.sessionStarted = true;
+
+        buttonsState();
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
-        show(getStartButton());
-        hide(getPauseButton());
-        hide(getStopButton());
+        this.sessionStarted = false;
+
+        buttonsState();
     }
 
-    private void buttonsInitialState() {
-        show(getStartButton());
-        hide(getPauseButton());
-        hide(getStopButton());
+    private void buttonsState() {
+        if (sessionStarted) {
+            hide(getStartButton());
+            show(getPauseButton());
+            show(getStopButton());
+        } else {
+            show(getStartButton());
+            hide(getPauseButton());
+            hide(getStopButton());
+        }
     }
 
     private Button getStartButton() {

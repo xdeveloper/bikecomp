@@ -29,6 +29,8 @@ public class AverageSpeedFragment extends Fragment {
     private double averageSpeed;
 
 
+    // ----------- System --------------------------------------------------------------------------
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.average_speed_fragment, container, false);
@@ -50,6 +52,9 @@ public class AverageSpeedFragment extends Fragment {
         super.onStop();
     }
 
+
+    // ----------- Events handling -----------------------------------------------------------------
+
     @SuppressWarnings(value = "unused")
     public void onEvent(NewElapsedTime event) {
         this.elapsedTime = event.getElapsedTime();
@@ -66,6 +71,9 @@ public class AverageSpeedFragment extends Fragment {
         updateUi();
     }
 
+
+    // ----------- Utilities -----------------------------------------------------------------------
+
     private void reCalculateAverageSpeed() {
         // No elapsed time yet (prevent ArithmeticException exception "division by zero")
         if (this.elapsedTime == 0) {
@@ -78,6 +86,12 @@ public class AverageSpeedFragment extends Fragment {
     }
 
     private void updateUi() {
-        ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(Utils.formatSpeed(averageSpeed));
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(Utils.formatSpeed(averageSpeed));
+            }
+        });
+
     }
 }

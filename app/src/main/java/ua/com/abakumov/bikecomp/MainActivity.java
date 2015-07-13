@@ -14,12 +14,12 @@ import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.Disabled;
 import ua.com.abakumov.bikecomp.event.gps.Enabled;
 import ua.com.abakumov.bikecomp.fragment.AverageSpeedFragment;
-import ua.com.abakumov.bikecomp.fragment.ButtonsFragment;
 import ua.com.abakumov.bikecomp.fragment.ClockFragment;
 import ua.com.abakumov.bikecomp.fragment.DistanceFragment;
 import ua.com.abakumov.bikecomp.fragment.ElapsedTimeFragment;
 import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
 import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
+import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.service.GpsService;
 
 import static ua.com.abakumov.bikecomp.Utils.showShortToast;
@@ -29,6 +29,9 @@ import static ua.com.abakumov.bikecomp.Utils.showToast;
 public class MainActivity extends Activity {
 
     private EventBus eventBus;
+
+
+    // ----------- System --------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,46 @@ public class MainActivity extends Activity {
 
         addFragments();
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        startServices();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.v(Constants.BIKECOMP_TAG, "Main activity resumed");
+    }
+
+    @Override
+    protected void onStop() {
+        eventBus.unregister(this);
+        stopServices();
+        super.onStop();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Enabled event) {
@@ -61,27 +104,17 @@ public class MainActivity extends Activity {
         showShortToast(R.string.session_stopped, getApplicationContext());
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
 
+    // ----------- Utilities -----------------------------------------------------------------------
+
+    private void startServices() {
         startService(new Intent(this, GpsService.class));
+        startService(new Intent(this, InfoService.class));
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        eventBus.unregister(this);
-
+    private void stopServices() {
         stopService(new Intent(this, GpsService.class));
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        Log.v(Constants.BIKECOMP_TAG, "Main activity resumed");
+        stopService(new Intent(this, InfoService.class));
     }
 
     private void addFragments() {
@@ -102,21 +135,4 @@ public class MainActivity extends Activity {
                 .commit();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

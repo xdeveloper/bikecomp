@@ -31,6 +31,9 @@ public class SpeedFragment extends Fragment {
 
     private EventBus eventBus;
 
+
+    // ----------- System --------------------------------------------------------------------------
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.speed_fragment, container, false);
@@ -39,10 +42,18 @@ public class SpeedFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         eventBus = EventBus.getDefault();
         eventBus.register(this);
     }
+
+    @Override
+    public void onStop() {
+        eventBus.unregister(this);
+        super.onStop();
+    }
+
+
+    // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Enabled event) {
@@ -76,6 +87,8 @@ public class SpeedFragment extends Fragment {
         ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(kmphSpeed));
     }
 
+
+    // ----------- Utilities -----------------------------------------------------------------------
     private void gpsEnabled(boolean enabled) {
         ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
         satellite.setImageResource(R.drawable.gps_satellite);
@@ -86,13 +99,6 @@ public class SpeedFragment extends Fragment {
         ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
         satellite.setImageResource(R.drawable.gps_satellite_green);
         satellite.setImageAlpha(available ? 100 : 60);
-    }
-
-    @Override
-    public void onStop() {
-        eventBus.unregister(this);
-
-        super.onStop();
     }
 
 }

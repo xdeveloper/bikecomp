@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.Formatter;
 import java.util.concurrent.TimeUnit;
 
 /**

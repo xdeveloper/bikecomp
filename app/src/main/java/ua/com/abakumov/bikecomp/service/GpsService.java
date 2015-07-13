@@ -16,11 +16,9 @@ import ua.com.abakumov.bikecomp.Constants;
 import ua.com.abakumov.bikecomp.event.gps.Available;
 import ua.com.abakumov.bikecomp.event.gps.Disabled;
 import ua.com.abakumov.bikecomp.event.gps.Enabled;
-import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.NewLocation;
+import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
-
-import static ua.com.abakumov.bikecomp.Constants.BIKECOMP_TAG;
 
 /**
  * <Class Name and Purpose>
@@ -29,38 +27,35 @@ import static ua.com.abakumov.bikecomp.Constants.BIKECOMP_TAG;
  */
 public class GpsService extends Service {
 
+    private static long SECOND = 1000;
+
     private EventBus eventBus;
+
+
+    // ----------- System --------------------------------------------------------------------------
 
     public void onCreate() {
         super.onCreate();
-        Log.v(BIKECOMP_TAG, "onCreate");
-
         eventBus = EventBus.getDefault();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(BIKECOMP_TAG, "onStartCommand");
-
         doJob();
-
         return super.onStartCommand(intent, flags, startId);
     }
 
     public void onDestroy() {
         eventBus.unregister(this);
-
         super.onDestroy();
-        Log.d(BIKECOMP_TAG, "onDestroy");
     }
 
     public IBinder onBind(Intent intent) {
-        Log.d(BIKECOMP_TAG, "onBind");
         return null;
     }
 
-    /**
-     * Work is here
-     */
+
+    // ----------- Utilities -----------------------------------------------------------------------
+
     private void doJob() {
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         LocationListener locationListener = new LocationListener() {
@@ -102,6 +97,6 @@ public class GpsService extends Service {
             }
         };
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1, locationListener);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, SECOND, 1, locationListener);
     }
 }

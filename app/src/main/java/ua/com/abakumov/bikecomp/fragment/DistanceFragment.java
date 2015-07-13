@@ -11,9 +11,6 @@ import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.Utils;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
-import ua.com.abakumov.bikecomp.event.gps.NewLocation;
-import ua.com.abakumov.bikecomp.event.SessionStart;
-import ua.com.abakumov.bikecomp.event.SessionStop;
 
 /**
  * Shows distance on the screen
@@ -22,11 +19,10 @@ import ua.com.abakumov.bikecomp.event.SessionStop;
  */
 public class DistanceFragment extends Fragment {
 
-    private float distance;
-
-    private boolean sessionStarted;
-
     private EventBus eventBus;
+
+
+    // ----------- System --------------------------------------------------------------------------
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,45 +37,26 @@ public class DistanceFragment extends Fragment {
         eventBus.register(this);
     }
 
-    @SuppressWarnings(value = "unused")
-    public void onEvent(SessionStart event) {
-        sessionStarted = true;
-        resetDistance();
-        calcDistance(0);
-        uiUpdateDistance();
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(SessionStop event) {
-        sessionStarted = false;
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(NewLocation event) {
-        calcDistance(event.getMpsSpeed());
-        uiUpdateDistance();
-
-        eventBus.post(new NewDistance(distance));
-    }
 
     @Override
     public void onStop() {
         eventBus.unregister(this);
-
         super.onStop();
     }
 
-    private void calcDistance(float speed) {
-        distance += speed;
+
+    // ----------- Events handling -----------------------------------------------------------------
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(NewDistance event) {
+        uiUpdateDistance(event.getDistanceInMeters());
     }
 
-    private void resetDistance() {
-        distance = 0;
-    }
 
-    private void uiUpdateDistance() {
-        ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(Utils.formatDistance(distance));
-    }
+    // ----------- Utilities -----------------------------------------------------------------------
 
+    private void uiUpdateDistance(float distanceInMeters) {
+        ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(Utils.formatDistance(distanceInMeters));
+    }
 
 }

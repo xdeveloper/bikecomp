@@ -11,6 +11,7 @@
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
         <service android:name=".service.GpsService"/>
+        <service android:name=".service.InfoService"/>
 
         <activity
             android:name="ua.com.abakumov.bikecomp.MainActivity"
