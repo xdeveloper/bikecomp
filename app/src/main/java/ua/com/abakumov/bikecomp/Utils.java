@@ -22,17 +22,19 @@ public final class Utils {
     /**
      * Format speed parameter (with locale-dependent decimal separator)
      * <p/>
-     * 0 -> 0.0
-     * 1 -> 1.0
-     * 10.45 -> 10.5
-     * 10.42 -> 10.4
-     * 20 -> 20.0
+     * 0        ->  0.0
+     * 0.32     ->  0.3
+     * 0.37     ->  0.4
+     * 1        ->  1.0
+     * 10.45    ->  10.5
+     * 10.42    ->  10.4
+     * 20       ->  20.0
      *
      * @param speed speed
      * @return formatted string
      */
     public static String formatSpeed(double speed) {
-        return (speed == 0 ? ZERO_FORMAT.format(0) : USUAL_FORMAT.format(speed));
+        return (speed >= 0 && speed < 1 ? ZERO_FORMAT.format(speed) : USUAL_FORMAT.format(speed));
     }
 
     public static String formatDistance(float distance) {

@@ -13,6 +13,8 @@ import ua.com.abakumov.bikecomp.Utils;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 
+import static ua.com.abakumov.bikecomp.Utils.formatSpeed;
+
 /**
  * Shows average speed
  * <p/>
@@ -89,7 +91,7 @@ public class AverageSpeedFragment extends Fragment {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(Utils.formatSpeed(averageSpeed));
+                ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(formatSpeed(averageSpeed));
             }
         });
 

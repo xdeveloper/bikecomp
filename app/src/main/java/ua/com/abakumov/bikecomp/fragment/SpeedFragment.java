@@ -90,15 +90,15 @@ public class SpeedFragment extends Fragment {
 
     // ----------- Utilities -----------------------------------------------------------------------
     private void gpsEnabled(boolean enabled) {
-        ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
+        /*ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
         satellite.setImageResource(R.drawable.gps_satellite);
-        satellite.setImageAlpha(enabled ? 100 : 60);
+        satellite.setImageAlpha(enabled ? 100 : 60);*/
     }
 
     private void gpsAvailable(boolean available) {
-        ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
+        /*ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
         satellite.setImageResource(R.drawable.gps_satellite_green);
-        satellite.setImageAlpha(available ? 100 : 60);
+        satellite.setImageAlpha(available ? 100 : 60);*/
     }
 
 }
