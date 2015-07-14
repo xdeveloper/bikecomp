@@ -2,6 +2,7 @@ package ua.com.abakumov.bikecomp.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 
@@ -24,9 +25,9 @@ import ua.com.abakumov.bikecomp.event.gps.NewLocation;
  */
 public class InfoService extends Service {
 
-    private static final long SECOND = 1000;
+    private boolean runQuietly;
 
-    private EventBus eventBus;
+    private static final long SECOND = 1000;
 
     private int elapsedTime;
 
@@ -44,28 +45,30 @@ public class InfoService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        eventBus = EventBus.getDefault();
-
         timerTask = new ElapsedTimeFragmentTask();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        eventBus.register(this);
+        EventBus.getDefault().register(this);
         super.onStartCommand(intent, flags, startId);
-
         return START_STICKY;
     }
 
     public void onDestroy() {
-        eventBus.unregister(this);
-
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
     public IBinder onBind(Intent intent) {
-        return null;
+        return new LocalBinder();
     }
 
+
+    // ----------- Custom methods ------------------------------------------------------------------
+
+    public void runQuietly(boolean runQuietly) {
+        this.runQuietly = runQuietly;
+    }
 
     // ----------- Events handling -----------------------------------------------------------------
 
@@ -108,7 +111,7 @@ public class InfoService extends Service {
         // correct ?
         distance += event.getMpsSpeed();
 
-        eventBus.post(new NewDistance(distance));
+        EventBus.getDefault().post(new NewDistance(distance));
     }
 
     @SuppressWarnings(value = "unused")
@@ -128,11 +131,19 @@ public class InfoService extends Service {
         @Override
         public void run() {
             elapsedTime++;
-            eventBus.post(new NewElapsedTime(elapsedTime));
+
+            if (!runQuietly) {
+                EventBus.getDefault().post(new NewElapsedTime(elapsedTime));
+            }
 
             handler.postDelayed(timerTask, SECOND);
         }
     }
 
 
+    public class LocalBinder extends Binder {
+        public InfoService getService() {
+            return InfoService.this;
+        }
+    }
 }

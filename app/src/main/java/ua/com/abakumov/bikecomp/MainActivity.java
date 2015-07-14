@@ -2,8 +2,11 @@ package ua.com.abakumov.bikecomp;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +31,7 @@ import static ua.com.abakumov.bikecomp.Utils.showToast;
 
 public class MainActivity extends Activity {
 
-    private EventBus eventBus;
+    private InfoService infoService;
 
 
     // ----------- System --------------------------------------------------------------------------
@@ -38,29 +41,36 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        eventBus = EventBus.getDefault();
-        eventBus.register(this);
-
         addFragments();
+
+        startServices();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        startServices();
+
+        EventBus.getDefault().register(this);
+        if (infoService != null) infoService.runQuietly(false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v(Constants.BIKECOMP_TAG, "Main activity resumed");
+        Log.v(Constants.BIKECOMP_TAG, "++++++++++++++++++ Main screen has been shown ++++++++++++++++++");
     }
 
     @Override
     protected void onStop() {
-        eventBus.unregister(this);
-        stopServices();
+        EventBus.getDefault().unregister(this);
+        infoService.runQuietly(true);
+
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -108,8 +118,26 @@ public class MainActivity extends Activity {
     // ----------- Utilities -----------------------------------------------------------------------
 
     private void startServices() {
+        bindService(new Intent(this, InfoService.class), new ServiceConnection() {
+
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                infoService = ((InfoService.LocalBinder) iBinder).getService();
+                infoService.startService(new Intent(MainActivity.this, InfoService.class));
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                infoService = null;
+
+            }
+        }, BIND_AUTO_CREATE);
+
+
+        //infoService.startService()
+
+        //startService(new Intent(this, InfoService.class));
         startService(new Intent(this, GpsService.class));
-        startService(new Intent(this, InfoService.class));
     }
 
     private void stopServices() {
