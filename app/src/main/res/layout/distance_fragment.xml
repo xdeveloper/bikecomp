@@ -13,7 +13,8 @@
         android:gravity="center|fill_horizontal|fill_vertical"
         android:layout_gravity="center_horizontal"
         android:textStyle="bold"
-        android:layout_marginBottom="-15dp" />
+        android:layout_marginBottom="-15dp"
+        android:textColor="@color/indicator_color" />
 
     <LinearLayout
         android:orientation="horizontal"

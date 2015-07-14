@@ -97,4 +97,8 @@ public final class Utils {
     public static void showShortToast(int resId, Context context) {
         Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
     }
+
+    public static float metersToKilometers(float distanceInMeters) {
+        return distanceInMeters / 1000;
+    }
 }

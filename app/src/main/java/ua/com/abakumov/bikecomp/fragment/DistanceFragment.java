@@ -12,6 +12,9 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.Utils;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 
+import static ua.com.abakumov.bikecomp.Utils.formatDistance;
+import static ua.com.abakumov.bikecomp.Utils.metersToKilometers;
+
 /**
  * Shows distance on the screen
  * <p/>
@@ -56,7 +59,7 @@ public class DistanceFragment extends Fragment {
     // ----------- Utilities -----------------------------------------------------------------------
 
     private void uiUpdateDistance(float distanceInMeters) {
-        ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(Utils.formatDistance(distanceInMeters));
+        ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(formatDistance(metersToKilometers(distanceInMeters)));
     }
 
 }

@@ -25,7 +25,7 @@
     <string name="pause">Пауза</string>
     <string name="stop">Фініш</string>
 
-    <string name="session_started">Поїхали</string>
-    <string name="session_stopped">Зупинка</string>
+    <string name="session_started">Поїхали!</string>
+    <string name="session_stopped">Фініш!</string>
 
 </resources>

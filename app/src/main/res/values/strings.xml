@@ -25,7 +25,7 @@
     <string name="pause">Pause</string>
     <string name="stop">Finish</string>
 
-    <string name="session_started">Let\'s go</string>
-    <string name="session_stopped">Stopped</string>
+    <string name="session_started">Let\'s go!</string>
+    <string name="session_stopped">Finish!</string>
 
 </resources>
