@@ -111,6 +111,7 @@ public class MainActivity extends Activity {
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
         showShortToast(R.string.session_stopped, getApplicationContext());
+        startActivity(new Intent(MainActivity.this, ReportActivity.class));
     }
 
 

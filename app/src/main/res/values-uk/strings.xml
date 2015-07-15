@@ -28,4 +28,6 @@
     <string name="session_started">Поїхали!</string>
     <string name="session_stopped">Фініш!</string>
 
+    <string name="report">Звіт</string>
+
 </resources>
