@@ -1,25 +1,37 @@
 package ua.com.abakumov.bikecomp.service;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import android.util.Log;
 
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.NoSubscriberEvent;
+import ua.com.abakumov.bikecomp.event.Event;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
+import ua.com.abakumov.bikecomp.event.gps.Available;
+import ua.com.abakumov.bikecomp.event.gps.Disabled;
+import ua.com.abakumov.bikecomp.event.gps.Enabled;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 import ua.com.abakumov.bikecomp.event.gps.NewLocation;
+import ua.com.abakumov.bikecomp.event.gps.OutOfService;
+import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
+
+import static ua.com.abakumov.bikecomp.Constants.BIKECOMP_TAG;
 
 /**
- * <Class Name and Purpose>
+ * Listens location updates and publishes events
  * <p/>
  * Created by Oleksandr Abakumov on 7/13/15.
  */
@@ -39,23 +51,69 @@ public class InfoService extends Service {
 
     private ElapsedTimeFragmentTask timerTask;
 
+    private LocationManager locationManager;
+
+    private LocationListener locationListener;
+
 
     // ----------- System --------------------------------------------------------------------------
 
     @Override
     public void onCreate() {
         super.onCreate();
+
         timerTask = new ElapsedTimeFragmentTask();
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+
+            @Override
+            public void onLocationChanged(Location location) {
+                post(new NewLocation(location.getSpeed()));
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                switch (status) {
+                    case LocationProvider.AVAILABLE:
+                        post(new Available());
+                        break;
+
+                    case LocationProvider.TEMPORARILY_UNAVAILABLE:
+                        post(new TemporaryUnavailable());
+                        break;
+
+                    case LocationProvider.OUT_OF_SERVICE:
+                        post(new OutOfService());
+                        break;
+
+                    default:
+                        Log.w(BIKECOMP_TAG, "Unknown status");
+                        break;
+                }
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+                post(new Enabled());
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                post(new Disabled());
+            }
+        };
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
         EventBus.getDefault().register(this);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, SECOND, 1, locationListener);
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
 
     public void onDestroy() {
         EventBus.getDefault().unregister(this);
+        locationManager.removeUpdates(locationListener);
         super.onDestroy();
     }
 
@@ -69,6 +127,7 @@ public class InfoService extends Service {
     public void runQuietly(boolean runQuietly) {
         this.runQuietly = runQuietly;
     }
+
 
     // ----------- Events handling -----------------------------------------------------------------
 
@@ -111,39 +170,37 @@ public class InfoService extends Service {
         // correct ?
         distance += event.getMpsSpeed();
 
-        EventBus.getDefault().post(new NewDistance(distance));
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(NoSubscriberEvent event) {
-        // ignore
+        post(new NewDistance(distance));
     }
 
 
 
     // ----------- Utilities -----------------------------------------------------------------------
 
+
     private void setupAndLaunchTimer() {
         handler.postDelayed(timerTask, SECOND);
     }
 
     private class ElapsedTimeFragmentTask implements Runnable {
+
         @Override
         public void run() {
             elapsedTime++;
-
-            if (!runQuietly) {
-                EventBus.getDefault().post(new NewElapsedTime(elapsedTime));
-            }
-
+            post(new NewElapsedTime(elapsedTime));
             handler.postDelayed(timerTask, SECOND);
         }
     }
 
-
     public class LocalBinder extends Binder {
         public InfoService getService() {
             return InfoService.this;
+        }
+    }
+
+    private void post(Event event) {
+        if (!runQuietly) {
+            EventBus.getDefault().post(event);
         }
     }
 }

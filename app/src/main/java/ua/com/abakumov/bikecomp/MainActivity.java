@@ -23,7 +23,6 @@ import ua.com.abakumov.bikecomp.fragment.ElapsedTimeFragment;
 import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
 import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
-import ua.com.abakumov.bikecomp.service.GpsService;
 
 import static ua.com.abakumov.bikecomp.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.Utils.showToast;
@@ -42,7 +41,6 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         addFragments();
-
         startServices();
     }
 
@@ -71,6 +69,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        stopServices();
     }
 
     @Override
@@ -132,18 +131,12 @@ public class MainActivity extends Activity {
 
             }
         }, BIND_AUTO_CREATE);
-
-
-        //infoService.startService()
-
-        //startService(new Intent(this, InfoService.class));
-        startService(new Intent(this, GpsService.class));
     }
 
     private void stopServices() {
-        stopService(new Intent(this, GpsService.class));
-        stopService(new Intent(this, InfoService.class));
+        stopService(new Intent(MainActivity.this, InfoService.class));
     }
+
 
     private void addFragments() {
         // Add some fragments
