@@ -24,6 +24,7 @@ import ua.com.abakumov.bikecomp.fragment.ClockFragment;
 import ua.com.abakumov.bikecomp.fragment.DistanceFragment;
 import ua.com.abakumov.bikecomp.fragment.ElapsedTimeFragment;
 import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
+import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 
@@ -99,6 +100,7 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
@@ -120,6 +122,11 @@ public class MainActivity extends Activity {
     public void onEvent(SessionStop event) {
         showShortToast(R.string.session_stopped, getApplicationContext());
 
+
+        SessionStopFragment f = new SessionStopFragment();
+        f.show(getFragmentManager(), Constants.BIKECOMP_TAG);
+
+        if (true) return;
 
         float distance = infoService.getDistance();
         float elapsedTime = infoService.getElapsedTime();

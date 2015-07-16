@@ -15,7 +15,7 @@ import ua.com.abakumov.bikecomp.R;
 public class HeartRateFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.heartrate_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_heartrate, container, false);
     }
 
 }
