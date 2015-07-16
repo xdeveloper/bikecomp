@@ -2,6 +2,8 @@ package ua.com.abakumov.bikecomp;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -17,6 +19,7 @@ import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.data.SessionData;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
+import ua.com.abakumov.bikecomp.event.SessionStopRequest;
 import ua.com.abakumov.bikecomp.event.gps.Disabled;
 import ua.com.abakumov.bikecomp.event.gps.Enabled;
 import ua.com.abakumov.bikecomp.fragment.AverageSpeedFragment;
@@ -119,14 +122,16 @@ public class MainActivity extends Activity {
     }
 
     @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStopRequest event) {
+        SessionStopFragment sessionStopFragment = new SessionStopFragment();
+        final FragmentTransaction fTransaction = getFragmentManager().beginTransaction();
+        fTransaction.addToBackStack(null);
+        sessionStopFragment.show(fTransaction, "dialog");
+    }
+
+    @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
         showShortToast(R.string.session_stopped, getApplicationContext());
-
-
-        SessionStopFragment f = new SessionStopFragment();
-        f.show(getFragmentManager(), Constants.BIKECOMP_TAG);
-
-        if (true) return;
 
         float distance = infoService.getDistance();
         float elapsedTime = infoService.getElapsedTime();

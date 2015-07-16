@@ -1,5 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:layout_margin="40dp"
+    >
+
+    <TextView
+        style="@style/header2_text_style"
+        android:layout_marginTop="10dp"
+        android:id="@+id/are_you_sure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/are_you_sure"
+        />
+
+    <TextView
+        android:id="@+id/tap_continue_or_finish"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/are_you_sure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/tap_continue_or_finish"
+        />
+
+    <LinearLayout
+        android:layout_marginTop="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tap_continue_or_finish"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_below="@id/tap_continue_or_finish"
+            android:id="@+id/buttonSessionContinue"
+            style="@style/button_standard"
+            android:text="@string/no" />
+
+        <Button
+            android:id="@+id/buttonSessionFinish"
+            android:layout_toRightOf="@id/buttonSessionContinue"
+            style="@style/button_standard"
+            android:text="@string/yes" />
+
+    </LinearLayout>
+
+
 
 </RelativeLayout>

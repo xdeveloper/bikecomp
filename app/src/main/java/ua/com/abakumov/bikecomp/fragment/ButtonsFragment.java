@@ -13,6 +13,7 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
+import ua.com.abakumov.bikecomp.event.SessionStopRequest;
 
 import static android.media.MediaPlayer.create;
 import static ua.com.abakumov.bikecomp.R.id.buttonPause;
@@ -33,8 +34,6 @@ public class ButtonsFragment extends Fragment {
     private MediaPlayer mediaPlayerStop;
 
     private MediaPlayer mediaPlayerPause;
-
-    private EventBus eventBus;
 
     private boolean sessionStarted;
 
@@ -58,50 +57,45 @@ public class ButtonsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_buttons, container, false);
+        View view = inflater.inflate(R.layout.fragment_buttons, container, false);
+        view.findViewById(buttonStart).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayerStart.start();
+                EventBus.getDefault().post(new SessionStart());
+            }
+        });
+
+        view.findViewById(buttonStop).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayerStop.start();
+                EventBus.getDefault().post(new SessionStopRequest());
+            }
+        });
+
+        view.findViewById(buttonPause).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayerPause.start();
+                EventBus.getDefault().post(new SessionPauseResume());
+            }
+        });
+        return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        eventBus = EventBus.getDefault();
-        eventBus.register(this);
-
-        getActivity().findViewById(buttonStart).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayerStart.start();
-
-                eventBus.post(new SessionStart());
-            }
-        });
-
-        getActivity().findViewById(buttonStop).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayerStop.start();
-
-                eventBus.post(new SessionStop());
-            }
-        });
-
-        getActivity().findViewById(buttonPause).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayerPause.start();
-
-                eventBus.post(new SessionPauseResume());
-            }
-        });
+        EventBus.getDefault().register(this);
 
         buttonsState();
     }
 
     @Override
     public void onStop() {
-        eventBus.unregister(this);
-
+        EventBus.getDefault().unregister(this);
         super.onStop();
     }
 

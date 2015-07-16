@@ -33,6 +33,6 @@
         android:layout_margin="3dp"
         android:background="@drawable/button_selector"
         android:gravity="center_vertical|center_horizontal"
-        android:text="@string/stop" />
+        android:text="@string/finish" />
 
 </LinearLayout>

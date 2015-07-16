@@ -19,7 +19,8 @@
     <string name="status_temporary_unavailable">GPS is temporary unavailable</string>
     <string name="start">Start</string>
     <string name="pause">Pause</string>
-    <string name="stop">Finish</string>
+    <string name="finish">Finish</string>
+    <string name="continue_session">Continue</string>
     <string name="session_started">Let\'s go!</string>
     <string name="session_stopped">Finish!</string>
     <string name="report">Ride is completed</string>
@@ -27,4 +28,8 @@
     <string name="date">Date</string>
     <string name="finished_at">Finished At</string>
     <string name="average_pace">Average Pace</string>
+    <string name="are_you_sure">Are you sure to finish\ncurrent ride?</string>
+    <string name="tap_continue_or_finish">Tap \'No\' to return to main screen.\nor \'Yes\' to finish current ride.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>
