@@ -3,30 +3,28 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="avg_speed">Avg. Speed</string>
+    <string name="avg_speed">Average Speed</string>
     <string name="speed">Speed</string>
-    <string name="kmh">(Km/H)</string>
+    <string name="kmh">(km/h)</string>
     <string name="clock">Clock</string>
     <string name="elapsedtime">Elapsed Time</string>
     <string name="action_google_play">Google Play</string>
     <string name="heartrate">Heart Rate</string>
     <string name="distance">Distance</string>
-    <string name="km">(Km)</string>
-
-    <!-- Location -->
+    <string name="km">(km)</string>
     <string name="enabled_gps_provider">GPS receiver on</string>
     <string name="disabled_gps_provider">GPS receiver off</string>
-
     <string name="status_available">Caught GPS signal</string>
     <string name="status_out_of_service">GPS signal lost</string>
     <string name="status_temporary_unavailable">GPS is temporary unavailable</string>
-
     <string name="start">Start</string>
     <string name="pause">Pause</string>
     <string name="stop">Finish</string>
-
     <string name="session_started">Let\'s go!</string>
     <string name="session_stopped">Finish!</string>
-
-    <string name="report">Report</string>
+    <string name="report">Ride is completed</string>
+    <string name="title">Title</string>
+    <string name="date">Date</string>
+    <string name="finished_at">Finished At</string>
+    <string name="average_pace">Average Pace</string>
 </resources>

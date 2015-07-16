@@ -12,22 +12,19 @@
     <string name="heartrate">Пульс</string>
     <string name="distance">Дистанція</string>
     <string name="km">(км)</string>
-
-    <!-- Location -->
     <string name="enabled_gps_provider">GPS приймач ввімкнено</string>
     <string name="disabled_gps_provider">GPS приймач вимкнено</string>
-
     <string name="status_available">Впіймано GPS сигнал</string>
     <string name="status_out_of_service">Втрачено GPS сигнал</string>
     <string name="status_temporary_unavailable">GPS тимчасово недоступний</string>
-
     <string name="start">Почати</string>
     <string name="pause">Пауза</string>
     <string name="stop">Фініш</string>
-
     <string name="session_started">Поїхали!</string>
     <string name="session_stopped">Фініш!</string>
-
-    <string name="report">Звіт</string>
-
+    <string name="report">Заїзд завершено</string>
+    <string name="title">Назва</string>
+    <string name="date">Дата</string>
+    <string name="finished_at">Час</string>
+    <string name="average_pace">Середній темп</string>
 </resources>

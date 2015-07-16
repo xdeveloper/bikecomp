@@ -11,7 +11,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.Date;
+
 import de.greenrobot.event.EventBus;
+import ua.com.abakumov.bikecomp.data.SessionData;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.Disabled;
@@ -28,6 +31,11 @@ import static ua.com.abakumov.bikecomp.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.Utils.showToast;
 
 
+/**
+ * Main activity
+ * <p/>
+ * Created by Oleksandr Abakumov on 6/28/15.
+ */
 public class MainActivity extends Activity {
 
     private InfoService infoService;
@@ -111,7 +119,19 @@ public class MainActivity extends Activity {
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
         showShortToast(R.string.session_stopped, getApplicationContext());
-        startActivity(new Intent(MainActivity.this, ReportActivity.class));
+
+
+        float distance = infoService.getDistance();
+        float elapsedTime = infoService.getElapsedTime();
+        double averageSpeed = Utils.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
+        int averagePace = 0; // todo
+
+
+        Intent intent = new Intent(MainActivity.this, ReportActivity.class);
+        intent.putExtra(SessionData.class.getCanonicalName(),
+                new SessionData("New ride", new Date(), infoService.getElapsedTime(), averageSpeed,
+                        averagePace, infoService.getDistance()));
+        startActivity(intent);
     }
 
 

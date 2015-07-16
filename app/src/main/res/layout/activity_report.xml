@@ -1,19 +1,63 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="ua.com.abakumov.bikecomp.ReportActivity"
-    android:gravity="center_horizontal">
+    tools:context="ua.com.abakumov.bikecomp.ReportActivity">
 
-    <TextView android:text="@string/report"
+    <TextView
+        style="@style/header_text_style"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        style="@style/header_text_style"
         android:gravity="center_horizontal"
-        />
+        android:text="@string/report" />
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
+
+        <TableRow android:layout_marginBottom="25dp" style="@style/report_row_margin">
+            <TextView android:text="@string/title" style="@style/report_first_column" />
+            <TextView android:id="@+id/report_title" android:text="Nice bike trip"/>
+        </TableRow>
+
+        <TableRow  style="@style/report_row_margin">
+            <TextView android:text="@string/date" style="@style/report_first_column"/>
+            <TextView android:id="@+id/report_date" android:text="08/12/1902"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/finished_at" style="@style/report_first_column"/>
+            <TextView android:id="@+id/report_finished_at" android:text="3:33:21 pm"/>
+        </TableRow>
+
+        <TableRow android:layout_marginBottom="20dp">
+            <TextView android:text="@string/elapsedtime" style="@style/report_first_column"/>
+            <TextView android:id="@+id/report_elapsedtime" android:text="3:12:43"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/avg_speed" style="@style/report_first_column"/>
+            <TextView android:id="@+id/report_average_speed" android:text="30.4 Km/h"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/average_pace" style="@style/report_first_column"/>
+            <TextView android:id="@+id/report_average_pace" android:text="2:11 per kilometer"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/distance" style="@style/report_first_column"/>
+            <TextView android:id="@+id/report_distance" android:text="100.3 kilometers"/>
+        </TableRow>
+
+    </TableLayout>
 
 </LinearLayout>

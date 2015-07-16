@@ -41,8 +41,14 @@ public class InfoService extends Service {
 
     private static final long SECOND = 1000;
 
+    /**
+     * Elapsed time in seconds
+     */
     private int elapsedTime;
 
+    /**
+     * Distance in meters
+     */
     private float distance;
 
     private Handler handler = new Handler();
@@ -128,6 +134,13 @@ public class InfoService extends Service {
         this.runQuietly = runQuietly;
     }
 
+    public float getDistance() {
+        return distance;
+    }
+
+    public int getElapsedTime() {
+        return elapsedTime;
+    }
 
     // ----------- Events handling -----------------------------------------------------------------
 
@@ -172,7 +185,6 @@ public class InfoService extends Service {
 
         post(new NewDistance(distance));
     }
-
 
 
     // ----------- Utilities -----------------------------------------------------------------------
