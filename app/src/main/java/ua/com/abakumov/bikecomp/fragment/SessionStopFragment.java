@@ -34,6 +34,7 @@ public class SessionStopFragment extends DialogFragment {
         view.findViewById(R.id.buttonSessionFinish).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dismiss();
                 EventBus.getDefault().post(new SessionStop());
             }
         });
