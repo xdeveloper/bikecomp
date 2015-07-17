@@ -2,7 +2,6 @@ package ua.com.abakumov.bikecomp;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Intent;
@@ -89,7 +88,6 @@ public class MainActivity extends Activity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
