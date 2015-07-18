@@ -32,6 +32,14 @@
     <string name="tap_continue_or_finish">Доторкніться до \'Ні\' щоб повернутись до головного екрану, або \'Так\' щоб завершити цей заїзд.</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
-    <string name="action_statistics">Статистика</string>
     <string name="quit">Вийти</string>
+    <string name="history">Історія</string>
+
+    <!-- Menus -->
+    <string name="action_history_period">Період</string>
+    <string name="action_statistics">Статистика</string>
+    <string name="action_today">Сьогодні</string>
+    <string name="action_yesterday">Вчора</string>
+    <string name="action_thisyear">Цей рік</string>
+    <string name="action_nolimits">Не лімітовано</string>
 </resources>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Filter -->
+    <item
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_history_period">
+        <menu>
+            <item
+                android:id="@+id/menuToday"
+                android:title="@string/action_today" />
+            <item
+                android:id="@+id/menuYesterday"
+                android:title="@string/action_yesterday" />
+
+            <item
+                android:id="@+id/menuThisYear"
+                android:title="@string/action_thisyear" />
+
+            <item
+                android:id="@+id/menuNoLimits"
+                android:title="@string/action_nolimits" />
+        </menu>
+    </item>
+
+    <item
+        android:icon="@android:drawable/ic_delete">
+    </item>
+
+</menu>

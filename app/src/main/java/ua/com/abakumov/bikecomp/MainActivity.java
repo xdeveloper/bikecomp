@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import java.util.Date;
 
 import de.greenrobot.event.EventBus;
-import ua.com.abakumov.bikecomp.data.SessionData;
+import ua.com.abakumov.bikecomp.data.Ride;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.SessionStopRequest;
@@ -139,8 +139,8 @@ public class MainActivity extends Activity {
 
 
         Intent intent = new Intent(MainActivity.this, ReportActivity.class);
-        intent.putExtra(SessionData.class.getCanonicalName(),
-                new SessionData("New ride", new Date(), infoService.getElapsedTime(), averageSpeed,
+        intent.putExtra(Ride.class.getCanonicalName(),
+                new Ride("New ride", new Date(), infoService.getElapsedTime(), averageSpeed,
                         averagePace, infoService.getDistance()));
         startActivity(intent);
     }

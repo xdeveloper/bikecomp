@@ -2,20 +2,14 @@ package ua.com.abakumov.bikecomp;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
-import java.util.Date;
-
-import ua.com.abakumov.bikecomp.data.SessionData;
+import ua.com.abakumov.bikecomp.data.Ride;
 
 import static ua.com.abakumov.bikecomp.Utils.formatDate;
 import static ua.com.abakumov.bikecomp.Utils.formatElapsedTime;
@@ -30,7 +24,7 @@ import static ua.com.abakumov.bikecomp.Utils.formatTime;
  */
 public class ReportActivity extends Activity {
 
-    private SessionData sessionData;
+    private Ride ride;
 
 
     // ----------- System --------------------------------------------------------------------------
@@ -38,9 +32,9 @@ public class ReportActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionData = getIntent().getParcelableExtra(SessionData.class.getCanonicalName());
+        ride = getIntent().getParcelableExtra(Ride.class.getCanonicalName());
 
-        saveSession(sessionData);
+        saveSession(ride);
 
         setContentView(R.layout.activity_report);
     }
@@ -49,13 +43,13 @@ public class ReportActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
-        setText(R.id.report_title, sessionData.getTitle());
-        setText(R.id.report_date, formatDate(sessionData.getDate()));
-        setText(R.id.report_finished_at, formatTime(sessionData.getDate()));
-        setText(R.id.report_elapsedtime, formatElapsedTime(sessionData.getElapsedTime()));
-        setText(R.id.report_average_speed, formatSpeed(sessionData.getAverageSpeed()));
-        setText(R.id.report_average_pace, formatElapsedTime(sessionData.getAveragePace()));
-        setText(R.id.report_distance, formatSpeed(sessionData.getDistance()));
+        setText(R.id.report_title, ride.getTitle());
+        setText(R.id.report_date, formatDate(ride.getDate()));
+        setText(R.id.report_finished_at, formatTime(ride.getDate()));
+        setText(R.id.report_elapsedtime, formatElapsedTime(ride.getElapsedTime()));
+        setText(R.id.report_average_speed, formatSpeed(ride.getAverageSpeed()));
+        setText(R.id.report_average_pace, formatElapsedTime(ride.getAveragePace()));
+        setText(R.id.report_distance, formatSpeed(ride.getDistance()));
     }
 
     @Override
@@ -93,7 +87,7 @@ public class ReportActivity extends Activity {
         }
 
         if (id == R.id.action_statistics) {
-            Intent intent = new Intent(this, StatisticsActivity.class);
+            Intent intent = new Intent(this, HistoryActivity.class);
             startActivity(intent);
             return true;
         }
@@ -109,42 +103,9 @@ public class ReportActivity extends Activity {
         view.setText(title);
     }
 
-    private void saveSession(SessionData sessionData) {
+    private void saveSession(Ride ride) {
         DBHelper dbHelper = new DBHelper(this);
-        SQLiteDatabase writableDatabase = dbHelper.getWritableDatabase();
-        writableDatabase.beginTransaction();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put("title", sessionData.getTitle());
-        writableDatabase.insert("bikecomp_table", null, contentValues);
-
-      /*  private final String title;
-        private final Date date;
-        private final int elapsedTime;
-        private final double averageSpeed;
-        private final int averagePace;
-        private final float distance;*/
-
-
-    }
-
-    private class DBHelper extends SQLiteOpenHelper {
-        public DBHelper(Context context) {
-            super(context, "bikecomp-database", null, 1);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            Log.d(Constants.BIKECOMP_TAG, "Create database");
-
-            sqLiteDatabase.execSQL("create table bikecomp_table ("
-                    + "id integer primary key autoincrement,"
-                    + "title text"
-                    + ");");
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        }
+        dbHelper.save(ride);
     }
 
 }

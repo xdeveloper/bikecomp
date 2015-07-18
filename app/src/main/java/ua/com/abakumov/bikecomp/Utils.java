@@ -1,6 +1,7 @@
 package ua.com.abakumov.bikecomp;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -12,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Useful utilities
- * <p/>
+ * <p>
  * Created by Oleksandr Abakumov on 7/4/15.
  */
 public final class Utils {
@@ -24,7 +25,7 @@ public final class Utils {
 
     /**
      * Format speed parameter (with locale-dependent decimal separator)
-     * <p/>
+     * <p>
      * 0        ->  0.0
      * 0.32     ->  0.3
      * 0.37     ->  0.4
@@ -88,11 +89,14 @@ public final class Utils {
     }
 
     public static void showToast(int resId, Context context) {
-        Toast.makeText(context, resId, Toast.LENGTH_LONG).show();
+        Toast toast = Toast.makeText(context, resId, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
     }
 
     public static void showShortToast(int resId, Context context) {
-        Toast.makeText(context, resId, Toast.LENGTH_SHORT).show();
+        Toast toast = Toast.makeText(context, resId, Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     public static float metersToKilometers(float distanceInMeters) {

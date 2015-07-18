@@ -10,7 +10,7 @@ import java.util.Date;
  * <p/>
  * Created by Oleksandr Abakumov on 7/16/15.
  */
-public class SessionData implements Parcelable {
+public class Ride implements Parcelable {
     private final String title;
     private final Date date;
     private final int elapsedTime;
@@ -18,7 +18,7 @@ public class SessionData implements Parcelable {
     private final int averagePace;
     private final float distance;
 
-    public SessionData(String title, Date date, int elapsedTime, double averageSpeed, int averagePace, float distance) {
+    public Ride(String title, Date date, int elapsedTime, double averageSpeed, int averagePace, float distance) {
         this.title = title;
         this.date = date;
         this.elapsedTime = elapsedTime;
@@ -27,7 +27,7 @@ public class SessionData implements Parcelable {
         this.distance = distance;
     }
 
-    private SessionData(Parcel parcel) {
+    private Ride(Parcel parcel) {
         this.title = parcel.readString();
         this.date = timeToDate(parcel.readLong());
         this.elapsedTime = parcel.readInt();
@@ -57,13 +57,13 @@ public class SessionData implements Parcelable {
         dest.writeFloat(this.distance);
     }
 
-    public static final Parcelable.Creator<SessionData> CREATOR = new Parcelable.Creator<SessionData>() {
-        public SessionData createFromParcel(Parcel in) {
-            return new SessionData(in);
+    public static final Parcelable.Creator<Ride> CREATOR = new Parcelable.Creator<Ride>() {
+        public Ride createFromParcel(Parcel in) {
+            return new Ride(in);
         }
 
-        public SessionData[] newArray(int size) {
-            return new SessionData[size];
+        public Ride[] newArray(int size) {
+            return new Ride[size];
         }
     };
 
