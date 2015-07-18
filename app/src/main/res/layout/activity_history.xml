@@ -13,7 +13,9 @@
         android:text="@string/history" />
 
     <ListView
+        android:layout_margin="20dp"
         android:dividerHeight="1dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:id="@+id/history_list"
         android:layout_below="@id/history_header"
         android:layout_width="fill_parent"

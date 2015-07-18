@@ -25,7 +25,14 @@
     </item>
 
     <item
-        android:icon="@android:drawable/ic_delete">
+        android:icon="@android:drawable/ic_menu_delete"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/action_clear">
+
+        <item
+            android:id="@+id/menuClearAll"
+            android:title="@string/action_clear_all" />
+
     </item>
 
 </menu>

@@ -34,6 +34,7 @@
     <string name="no">Ні</string>
     <string name="quit">Вийти</string>
     <string name="history">Історія</string>
+    <string name="time">Час</string>
 
     <!-- Menus -->
     <string name="action_history_period">Період</string>
@@ -42,4 +43,6 @@
     <string name="action_yesterday">Вчора</string>
     <string name="action_thisyear">Цей рік</string>
     <string name="action_nolimits">Не лімітовано</string>
+    <string name="action_clear">Стерти</string>
+    <string name="action_clear_all">Стерти все</string>
 </resources>

@@ -12,7 +12,8 @@ import java.util.Date;
 import java.util.List;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
-import ua.com.abakumov.bikecomp.util.Constants;
+
+import static ua.com.abakumov.bikecomp.util.Constants.BIKECOMP_TAG;
 
 /**
  * DAO/Helper (sqlite)
@@ -25,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String COL_ID = "id";
     private static final String COL_TITLE = "title";
     private static final String COL_DATE = "date";
-    private static final String COL_ELAPSEDTIME = "elapsedtime";
+    private static final String COL_ELAPSED_TIME = "elapsedtime";
     private static final String COL_AV_SPEED = "av_speed";
     private static final String COL_AV_PACE = "av_pace";
     private static final String COL_DISTANCE = "distance";
@@ -36,13 +37,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d(Constants.BIKECOMP_TAG, "Create database");
+        Log.d(BIKECOMP_TAG, "Create database");
 
         sqLiteDatabase.execSQL("CREATE TABLE " + BIKECOMP_TABLE + " ("
                 + COL_ID + " integer primary key autoincrement,"
                 + COL_TITLE + " text,"
                 + COL_DATE + " numeric,"
-                + COL_ELAPSEDTIME + " integer,"
+                + COL_ELAPSED_TIME + " integer,"
                 + COL_AV_SPEED + " real,"
                 + COL_AV_PACE + " integer,"
                 + COL_DISTANCE + " integer"
@@ -51,9 +52,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(Constants.BIKECOMP_TAG, "Upgrade database");
+        Log.d(BIKECOMP_TAG, "Upgrade database");
     }
-
 
     /**
      * Read all rides
@@ -61,7 +61,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return list of rides
      */
     public List<Ride> getAllRides() {
-        Log.d(Constants.BIKECOMP_TAG, "Get all rides");
+        Log.d(BIKECOMP_TAG, "Get all rides");
 
         List<Ride> list = new ArrayList<>();
 
@@ -71,7 +71,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
             int titleIndex = cursor.getColumnIndex(COL_TITLE);
             int dateIndex = cursor.getColumnIndex(COL_DATE);
-            int elapsedTimeIndex = cursor.getColumnIndex(COL_ELAPSEDTIME);
+            int elapsedTimeIndex = cursor.getColumnIndex(COL_ELAPSED_TIME);
             int avTimeIndex = cursor.getColumnIndex(COL_AV_SPEED);
             int avPaceIndex = cursor.getColumnIndex(COL_AV_PACE);
             int distanceIndex = cursor.getColumnIndex(COL_DISTANCE);
@@ -101,7 +101,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param ride ride
      */
     public void save(Ride ride) {
-        Log.d(Constants.BIKECOMP_TAG, "Saving ride");
+        Log.d(BIKECOMP_TAG, "Saving ride");
 
         SQLiteDatabase writableDatabase = getWritableDatabase();
         writableDatabase.beginTransaction();
@@ -109,7 +109,7 @@ public class DBHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_TITLE, ride.getTitle());
         contentValues.put(COL_DATE, ride.getDate().getTime());
-        contentValues.put(COL_ELAPSEDTIME, ride.getElapsedTime());
+        contentValues.put(COL_ELAPSED_TIME, ride.getElapsedTime());
         contentValues.put(COL_AV_SPEED, ride.getAverageSpeed());
         contentValues.put(COL_AV_PACE, ride.getAveragePace());
         contentValues.put(COL_DISTANCE, ride.getDistance());
@@ -121,4 +121,18 @@ public class DBHelper extends SQLiteOpenHelper {
         this.close();
     }
 
+    /**
+     * Delete all rides
+     */
+    public void deleteAllRides() {
+        Log.d(BIKECOMP_TAG, "Delete all rides");
+
+        SQLiteDatabase writableDatabase = getWritableDatabase();
+        writableDatabase.beginTransaction();
+        writableDatabase.delete(BIKECOMP_TABLE, null, null);
+        writableDatabase.setTransactionSuccessful();
+        writableDatabase.endTransaction();
+        writableDatabase.close();
+        this.close();
+    }
 }

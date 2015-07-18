@@ -7,7 +7,6 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -102,7 +101,6 @@ public final class Utils {
     public static float metersToKilometers(float distanceInMeters) {
         return distanceInMeters / 1000;
     }
-
 
     private static String hourAndMore(long seconds) {
         // H

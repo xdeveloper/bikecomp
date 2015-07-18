@@ -1,102 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    >
 
     <!-- title -->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <TableRow>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title"
-            android:textSize="20dp" />
+            android:text="@string/title" />
+
         <TextView
             android:id="@+id/ride_list_item_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="[text]"
-            android:textSize="20dp" />
-    </LinearLayout>
+            android:layout_marginLeft="15dp"
+            android:text="[text]" />
+    </TableRow>
 
     <!-- date -->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <TableRow>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/date"
-            android:textSize="20dp" />
+            android:text="@string/date" />
+
         <TextView
             android:id="@+id/ride_list_item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="[text]"
-            android:textSize="20dp" />
-    </LinearLayout>
+            android:layout_marginLeft="15dp"
+            android:text="[text]" />
+    </TableRow>
 
-    <!-- elapsed time-->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <!-- time -->
+    <TableRow>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/elapsedtime"
-            android:textSize="20dp" />
+            android:text="@string/time" />
+
+        <TextView
+            android:id="@+id/ride_list_item_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="[text]" />
+    </TableRow>
+
+    <!-- elapsed time-->
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/elapsedtime" />
+
         <TextView
             android:id="@+id/ride_list_item_elapsedtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="[text]"
-            android:textSize="20dp" />
-    </LinearLayout>
+            android:layout_marginLeft="15dp"
+            android:text="[text]" />
+    </TableRow>
 
     <!-- average speed -->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <TableRow>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/avg_speed"
-            android:textSize="20dp" />
+            android:text="@string/avg_speed" />
+
         <TextView
             android:id="@+id/ride_list_item_averagespeed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="[text]"
-            android:textSize="20dp" />
-    </LinearLayout>
+            android:layout_marginLeft="15dp"
+            android:text="[text]" />
+    </TableRow>
 
     <!-- distance -->
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <TableRow>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/distance"
-            android:textSize="20dp" />
+            android:text="@string/distance" />
+
         <TextView
             android:id="@+id/ride_list_item_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="[date]"
-            android:textSize="20dp" />
-    </LinearLayout>
+            android:layout_marginLeft="15dp"
+            android:text="[date]" />
+    </TableRow>
 
-</LinearLayout>
+</TableLayout>
