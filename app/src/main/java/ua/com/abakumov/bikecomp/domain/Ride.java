@@ -7,10 +7,11 @@ import java.util.Date;
 
 /**
  * <Class Name and Purpose>
- * <p/>
+ * <p>
  * Created by Oleksandr Abakumov on 7/16/15.
  */
 public class Ride implements Parcelable {
+    private Integer id;
     private final String title;
     private final Date date;
     private final int elapsedTime;
@@ -25,6 +26,11 @@ public class Ride implements Parcelable {
         this.averageSpeed = averageSpeed;
         this.averagePace = averagePace;
         this.distance = distance;
+    }
+
+    public Ride(Integer id, String title, Date date, int elapsedTime, double averageSpeed, int averagePace, float distance) {
+        this(title, date, elapsedTime, averageSpeed, averagePace, distance);
+        this.id = id;
     }
 
     private Ride(Parcel parcel) {
@@ -66,6 +72,10 @@ public class Ride implements Parcelable {
             return new Ride[size];
         }
     };
+
+    public Integer getId() {
+        return id;
+    }
 
     public String getTitle() {
         return title;

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
@@ -24,7 +25,7 @@ import static ua.com.abakumov.bikecomp.R.raw.stop;
 
 /**
  * <Class Name and Purpose>
- * <p/>
+ * <p>
  * Created by Oleksandr Abakumov on 7/5/15.
  */
 public class ButtonsFragment extends Fragment {
@@ -36,6 +37,11 @@ public class ButtonsFragment extends Fragment {
     private MediaPlayer mediaPlayerPause;
 
     private boolean sessionStarted;
+
+    private boolean sessionPaused;
+
+
+    // ----------- System --------------------------------------------------------------------------
 
     @Override
     public void onSaveInstanceState(Bundle out) {
@@ -58,29 +64,21 @@ public class ButtonsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_buttons, container, false);
-        view.findViewById(buttonStart).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayerStart.start();
-                EventBus.getDefault().post(new SessionStart());
-            }
+        view.findViewById(buttonStart).setOnClickListener(v -> {
+            mediaPlayerStart.start();
+            EventBus.getDefault().post(new SessionStart());
         });
 
-        view.findViewById(buttonStop).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayerStop.start();
-                EventBus.getDefault().post(new SessionStopRequest());
-            }
+        view.findViewById(buttonStop).setOnClickListener(v -> {
+            mediaPlayerStop.start();
+            EventBus.getDefault().post(new SessionStopRequest());
         });
 
-        view.findViewById(buttonPause).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayerPause.start();
-                EventBus.getDefault().post(new SessionPauseResume());
-            }
+        view.findViewById(buttonPause).setOnClickListener(v -> {
+            mediaPlayerPause.start();
+            EventBus.getDefault().post(new SessionPauseResume());
         });
+
         return view;
     }
 
@@ -99,6 +97,9 @@ public class ButtonsFragment extends Fragment {
         super.onStop();
     }
 
+
+    // ----------- Events handling -----------------------------------------------------------------
+
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
         this.sessionStarted = true;
@@ -113,6 +114,17 @@ public class ButtonsFragment extends Fragment {
         buttonsState();
     }
 
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionPauseResume event) {
+        sessionPaused = !sessionPaused;
+
+        ImageButton pauseButton = getPauseButton();
+        pauseButton.setImageResource(sessionPaused ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause);
+    }
+
+
+    // ----------- Utilities -----------------------------------------------------------------------
+
     private void buttonsState() {
         if (sessionStarted) {
             hide(getStartButton());
@@ -125,16 +137,16 @@ public class ButtonsFragment extends Fragment {
         }
     }
 
-    private Button getStartButton() {
-        return (Button) getActivity().findViewById(R.id.buttonStart);
+    private ImageButton getStartButton() {
+        return (ImageButton) getActivity().findViewById(R.id.buttonStart);
     }
 
-    private Button getPauseButton() {
-        return (Button) getActivity().findViewById(R.id.buttonPause);
+    private ImageButton getPauseButton() {
+        return (ImageButton) getActivity().findViewById(R.id.buttonPause);
     }
 
-    private Button getStopButton() {
-        return (Button) getActivity().findViewById(R.id.buttonStop);
+    private ImageButton getStopButton() {
+        return (ImageButton) getActivity().findViewById(R.id.buttonStop);
     }
 
     private void hide(Button button) {
@@ -142,6 +154,14 @@ public class ButtonsFragment extends Fragment {
     }
 
     private void show(Button button) {
+        button.setVisibility(View.VISIBLE);
+    }
+
+    private void hide(ImageButton button) {
+        button.setVisibility(View.GONE);
+    }
+
+    private void show(ImageButton button) {
         button.setVisibility(View.VISIBLE);
     }
 }

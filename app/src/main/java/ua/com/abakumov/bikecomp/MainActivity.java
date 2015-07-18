@@ -95,6 +95,11 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        // Go to History
+        if (id == R.id.action_history) {
+            startActivity(new Intent(this, HistoryActivity.class));
+        }
+
         // Quit application
         if (id == R.id.action_quit) {
             stopServices();

@@ -5,33 +5,33 @@
     <item
         android:icon="@android:drawable/ic_menu_recent_history"
         android:showAsAction="ifRoom"
-        android:title="@string/action_history_period">
+        android:title="@string/period">
         <menu>
             <item
                 android:id="@+id/menuToday"
-                android:title="@string/action_today" />
+                android:title="@string/today" />
             <item
                 android:id="@+id/menuYesterday"
-                android:title="@string/action_yesterday" />
+                android:title="@string/yesterday" />
 
             <item
                 android:id="@+id/menuThisYear"
-                android:title="@string/action_thisyear" />
+                android:title="@string/thisyear" />
 
             <item
                 android:id="@+id/menuNoLimits"
-                android:title="@string/action_nolimits" />
+                android:title="@string/nolimits" />
         </menu>
     </item>
 
     <item
         android:icon="@android:drawable/ic_menu_delete"
         android:showAsAction="ifRoom|withText"
-        android:title="@string/action_clear">
+        android:title="@string/clear">
 
         <item
             android:id="@+id/menuClearAll"
-            android:title="@string/action_clear_all" />
+            android:title="@string/clear_all" />
 
     </item>
 

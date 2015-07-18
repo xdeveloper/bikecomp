@@ -7,7 +7,7 @@
 
     <item
         android:id="@+id/action_statistics"
-        android:title="@string/action_statistics"
+        android:title="@string/statistics"
         android:icon="@android:drawable/ic_menu_today"
         android:orderInCategory="100"
         android:showAsAction="ifRoom|withText"

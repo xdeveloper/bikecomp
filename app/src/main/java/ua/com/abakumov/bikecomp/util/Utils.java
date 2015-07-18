@@ -89,7 +89,11 @@ public final class Utils {
 
     public static void showToast(int resId, Context context) {
         Toast toast = Toast.makeText(context, resId, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.show();
+    }
+
+    public static void showToast(String text, Context context) {
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
         toast.show();
     }
 

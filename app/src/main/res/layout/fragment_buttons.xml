@@ -6,31 +6,29 @@
     android:orientation="horizontal">
 
     <!-- Start -->
-    <Button
+    <ImageButton
+        android:src="@android:drawable/ic_menu_compass"
         android:id="@+id/buttonStart"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_margin="3dp"
+        style="@style/button_standard"
         android:background="@drawable/button_selector"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/start" />
 
     <!-- Pause -->
-    <Button
+    <ImageButton
         android:id="@+id/buttonPause"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_margin="2dp"
+        android:src="@android:drawable/ic_media_pause"
         android:background="@drawable/button_selector"
+        style="@style/button_standard"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/pause" />
 
     <!-- Stop -->
-    <Button
+    <ImageButton
+        android:drawableStart="@android:drawable/ic_menu_delete"
+        android:src="@android:drawable/ic_menu_myplaces"
         android:id="@+id/buttonStop"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_margin="3dp"
+        style="@style/button_standard"
         android:background="@drawable/button_selector"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/finish" />

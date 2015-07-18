@@ -37,12 +37,14 @@
     <string name="time">Time</string>
 
     <!-- Menus-->
-    <string name="action_history_period">Period</string>
-    <string name="action_statistics">Statistics</string>
-    <string name="action_today">Today</string>
-    <string name="action_yesterday">Yesterday</string>
-    <string name="action_thisyear">This year</string>
-    <string name="action_nolimits">No limits</string>
-    <string name="action_clear">Clear</string>
-    <string name="action_clear_all">Clear All</string>
+    <string name="period">Period</string>
+    <string name="statistics">Statistics</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+    <string name="thisyear">This year</string>
+    <string name="nolimits">No limits</string>
+    <string name="clear">Clear</string>
+    <string name="clear_all">Clear All</string>
+    <string name="delete">Delete</string>
+    <string name="resume">Resume</string>
 </resources>

@@ -133,6 +133,32 @@ public class DBHelper extends SQLiteOpenHelper {
         writableDatabase.setTransactionSuccessful();
         writableDatabase.endTransaction();
         writableDatabase.close();
-        this.close();
+        close();
+    }
+
+    /**
+     * Delete ride
+     * <p>
+     * (ride must have id field filled (i.e. ride must be saved before (and has id assigned by db) )
+     *
+     * @param ride ride
+     */
+    public void deleteRide(Ride ride) {
+        Log.d(BIKECOMP_TAG, "Delete ride");
+
+        Integer id = ride.getId();
+
+        if (id == null) {
+            throw new IllegalArgumentException(
+                    "Ride without id (maybe this ride hasn't been saved to the database)");
+        }
+
+        SQLiteDatabase writableDatabase = getWritableDatabase();
+        writableDatabase.beginTransaction();
+        writableDatabase.delete(BIKECOMP_TABLE, "id = ?", new String[]{id.toString()});
+        writableDatabase.setTransactionSuccessful();
+        writableDatabase.endTransaction();
+        writableDatabase.close();
+        close();
     }
 }

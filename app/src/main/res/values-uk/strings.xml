@@ -37,12 +37,14 @@
     <string name="time">Час</string>
 
     <!-- Menus -->
-    <string name="action_history_period">Період</string>
-    <string name="action_statistics">Статистика</string>
-    <string name="action_today">Сьогодні</string>
-    <string name="action_yesterday">Вчора</string>
-    <string name="action_thisyear">Цей рік</string>
-    <string name="action_nolimits">Не лімітовано</string>
-    <string name="action_clear">Стерти</string>
-    <string name="action_clear_all">Стерти все</string>
+    <string name="period">Період</string>
+    <string name="statistics">Статистика</string>
+    <string name="today">Сьогодні</string>
+    <string name="yesterday">Вчора</string>
+    <string name="thisyear">Цей рік</string>
+    <string name="nolimits">Не лімітовано</string>
+    <string name="clear">Стерти</string>
+    <string name="clear_all">Стерти все</string>
+    <string name="delete">Видалити</string>
+    <string name="resume">Продовжити</string>
 </resources>

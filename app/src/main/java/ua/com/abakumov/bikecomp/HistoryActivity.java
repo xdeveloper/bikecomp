@@ -3,11 +3,13 @@ package ua.com.abakumov.bikecomp;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,7 +19,6 @@ import java.util.List;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.DBHelper;
-import ua.com.abakumov.bikecomp.util.Utils;
 
 import static java.lang.Double.valueOf;
 import static ua.com.abakumov.bikecomp.util.Utils.formatDate;
@@ -36,6 +37,8 @@ public class HistoryActivity extends Activity {
 
     private DBHelper dbHelper;
 
+    private List<Ride> rides;
+
 
     // ----------- System --------------------------------------------------------------------------
 
@@ -45,6 +48,12 @@ public class HistoryActivity extends Activity {
         setContentView(R.layout.activity_history);
 
         dbHelper = new DBHelper(this);
+
+        /*ListView listView = (ListView) findViewById(R.id.history_list);
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            Ride ride = (Ride) parent.getItemAtPosition(position);
+
+        });*/
     }
 
     @Override
@@ -81,6 +90,38 @@ public class HistoryActivity extends Activity {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+        if (v.getId() == R.id.history_list) {
+            menu.setHeaderTitle("Actions");
+
+            AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+            String delete = getResources().getString(R.string.delete);
+            menu.add(Menu.NONE, info.position, 0, delete);
+
+        }
+
+        //getMenuInflater().inflate(R.menu.menu_history_item, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item;
+
+        int position = info.position;
+
+        Ride ride = rides.get(position);
+
+        dbHelper.deleteRide(ride);
+
+        loadHistory();
+
+        return true;
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
@@ -97,7 +138,7 @@ public class HistoryActivity extends Activity {
 
 
     private void loadHistory() {
-        List<Ride> rides = dbHelper.getAllRides();
+        rides = dbHelper.getAllRides();
         ListView listView = (ListView) findViewById(R.id.history_list);
         listView.setAdapter(new CustomArrayAdapter(this, R.layout.ride_list_item, rides));
     }
