@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
-import ua.com.abakumov.bikecomp.Constants;
+import ua.com.abakumov.bikecomp.util.Constants;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.gps.Available;
 import ua.com.abakumov.bikecomp.event.gps.Disabled;
@@ -18,7 +18,7 @@ import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.NewLocation;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 
-import static ua.com.abakumov.bikecomp.Utils.formatSpeed;
+import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
 
 
 /**

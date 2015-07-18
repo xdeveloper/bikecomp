@@ -1,6 +1,6 @@
 package ua.com.abakumov.bikecomp.event.gps;
 
-import ua.com.abakumov.bikecomp.Utils;
+import ua.com.abakumov.bikecomp.util.Utils;
 import ua.com.abakumov.bikecomp.event.Event;
 
 /**

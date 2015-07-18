@@ -11,8 +11,8 @@ import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 
-import static ua.com.abakumov.bikecomp.Utils.formatDistance;
-import static ua.com.abakumov.bikecomp.Utils.metersToKilometers;
+import static ua.com.abakumov.bikecomp.util.Utils.formatDistance;
+import static ua.com.abakumov.bikecomp.util.Utils.metersToKilometers;
 
 /**
  * Shows distance on the screen

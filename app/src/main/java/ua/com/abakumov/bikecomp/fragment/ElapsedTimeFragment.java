@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.Utils;
+import ua.com.abakumov.bikecomp.util.Utils;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 
 /*

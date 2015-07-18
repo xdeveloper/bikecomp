@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp.data;
+package ua.com.abakumov.bikecomp.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;

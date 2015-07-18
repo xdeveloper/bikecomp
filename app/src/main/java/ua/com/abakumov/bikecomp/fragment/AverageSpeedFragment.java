@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.Utils;
+import ua.com.abakumov.bikecomp.util.Utils;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 
-import static ua.com.abakumov.bikecomp.Utils.formatSpeed;
+import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
 
 /**
  * Shows average speed

@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import java.util.Date;
 
 import de.greenrobot.event.EventBus;
-import ua.com.abakumov.bikecomp.data.Ride;
+import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.SessionStopRequest;
@@ -29,9 +29,11 @@ import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
+import ua.com.abakumov.bikecomp.util.Constants;
+import ua.com.abakumov.bikecomp.util.Utils;
 
-import static ua.com.abakumov.bikecomp.Utils.showShortToast;
-import static ua.com.abakumov.bikecomp.Utils.showToast;
+import static ua.com.abakumov.bikecomp.util.Utils.showShortToast;
+import static ua.com.abakumov.bikecomp.util.Utils.showToast;
 
 
 /**

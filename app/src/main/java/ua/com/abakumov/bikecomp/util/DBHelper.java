@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp;
+package ua.com.abakumov.bikecomp.util;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ua.com.abakumov.bikecomp.data.Ride;
+import ua.com.abakumov.bikecomp.domain.Ride;
+import ua.com.abakumov.bikecomp.util.Constants;
 
 /**
  * DAO/Helper (sqlite)

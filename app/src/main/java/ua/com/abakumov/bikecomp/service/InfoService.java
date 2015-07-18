@@ -14,7 +14,6 @@ import android.os.IBinder;
 import android.util.Log;
 
 import de.greenrobot.event.EventBus;
-import de.greenrobot.event.NoSubscriberEvent;
 import ua.com.abakumov.bikecomp.event.Event;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
@@ -28,7 +27,7 @@ import ua.com.abakumov.bikecomp.event.gps.NewLocation;
 import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 
-import static ua.com.abakumov.bikecomp.Constants.BIKECOMP_TAG;
+import static ua.com.abakumov.bikecomp.util.Constants.BIKECOMP_TAG;
 
 /**
  * Listens location updates and publishes events

@@ -1,20 +1,19 @@
 package ua.com.abakumov.bikecomp;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import ua.com.abakumov.bikecomp.data.Ride;
+import ua.com.abakumov.bikecomp.domain.Ride;
+import ua.com.abakumov.bikecomp.util.DBHelper;
 
-import static ua.com.abakumov.bikecomp.Utils.formatDate;
-import static ua.com.abakumov.bikecomp.Utils.formatElapsedTime;
-import static ua.com.abakumov.bikecomp.Utils.formatSpeed;
-import static ua.com.abakumov.bikecomp.Utils.formatTime;
+import static ua.com.abakumov.bikecomp.util.Utils.formatDate;
+import static ua.com.abakumov.bikecomp.util.Utils.formatElapsedTime;
+import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
+import static ua.com.abakumov.bikecomp.util.Utils.formatTime;
 
 
 /**

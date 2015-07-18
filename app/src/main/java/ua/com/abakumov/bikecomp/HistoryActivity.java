@@ -15,7 +15,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import ua.com.abakumov.bikecomp.data.Ride;
+import ua.com.abakumov.bikecomp.domain.Ride;
+import ua.com.abakumov.bikecomp.util.DBHelper;
+import ua.com.abakumov.bikecomp.util.Utils;
 
 
 /**
