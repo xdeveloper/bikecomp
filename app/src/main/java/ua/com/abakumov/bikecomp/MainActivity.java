@@ -36,7 +36,7 @@ import static ua.com.abakumov.bikecomp.Utils.showToast;
 
 /**
  * Main activity
- * <p/>
+ * <p>
  * Created by Oleksandr Abakumov on 6/28/15.
  */
 public class MainActivity extends Activity {
@@ -93,9 +93,10 @@ public class MainActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        // Quit application
+        if (id == R.id.action_quit) {
+            stopServices();
+            System.exit(0);
         }
 
         return super.onOptionsItemSelected(item);

@@ -155,7 +155,7 @@ public class InfoService extends Service {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
-        paused = false;
+        paused = true;
 
         handler.removeCallbacks(timerTask);
     }

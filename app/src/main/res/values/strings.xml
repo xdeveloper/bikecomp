@@ -28,8 +28,10 @@
     <string name="date">Date</string>
     <string name="finished_at">Finished At</string>
     <string name="average_pace">Average Pace</string>
-    <string name="are_you_sure">Are you sure to finish\ncurrent ride?</string>
-    <string name="tap_continue_or_finish">Tap \'No\' to return to main screen.\nor \'Yes\' to finish current ride.</string>
+    <string name="are_you_sure">Are you sure to finish current ride?</string>
+    <string name="tap_continue_or_finish">Tap \'No\' to return to main screen or \'Yes\' to finish current ride.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="action_statistics">Statistics</string>
+    <string name="quit">Quit</string>
 </resources>

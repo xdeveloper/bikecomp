@@ -12,6 +12,7 @@
 
         <service android:name=".service.InfoService" android:exported="false" />
 
+        <!--  ##############################  Main screen ###################################### -->
         <activity
             android:name="ua.com.abakumov.bikecomp.MainActivity"
             android:label="@string/app_name"
@@ -23,8 +24,25 @@
             </intent-filter>
         </activity>
 
+
+        <!--  ###############################  Report screen ################################### -->
         <activity
+            android:theme="@android:style/Theme.Holo"
             android:name="ua.com.abakumov.bikecomp.ReportActivity"
+            android:label="@string/app_name"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+
+        <!--  ###########################  Statistics screen ################################### -->
+        <activity
+            android:theme="@android:style/Theme.Holo"
+            android:name="ua.com.abakumov.bikecomp.StatisticsActivity"
             android:label="@string/app_name"
             android:configChanges="orientation"
             android:screenOrientation="portrait">

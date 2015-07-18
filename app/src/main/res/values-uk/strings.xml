@@ -29,7 +29,9 @@
     <string name="finished_at">Час</string>
     <string name="average_pace">Середній темп</string>
     <string name="are_you_sure">Ви впевнені в тому, що хочете\n закінчити заїзд?</string>
-    <string name="tap_continue_or_finish">Доторкніться до \'Ні\' щоб повернутись до головного екрану.\nАбо \'Так\' щоб завершити цей заїзд.</string>
+    <string name="tap_continue_or_finish">Доторкніться до \'Ні\' щоб повернутись до головного екрану, або \'Так\' щоб завершити цей заїзд.</string>
     <string name="yes">Так</string>
     <string name="no">Ні</string>
+    <string name="action_statistics">Статистика</string>
+    <string name="quit">Вийти</string>
 </resources>
