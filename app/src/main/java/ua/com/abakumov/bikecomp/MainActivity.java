@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import java.util.Date;
 
@@ -32,7 +35,6 @@ import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.util.Constants;
 import ua.com.abakumov.bikecomp.util.Utils;
 
-import static ua.com.abakumov.bikecomp.util.Utils.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.util.Utils.showToast;
 
@@ -45,6 +47,8 @@ import static ua.com.abakumov.bikecomp.util.Utils.showToast;
 public class MainActivity extends Activity {
 
     private InfoService infoService;
+
+    private PowerManager.WakeLock wakeLock;
 
 
     // ----------- System --------------------------------------------------------------------------
@@ -64,6 +68,11 @@ public class MainActivity extends Activity {
 
         EventBus.getDefault().register(this);
         if (infoService != null) infoService.runQuietly(false);
+
+        // Screen on
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON | PowerManager.ON_AFTER_RELEASE, "My Tag");
+        wakeLock.acquire();
     }
 
     @Override
@@ -76,6 +85,8 @@ public class MainActivity extends Activity {
     protected void onStop() {
         EventBus.getDefault().unregister(this);
         infoService.runQuietly(true);
+
+        wakeLock.release();
 
         super.onStop();
     }

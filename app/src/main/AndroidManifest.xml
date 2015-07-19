@@ -3,6 +3,8 @@
     package="ua.com.abakumov.bikecomp">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
 
     <application
         android:allowBackup="true"
@@ -10,13 +12,15 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
 
-        <service android:name=".service.InfoService" android:exported="false" />
+        <service
+            android:name=".service.InfoService"
+            android:exported="false" />
 
         <!--  ##############################  Main screen ###################################### -->
         <activity
             android:name="ua.com.abakumov.bikecomp.MainActivity"
-            android:label="@string/app_name"
             android:configChanges="orientation"
+            android:label="@string/app_name"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,11 +31,11 @@
 
         <!--  ###############################  Report screen ################################### -->
         <activity
-            android:theme="@android:style/Theme.Holo"
             android:name="ua.com.abakumov.bikecomp.ReportActivity"
-            android:label="@string/app_name"
             android:configChanges="orientation"
-            android:screenOrientation="portrait">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -41,11 +45,11 @@
 
         <!--  ###########################  Statistics screen ################################### -->
         <activity
-            android:theme="@android:style/Theme.Holo"
             android:name=".HistoryActivity"
-            android:label="@string/app_name"
             android:configChanges="orientation"
-            android:screenOrientation="portrait">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.DEFAULT" />
