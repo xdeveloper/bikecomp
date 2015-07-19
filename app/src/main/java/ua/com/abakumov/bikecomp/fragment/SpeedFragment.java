@@ -18,17 +18,21 @@ import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.NewLocation;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 
+import static java.lang.String.valueOf;
 import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
 
 
 /**
  * Fragment that shows speed on the screen
- * <p/>
+ * <p>
  * Created by oabakumov on 26.06.2015.
  */
 public class SpeedFragment extends Fragment {
 
     private EventBus eventBus;
+
+    // Kilometers per hour
+    private double speed;
 
 
     // ----------- System --------------------------------------------------------------------------
@@ -43,6 +47,8 @@ public class SpeedFragment extends Fragment {
         super.onStart();
         eventBus = EventBus.getDefault();
         eventBus.register(this);
+
+        updateUI();
     }
 
     @Override
@@ -81,11 +87,12 @@ public class SpeedFragment extends Fragment {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewLocation event) {
-        double kmphSpeed = event.getKmphSpeed();
-        Log.v(Constants.BIKECOMP_TAG, "Location received:" + String.valueOf(kmphSpeed));
-        ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(kmphSpeed));
-    }
+        speed = event.getKmphSpeed();
 
+        Log.v(Constants.BIKECOMP_TAG, "Location received:" + valueOf(speed));
+
+        updateUI();
+    }
 
     // ----------- Utilities -----------------------------------------------------------------------
     private void gpsEnabled(boolean enabled) {
@@ -94,10 +101,15 @@ public class SpeedFragment extends Fragment {
         satellite.setImageAlpha(enabled ? 100 : 60);*/
     }
 
+
     private void gpsAvailable(boolean available) {
         /*ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
         satellite.setImageResource(R.drawable.gps_satellite_green);
         satellite.setImageAlpha(available ? 100 : 60);*/
+    }
+
+    private void updateUI() {
+        getActivity().runOnUiThread(() -> ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(speed)));
     }
 
 }

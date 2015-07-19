@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.util.Utils;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
@@ -17,7 +18,7 @@ import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
 
 /**
  * Shows average speed
- * <p/>
+ * <p>
  * Created by oabakumov on 26.06.2015.
  */
 public class AverageSpeedFragment extends Fragment {
@@ -45,6 +46,7 @@ public class AverageSpeedFragment extends Fragment {
         eventBus = EventBus.getDefault();
         eventBus.register(this);
 
+        updateAverageSpeed();
     }
 
     @Override
@@ -58,23 +60,33 @@ public class AverageSpeedFragment extends Fragment {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStart event) {
+        this.averageSpeed = 0;
+
+        updateUi();
+    }
+
+    @SuppressWarnings(value = "unused")
     public void onEvent(NewElapsedTime event) {
         this.elapsedTime = event.getElapsedTime();
 
-        reCalculateAverageSpeed();
-        updateUi();
+        updateAverageSpeed();
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewDistance event) {
         this.distance = event.getDistanceInMeters();
 
-        reCalculateAverageSpeed();
-        updateUi();
+        updateAverageSpeed();
     }
 
 
     // ----------- Utilities -----------------------------------------------------------------------
+
+    private void updateAverageSpeed() {
+        reCalculateAverageSpeed();
+        updateUi();
+    }
 
     private void reCalculateAverageSpeed() {
         // No elapsed time yet (prevent ArithmeticException exception "division by zero")
