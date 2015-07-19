@@ -72,6 +72,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
 
+            int idIndex = cursor.getColumnIndex(COL_ID);
             int titleIndex = cursor.getColumnIndex(COL_TITLE);
             int startDateIndex = cursor.getColumnIndex(COL_START_DATE);
             int finishDateIndex = cursor.getColumnIndex(COL_FINISH_DATE);
@@ -81,6 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
             int distanceIndex = cursor.getColumnIndex(COL_DISTANCE);
 
             do {
+                int id = cursor.getInt(idIndex);
                 String title = cursor.getString(titleIndex);
                 Date startDate = timeToDate(cursor.getLong(startDateIndex));
                 Date finishDate = timeToDate(cursor.getLong(finishDateIndex));
@@ -89,7 +91,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 int avPace = cursor.getInt(avPaceIndex);
                 float distance = cursor.getFloat(distanceIndex);
 
-                list.add(new Ride(title, startDate, finishDate, elapsedTime, avSpeed, avPace, distance));
+                list.add(new Ride(id, title, startDate, finishDate, elapsedTime, avSpeed, avPace, distance));
             }
             while (cursor.moveToNext());
         }

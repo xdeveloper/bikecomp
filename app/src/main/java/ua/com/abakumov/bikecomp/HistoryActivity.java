@@ -49,6 +49,8 @@ public class HistoryActivity extends Activity {
 
         dbHelper = new DBHelper(this);
 
+        registerForContextMenu(findViewById(R.id.history_list));
+
         /*ListView listView = (ListView) findViewById(R.id.history_list);
         listView.setOnItemClickListener((parent, view, position, id) -> {
             Ride ride = (Ride) parent.getItemAtPosition(position);
@@ -91,32 +93,22 @@ public class HistoryActivity extends Activity {
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
         if (v.getId() == R.id.history_list) {
-            menu.setHeaderTitle("Actions");
-
+            menu.setHeaderTitle(R.string.actions);
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 
             String delete = getResources().getString(R.string.delete);
             menu.add(Menu.NONE, info.position, 0, delete);
-
         }
-
-        //getMenuInflater().inflate(R.menu.menu_history_item, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item;
-
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         int position = info.position;
-
         Ride ride = rides.get(position);
-
         dbHelper.deleteRide(ride);
-
         loadHistory();
-
         return true;
     }
 

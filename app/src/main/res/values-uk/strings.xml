@@ -47,4 +47,5 @@
     <string name="clear_all">Стерти все</string>
     <string name="delete">Видалити</string>
     <string name="resume">Продовжити</string>
+    <string name="actions">Дії</string>
 </resources>
