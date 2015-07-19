@@ -71,7 +71,7 @@ public class MainActivity extends Activity {
 
         // Screen on
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, Constants.BIKECOMP_TAG);
+        wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, Constants.BIKECOMP_TAG);
         wakeLock.acquire();
     }
 
