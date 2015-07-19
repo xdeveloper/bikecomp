@@ -32,6 +32,7 @@ import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.util.Constants;
 import ua.com.abakumov.bikecomp.util.Utils;
 
+import static ua.com.abakumov.bikecomp.util.Utils.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.util.Utils.showToast;
 
@@ -139,15 +140,15 @@ public class MainActivity extends Activity {
     public void onEvent(SessionStop event) {
         showShortToast(R.string.session_stopped, getApplicationContext());
 
+        Date startDate = infoService.getStartDate();
         float distance = infoService.getDistance();
         float elapsedTime = infoService.getElapsedTime();
         double averageSpeed = Utils.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
-        int averagePace = 0; // todo
-
+        int averagePace = (int) (distance / elapsedTime);
 
         Intent intent = new Intent(MainActivity.this, ReportActivity.class);
         intent.putExtra(Ride.class.getCanonicalName(),
-                new Ride("New ride", new Date(), infoService.getElapsedTime(), averageSpeed,
+                new Ride("New ride", startDate, new Date(), infoService.getElapsedTime(), averageSpeed,
                         averagePace, infoService.getDistance()));
         startActivity(intent);
     }

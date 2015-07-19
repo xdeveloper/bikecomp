@@ -117,7 +117,7 @@ public final class Utils {
         // S
         seconds = seconds - TimeUnit.MINUTES.toSeconds(minutes);
 
-        return normalizeNumber(hours) + ":" + normalizeNumber(minutes) + normalizeNumber(seconds);
+        return normalizeNumber(hours) + ":" + normalizeNumber(minutes) + ":" + normalizeNumber(seconds);
     }
 
     private static String lessThanHour(long secounds) {
@@ -132,5 +132,11 @@ public final class Utils {
 
     private static String normalizeNumber(long number) {
         return number < 10 ? "0" + number : String.valueOf(number);
+    }
+
+    public static Date timeToDate(long milliseconds) {
+        Date date = new Date();
+        date.setTime(milliseconds);
+        return date;
     }
 }

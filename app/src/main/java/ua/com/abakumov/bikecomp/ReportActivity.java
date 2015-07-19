@@ -43,8 +43,10 @@ public class ReportActivity extends Activity {
         super.onStart();
 
         setText(R.id.report_title, ride.getTitle());
-        setText(R.id.report_date, formatDate(ride.getDate()));
-        setText(R.id.report_finished_at, formatTime(ride.getDate()));
+        setText(R.id.report_startdate, formatDate(ride.getStartDate()));
+        setText(R.id.report_starttime, formatTime(ride.getStartDate()));
+        setText(R.id.report_finishdate, formatDate(ride.getFinishDate()));
+        setText(R.id.report_finishtime, formatTime(ride.getFinishDate()));
         setText(R.id.report_elapsedtime, formatElapsedTime(ride.getElapsedTime()));
         setText(R.id.report_average_speed, formatSpeed(ride.getAverageSpeed()));
         setText(R.id.report_average_pace, formatElapsedTime(ride.getAveragePace()));

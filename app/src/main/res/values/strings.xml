@@ -25,8 +25,10 @@
     <string name="session_stopped">Finish!</string>
     <string name="report">Ride is completed</string>
     <string name="title">Title</string>
-    <string name="date">Date</string>
-    <string name="finished_at">Finished At</string>
+    <string name="start_date">Start Date</string>
+    <string name="start_time">Start Time</string>
+    <string name="finish_date">Finish Date</string>
+    <string name="finish_time">Finish Time</string>
     <string name="average_pace">Average Pace</string>
     <string name="are_you_sure">Are you sure to finish current ride?</string>
     <string name="tap_continue_or_finish">Tap \'No\' to return to main screen or \'Yes\' to finish current ride.</string>
@@ -35,8 +37,6 @@
     <string name="quit">Quit</string>
     <string name="history">History</string>
     <string name="time">Time</string>
-
-    <!-- Menus-->
     <string name="period">Period</string>
     <string name="statistics">Statistics</string>
     <string name="today">Today</string>

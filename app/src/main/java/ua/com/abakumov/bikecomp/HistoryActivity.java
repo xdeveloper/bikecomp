@@ -166,8 +166,10 @@ public class HistoryActivity extends Activity {
             Ride ride = list.get(position);
 
             ((TextView) convertView.findViewById(R.id.ride_list_item_title)).setText(ride.getTitle());
-            ((TextView) convertView.findViewById(R.id.ride_list_item_date)).setText(formatDate(ride.getDate()));
-            ((TextView) convertView.findViewById(R.id.ride_list_item_time)).setText(formatTime(ride.getDate()));
+            ((TextView) convertView.findViewById(R.id.ride_list_item_startdate)).setText(formatDate(ride.getStartDate()));
+            ((TextView) convertView.findViewById(R.id.ride_list_item_starttime)).setText(formatTime(ride.getStartDate()));
+            ((TextView) convertView.findViewById(R.id.ride_list_item_finishdate)).setText(formatDate(ride.getFinishDate()));
+            ((TextView) convertView.findViewById(R.id.ride_list_item_finishtime)).setText(formatTime(ride.getFinishDate()));
             ((TextView) convertView.findViewById(R.id.ride_list_item_elapsedtime)).setText(formatElapsedTime(ride.getElapsedTime()));
             ((TextView) convertView.findViewById(R.id.ride_list_item_averagespeed)).setText(formatSpeed(ride.getAverageSpeed()));
             ((TextView) convertView.findViewById(R.id.ride_list_item_distance)).setText(formatDistance(ride.getDistance()));

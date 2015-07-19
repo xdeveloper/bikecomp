@@ -19,6 +19,8 @@ public class ElapsedTimeFragment extends Fragment {
 
     private EventBus eventBus;
 
+    private int elapsedTime;
+
     // ----------- System --------------------------------------------------------------------------
 
     @Override
@@ -44,22 +46,18 @@ public class ElapsedTimeFragment extends Fragment {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewElapsedTime event) {
-        updateUi(event.getElapsedTime());
+        elapsedTime = event.getElapsedTime();
+
+        updateUi();
     }
 
 
     // ----------- Utilities -----------------------------------------------------------------------
 
-    private void updateUi(final int elapsedTime) {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextView elapsedTimeTextView = (TextView) getActivity().findViewById(R.id.elapsedTimeTextView);
-                elapsedTimeTextView.setText(Utils.formatElapsedTime(elapsedTime));
-            }
+    private void updateUi() {
+        getActivity().runOnUiThread(() -> {
+            TextView elapsedTimeTextView = (TextView) getActivity().findViewById(R.id.elapsedTimeTextView);
+            elapsedTimeTextView.setText(Utils.formatElapsedTime(elapsedTime));
         });
-
-
     }
-
 }

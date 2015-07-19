@@ -22,32 +22,64 @@
             android:text="[text]" />
     </TableRow>
 
-    <!-- date -->
+    <!-- start date -->
     <TableRow>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/date" />
+            android:text="@string/start_date" />
 
         <TextView
-            android:id="@+id/ride_list_item_date"
+            android:id="@+id/ride_list_item_startdate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:text="[text]" />
     </TableRow>
 
-    <!-- time -->
+    <!-- start time -->
     <TableRow>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/time" />
+            android:text="@string/start_time" />
 
         <TextView
-            android:id="@+id/ride_list_item_time"
+            android:id="@+id/ride_list_item_starttime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="[text]" />
+    </TableRow>
+
+    <!-- finish date -->
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/finish_date" />
+
+        <TextView
+            android:id="@+id/ride_list_item_finishdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="[text]" />
+    </TableRow>
+
+    <!-- finish time -->
+    <TableRow>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/finish_time" />
+
+        <TextView
+            android:id="@+id/ride_list_item_finishtime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"

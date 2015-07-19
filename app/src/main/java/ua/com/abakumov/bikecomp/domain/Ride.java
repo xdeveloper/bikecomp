@@ -13,29 +13,32 @@ import java.util.Date;
 public class Ride implements Parcelable {
     private Integer id;
     private final String title;
-    private final Date date;
+    private final Date startDate;
+    private final Date finishDate;
     private final int elapsedTime;
     private final double averageSpeed;
     private final int averagePace;
     private final float distance;
 
-    public Ride(String title, Date date, int elapsedTime, double averageSpeed, int averagePace, float distance) {
+    public Ride(String title, Date startDate, Date finishDate, int elapsedTime, double averageSpeed, int averagePace, float distance) {
         this.title = title;
-        this.date = date;
+        this.startDate = startDate;
+        this.finishDate = finishDate;
         this.elapsedTime = elapsedTime;
         this.averageSpeed = averageSpeed;
         this.averagePace = averagePace;
         this.distance = distance;
     }
 
-    public Ride(Integer id, String title, Date date, int elapsedTime, double averageSpeed, int averagePace, float distance) {
-        this(title, date, elapsedTime, averageSpeed, averagePace, distance);
+    public Ride(Integer id, String title, Date startDate, Date finishDate, int elapsedTime, double averageSpeed, int averagePace, float distance) {
+        this(title, startDate, finishDate, elapsedTime, averageSpeed, averagePace, distance);
         this.id = id;
     }
 
     private Ride(Parcel parcel) {
         this.title = parcel.readString();
-        this.date = timeToDate(parcel.readLong());
+        this.startDate = timeToDate(parcel.readLong());
+        this.finishDate = timeToDate(parcel.readLong());
         this.elapsedTime = parcel.readInt();
         this.averageSpeed = parcel.readDouble();
         this.averagePace = parcel.readInt();
@@ -56,7 +59,8 @@ public class Ride implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.title);
-        dest.writeLong(this.date.getTime());
+        dest.writeLong(this.startDate.getTime());
+        dest.writeLong(this.finishDate.getTime());
         dest.writeInt(this.elapsedTime);
         dest.writeDouble(this.averageSpeed);
         dest.writeInt(this.averagePace);
@@ -81,8 +85,12 @@ public class Ride implements Parcelable {
         return title;
     }
 
-    public Date getDate() {
-        return date;
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public Date getFinishDate() {
+        return finishDate;
     }
 
     public int getElapsedTime() {

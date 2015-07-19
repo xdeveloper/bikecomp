@@ -13,6 +13,8 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.util.Date;
+
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.event.Event;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
@@ -31,7 +33,7 @@ import static ua.com.abakumov.bikecomp.util.Constants.BIKECOMP_TAG;
 
 /**
  * Listens location updates and publishes events
- * <p/>
+ * <p>
  * Created by Oleksandr Abakumov on 7/13/15.
  */
 public class InfoService extends Service {
@@ -39,6 +41,8 @@ public class InfoService extends Service {
     private boolean runQuietly;
 
     private static final long SECOND = 1000;
+
+    private Date startDate;
 
     /**
      * Elapsed time in seconds
@@ -141,12 +145,18 @@ public class InfoService extends Service {
         return elapsedTime;
     }
 
+    public Date getStartDate() {
+        return startDate;
+    }
+
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
         elapsedTime = 0;
         distance = 0;
+        startDate = new Date();
+
         paused = false;
 
         setupAndLaunchTimer();
@@ -194,7 +204,6 @@ public class InfoService extends Service {
     }
 
     private class ElapsedTimeFragmentTask implements Runnable {
-
         @Override
         public void run() {
             elapsedTime++;

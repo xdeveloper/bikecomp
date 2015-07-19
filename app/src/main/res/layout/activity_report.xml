@@ -29,13 +29,23 @@
         </TableRow>
 
         <TableRow  style="@style/report_row_margin">
-            <TextView android:text="@string/date" style="@style/report_first_column"/>
-            <TextView android:id="@+id/report_date" android:text="08/12/1902"/>
+            <TextView android:text="@string/start_date" style="@style/report_first_column"/>
+            <TextView android:id="@+id/report_startdate" android:text="08/12/1902"/>
         </TableRow>
 
         <TableRow>
-            <TextView android:text="@string/finished_at" style="@style/report_first_column"/>
-            <TextView android:id="@+id/report_finished_at" android:text="3:33:21 pm"/>
+            <TextView android:text="@string/start_time" style="@style/report_first_column"/>
+            <TextView android:id="@+id/report_starttime" android:text="3:33:21 pm"/>
+        </TableRow>
+
+        <TableRow  style="@style/report_row_margin">
+            <TextView android:text="@string/finish_date" style="@style/report_first_column"/>
+            <TextView android:id="@+id/report_finishdate" android:text="08/12/1902"/>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:text="@string/finish_time" style="@style/report_first_column"/>
+            <TextView android:id="@+id/report_finishtime" android:text="3:33:21 pm"/>
         </TableRow>
 
         <TableRow android:layout_marginBottom="20dp">

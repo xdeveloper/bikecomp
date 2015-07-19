@@ -14,6 +14,7 @@ import java.util.List;
 import ua.com.abakumov.bikecomp.domain.Ride;
 
 import static ua.com.abakumov.bikecomp.util.Constants.BIKECOMP_TAG;
+import static ua.com.abakumov.bikecomp.util.Utils.timeToDate;
 
 /**
  * DAO/Helper (sqlite)
@@ -25,10 +26,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private static final String COL_ID = "id";
     private static final String COL_TITLE = "title";
-    private static final String COL_DATE = "date";
-    private static final String COL_ELAPSED_TIME = "elapsedtime";
-    private static final String COL_AV_SPEED = "av_speed";
-    private static final String COL_AV_PACE = "av_pace";
+    private static final String COL_START_DATE = "start_date";
+    private static final String COL_FINISH_DATE = "finish_date";
+    private static final String COL_ELAPSED_TIME = "elapsed_time";
+    private static final String COL_AV_SPEED = "average_speed";
+    private static final String COL_AV_PACE = "average_pace";
     private static final String COL_DISTANCE = "distance";
 
     public DBHelper(Context context) {
@@ -42,7 +44,8 @@ public class DBHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("CREATE TABLE " + BIKECOMP_TABLE + " ("
                 + COL_ID + " integer primary key autoincrement,"
                 + COL_TITLE + " text,"
-                + COL_DATE + " numeric,"
+                + COL_START_DATE + " numeric,"
+                + COL_FINISH_DATE + " numeric,"
                 + COL_ELAPSED_TIME + " integer,"
                 + COL_AV_SPEED + " real,"
                 + COL_AV_PACE + " integer,"
@@ -70,7 +73,8 @@ public class DBHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
 
             int titleIndex = cursor.getColumnIndex(COL_TITLE);
-            int dateIndex = cursor.getColumnIndex(COL_DATE);
+            int startDateIndex = cursor.getColumnIndex(COL_START_DATE);
+            int finishDateIndex = cursor.getColumnIndex(COL_FINISH_DATE);
             int elapsedTimeIndex = cursor.getColumnIndex(COL_ELAPSED_TIME);
             int avTimeIndex = cursor.getColumnIndex(COL_AV_SPEED);
             int avPaceIndex = cursor.getColumnIndex(COL_AV_PACE);
@@ -78,14 +82,14 @@ public class DBHelper extends SQLiteOpenHelper {
 
             do {
                 String title = cursor.getString(titleIndex);
-                Date date = new Date();
-                date.setTime(cursor.getInt(dateIndex));
+                Date startDate = timeToDate(cursor.getLong(startDateIndex));
+                Date finishDate = timeToDate(cursor.getLong(finishDateIndex));
                 int elapsedTime = cursor.getInt(elapsedTimeIndex);
                 double avSpeed = cursor.getDouble(avTimeIndex);
                 int avPace = cursor.getInt(avPaceIndex);
                 float distance = cursor.getFloat(distanceIndex);
 
-                list.add(new Ride(title, date, elapsedTime, avSpeed, avPace, distance));
+                list.add(new Ride(title, startDate, finishDate, elapsedTime, avSpeed, avPace, distance));
             }
             while (cursor.moveToNext());
         }
@@ -108,7 +112,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_TITLE, ride.getTitle());
-        contentValues.put(COL_DATE, ride.getDate().getTime());
+        contentValues.put(COL_START_DATE, ride.getStartDate().getTime());
+        contentValues.put(COL_FINISH_DATE, ride.getFinishDate().getTime());
         contentValues.put(COL_ELAPSED_TIME, ride.getElapsedTime());
         contentValues.put(COL_AV_SPEED, ride.getAverageSpeed());
         contentValues.put(COL_AV_PACE, ride.getAveragePace());

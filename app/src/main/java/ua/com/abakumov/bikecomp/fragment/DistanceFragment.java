@@ -16,12 +16,15 @@ import static ua.com.abakumov.bikecomp.util.Utils.metersToKilometers;
 
 /**
  * Shows distance on the screen
- * <p/>
+ * <p>
  * Created by oabakumov on 26.06.2015.
  */
 public class DistanceFragment extends Fragment {
 
     private EventBus eventBus;
+
+    //  Meters
+    private float distance;
 
 
     // ----------- System --------------------------------------------------------------------------
@@ -37,6 +40,8 @@ public class DistanceFragment extends Fragment {
 
         eventBus = EventBus.getDefault();
         eventBus.register(this);
+
+        updateUI();
     }
 
 
@@ -51,14 +56,16 @@ public class DistanceFragment extends Fragment {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewDistance event) {
-        uiUpdateDistance(event.getDistanceInMeters());
+        distance = event.getDistanceInMeters();
+
+        updateUI();
     }
 
 
     // ----------- Utilities -----------------------------------------------------------------------
 
-    private void uiUpdateDistance(float distanceInMeters) {
-        ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(formatDistance(metersToKilometers(distanceInMeters)));
+    private void updateUI() {
+        ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(formatDistance(metersToKilometers(distance)));
     }
 
 }
