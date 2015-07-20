@@ -8,7 +8,7 @@
             android:entries="@array/display_backlight_settings"
             android:entryValues="@array/display_backlight_values"
             android:key="displaySettingsBacklightStrategyKey"
-            android:summary="@string/backlight_strategy_summary"
+            android:summary="%s"
             android:title="@string/backlight_strategy_title" />
 
         <!-- Theme by calendar -->
