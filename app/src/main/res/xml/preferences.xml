@@ -4,7 +4,7 @@
 
         <!-- Backlight strategy-->
         <ListPreference
-            android:defaultValue="1"
+            android:defaultValue="2"
             android:entries="@array/display_backlight_settings"
             android:entryValues="@array/display_backlight_values"
             android:key="displaySettingsBacklightStrategyKey"

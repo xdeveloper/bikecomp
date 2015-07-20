@@ -62,8 +62,6 @@ public class MainActivity extends Activity {
 
         addFragments();
         startServices();
-
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
@@ -73,10 +71,7 @@ public class MainActivity extends Activity {
         EventBus.getDefault().register(this);
         if (infoService != null) infoService.runQuietly(false);
 
-        // Screen on
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, Constants.BIKECOMP_TAG);
-        wakeLock.acquire();
+        setupBacklightStrategy();
     }
 
     @Override
@@ -130,9 +125,8 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     // ----------- Events handling -----------------------------------------------------------------
+
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Enabled event) {
@@ -174,8 +168,8 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-
     // ----------- Utilities -----------------------------------------------------------------------
+
 
     private void startServices() {
         bindService(new Intent(this, InfoService.class), new ServiceConnection() {
@@ -198,14 +192,12 @@ public class MainActivity extends Activity {
         stopService(new Intent(MainActivity.this, InfoService.class));
     }
 
-
     private void addFragments() {
-        // Add some fragments
         Fragment speedFragment = new SpeedFragment();
         Fragment averageSpeedFragment = new AverageSpeedFragment();
         Fragment clockFragment = new ClockFragment();
         Fragment elapsedTimeFragment = new ElapsedTimeFragment();
-        Fragment hrFragment = new HeartRateFragment();
+        Fragment hrFragment = new HeartRateFragment(); // todo
         Fragment distanceFragment = new DistanceFragment();
 
         getFragmentManager().beginTransaction()
@@ -215,6 +207,38 @@ public class MainActivity extends Activity {
                 .add(R.id.mainArea, elapsedTimeFragment)
                 .add(R.id.mainArea, distanceFragment)
                 .commit();
+    }
+
+    private void setupBacklightStrategy() {
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                Log.d("!", "1");
+            }
+        });
+
+        String backlightStrategyDefault = "SYSTEM_SETTING";
+        String backlightStrategy = defaultSharedPreferences.getString("displaySettingsBacklightStrategyKey", backlightStrategyDefault);
+
+        switch (backlightStrategy) {
+            case "ALWAYS_ON_MAXIMUM":
+                acquireWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK);
+                break;
+            case "ALWAYS_ON_NORMAL":
+                acquireWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK);
+                break;
+            case "SYSTEM_SETTING": // Do not acquire anything
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown backlight strategy");
+        }
+    }
+
+    private void acquireWakeLock(int levelAndFlags) {
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(levelAndFlags, Constants.BIKECOMP_TAG);
+        wakeLock.acquire();
     }
 
 }

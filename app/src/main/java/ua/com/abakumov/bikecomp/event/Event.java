@@ -1,7 +1,7 @@
 package ua.com.abakumov.bikecomp.event;
 
 /**
- * Marker interface for all event bus events
+ * Marker interface for all events
  * <p/>
  * Created by Oleksandr Abakumov on 7/8/15.
  */

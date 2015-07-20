@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.Date;
 
 /**
- * <Class Name and Purpose>
+ * Represents ride domain class
  * <p>
  * Created by Oleksandr Abakumov on 7/16/15.
  */
