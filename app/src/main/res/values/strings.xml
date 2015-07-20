@@ -48,4 +48,15 @@
     <string name="delete">Delete</string>
     <string name="resume">Resume</string>
     <string name="actions">Actions</string>
+    <string name="display">Display</string>
+    <string name="display_settings">Display Settings</string>
+    <string name="display_settings_summary">Backlight, theme …</string>
+    <string name="backlight_strategy_title">Backlight Strategy</string>
+    <string name="backlight_strategy_summary">Backlight Strategy Settings</string>
+    <string name="theme_by_calendar">Theme change</string>
+    <string name="theme_by_calendar_summary">Auto change theme using calendar</string>
+    <string name="theme_by_calendar_enabled_summary">Using calendar</string>
+    <string name="theme_by_calendar_disabled_summary">By Hands</string>
+    <string name="theme_summary">Select Theme</string>
+    <string name="theme_title">Theme</string>
 </resources>

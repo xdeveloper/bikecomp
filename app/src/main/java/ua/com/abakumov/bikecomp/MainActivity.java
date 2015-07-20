@@ -7,9 +7,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,6 +62,8 @@ public class MainActivity extends Activity {
 
         addFragments();
         startServices();
+
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
@@ -112,6 +116,11 @@ public class MainActivity extends Activity {
             startActivity(new Intent(this, HistoryActivity.class));
         }
 
+        // Go to Settings
+        if (id == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+
         // Quit application
         if (id == R.id.action_quit) {
             stopServices();
@@ -120,6 +129,7 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
 
 
     // ----------- Events handling -----------------------------------------------------------------

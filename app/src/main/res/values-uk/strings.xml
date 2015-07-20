@@ -48,4 +48,15 @@
     <string name="delete">Видалити</string>
     <string name="resume">Продовжити</string>
     <string name="actions">Дії</string>
+    <string name="display">Екран</string>
+    <string name="display_settings">Настройки екрана</string>
+    <string name="display_settings_summary">Підсвітка, тема …</string>
+    <string name="backlight_strategy_title">Підсвітка</string>
+    <string name="backlight_strategy_summary">Стратегія підсвітки екрана</string>
+    <string name="theme_by_calendar">Календарна тема</string>
+    <string name="theme_by_calendar_summary">Міняти тему спираючись на календар</string>
+    <string name="theme_by_calendar_enabled_summary">Згідно календаря</string>
+    <string name="theme_by_calendar_disabled_summary">Вибір вручну</string>
+    <string name="theme_summary">Виберіть тему</string>
+    <string name="theme_title">Тема</string>
 </resources>

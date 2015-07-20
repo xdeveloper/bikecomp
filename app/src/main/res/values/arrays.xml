@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="display_backlight_settings">
+        <item>Always on (max.)</item>
+        <item>Always on (norm.)</item>
+        <item>System setting</item>
+    </string-array>
+
+    <string-array name="display_theme">
+        <item>Day</item>
+        <item>Night</item>
+    </string-array>
+
+
+    <!-- Locale independent values-->
+    <string-array name="display_backlight_values">
+        <item>ALWAYS_ON_MAXIMUM</item>
+        <item>ALWAYS_ON_NORMAL</item>
+        <item>SYSTEM_SETTING</item>
+    </string-array>
+
+    <string-array name="display_theme_values">
+        <item>DAY</item>
+        <item>NIGHT</item>
+    </string-array>
+
+</resources>

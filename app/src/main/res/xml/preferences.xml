@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/display">
+
+        <!-- Backlight strategy-->
+        <ListPreference
+            android:defaultValue="1"
+            android:entries="@array/display_backlight_settings"
+            android:entryValues="@array/display_backlight_values"
+            android:key="displaySettingsBacklightStrategyKey"
+            android:summary="@string/backlight_strategy_summary"
+            android:title="@string/backlight_strategy_title" />
+
+        <!-- Theme by calendar -->
+        <SwitchPreference
+            android:disableDependentsState="true"
+            android:key="displaySettingsThemeByCalendarKey"
+            android:summary="@string/theme_by_calendar_summary"
+            android:summaryOff="@string/theme_by_calendar_disabled_summary"
+            android:summaryOn="@string/theme_by_calendar_enabled_summary"
+            android:title="@string/theme_by_calendar" />
+
+        <!-- Theme -->
+        <ListPreference
+            android:dependency="displaySettingsThemeByCalendarKey"
+            android:defaultValue="1"
+            android:entries="@array/display_theme"
+            android:entryValues="@array/display_theme_values"
+            android:key="displaySettingsThemeKey"
+            android:summary="%s"
+            android:title="@string/theme_title" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
