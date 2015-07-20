@@ -37,6 +37,7 @@ import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.util.Constants;
 import ua.com.abakumov.bikecomp.util.Utils;
 
+import static ua.com.abakumov.bikecomp.util.Constants.BIKECOMP_TAG;
 import static ua.com.abakumov.bikecomp.util.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.util.Utils.showToast;
 
@@ -52,6 +53,17 @@ public class MainActivity extends Activity {
 
     private PowerManager.WakeLock wakeLock;
 
+    private SharedPreferences defaultSharedPreferences;
+
+    private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = (sharedPreferences, key) -> {
+        if ("displaySettingsBacklightStrategyKey".equals(key)) {
+            setupBacklightStrategy();
+        } else if ("displaySettingsThemeKey".equals(key)) {
+            setupTheme();
+        }
+
+    };
+
 
     // ----------- System --------------------------------------------------------------------------
 
@@ -62,6 +74,9 @@ public class MainActivity extends Activity {
 
         addFragments();
         startServices();
+
+        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
     }
 
     @Override
@@ -77,7 +92,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v(Constants.BIKECOMP_TAG, "++++++++++++++++++ Main screen has been shown ++++++++++++++++++");
+        Log.v(BIKECOMP_TAG, "++++++++++++++++++ Main screen has been shown ++++++++++++++++++");
     }
 
     @Override
@@ -85,7 +100,9 @@ public class MainActivity extends Activity {
         EventBus.getDefault().unregister(this);
         infoService.runQuietly(true);
 
-        wakeLock.release();
+        if (wakeLock != null && wakeLock.isHeld()) {
+            wakeLock.release();
+        }
 
         super.onStop();
     }
@@ -210,26 +227,22 @@ public class MainActivity extends Activity {
     }
 
     private void setupBacklightStrategy() {
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                Log.d("!", "1");
-            }
-        });
+        String val = defaultSharedPreferences.getString("displaySettingsBacklightStrategyKey", "ALWAYS_ON_NORMAL");
 
-        String backlightStrategyDefault = "SYSTEM_SETTING";
-        String backlightStrategy = defaultSharedPreferences.getString("displaySettingsBacklightStrategyKey", backlightStrategyDefault);
-
-        switch (backlightStrategy) {
+        switch (val) {
             case "ALWAYS_ON_MAXIMUM":
                 acquireWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK);
                 break;
             case "ALWAYS_ON_NORMAL":
                 acquireWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK);
                 break;
-            case "SYSTEM_SETTING": // Do not acquire anything
+            case "SYSTEM_SETTING":
+                // Release lock if it was acquired earlier
+                if (wakeLock != null && wakeLock.isHeld()) {
+                    wakeLock.release();
+                }
                 break;
+
             default:
                 throw new IllegalArgumentException("Unknown backlight strategy");
         }
@@ -237,8 +250,23 @@ public class MainActivity extends Activity {
 
     private void acquireWakeLock(int levelAndFlags) {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(levelAndFlags, Constants.BIKECOMP_TAG);
+        wakeLock = pm.newWakeLock(levelAndFlags, BIKECOMP_TAG);
         wakeLock.acquire();
+    }
+
+    private void setupTheme() {
+        String val = defaultSharedPreferences.getString("displaySettingsThemeKey", "DAY");
+
+        switch (val) {
+            case "DAY":
+                Log.d(BIKECOMP_TAG, "Set daily theme");
+                break;
+            case "NIGHT":
+                Log.d(BIKECOMP_TAG, "Set nightly theme");
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown theme");
+        }
     }
 
 }

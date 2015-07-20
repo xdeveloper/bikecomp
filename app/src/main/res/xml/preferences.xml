@@ -4,7 +4,7 @@
 
         <!-- Backlight strategy-->
         <ListPreference
-            android:defaultValue="2"
+            android:defaultValue="ALWAYS_ON_NORMAL"
             android:entries="@array/display_backlight_settings"
             android:entryValues="@array/display_backlight_values"
             android:key="displaySettingsBacklightStrategyKey"
@@ -23,7 +23,7 @@
         <!-- Theme -->
         <ListPreference
             android:dependency="displaySettingsThemeByCalendarKey"
-            android:defaultValue="1"
+            android:defaultValue="DAY"
             android:entries="@array/display_theme"
             android:entryValues="@array/display_theme_values"
             android:key="displaySettingsThemeKey"

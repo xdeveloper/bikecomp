@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="display_backlight_settings">
-        <item>Завжди включений (макс.)</item>
-        <item>Завжди включений (норм.)</item>
-        <item>Залежить від системи</item>
+        <item>Завжди максимум</item>
+        <item>Завжди нормально)</item>
+        <item>Системна настройка</item>
     </string-array>
 
     <string-array name="display_theme">
