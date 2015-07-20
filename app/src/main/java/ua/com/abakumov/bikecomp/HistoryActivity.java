@@ -20,7 +20,6 @@ import java.util.List;
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.DBHelper;
 
-import static java.lang.Double.valueOf;
 import static ua.com.abakumov.bikecomp.util.Utils.formatDate;
 import static ua.com.abakumov.bikecomp.util.Utils.formatDistance;
 import static ua.com.abakumov.bikecomp.util.Utils.formatElapsedTime;
@@ -50,12 +49,6 @@ public class HistoryActivity extends Activity {
         dbHelper = new DBHelper(this);
 
         registerForContextMenu(findViewById(R.id.history_list));
-
-        /*ListView listView = (ListView) findViewById(R.id.history_list);
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            Ride ride = (Ride) parent.getItemAtPosition(position);
-
-        });*/
     }
 
     @Override
