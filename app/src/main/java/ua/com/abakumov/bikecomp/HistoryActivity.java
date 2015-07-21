@@ -19,7 +19,9 @@ import java.util.List;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.DBHelper;
+import ua.com.abakumov.bikecomp.util.UIUtils;
 
+import static ua.com.abakumov.bikecomp.util.UIUtils.setupTheme;
 import static ua.com.abakumov.bikecomp.util.Utils.formatDate;
 import static ua.com.abakumov.bikecomp.util.Utils.formatDistance;
 import static ua.com.abakumov.bikecomp.util.Utils.formatElapsedTime;
@@ -44,6 +46,9 @@ public class HistoryActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setupTheme(this);
+
         setContentView(R.layout.activity_history);
 
         dbHelper = new DBHelper(this);

@@ -1,12 +1,16 @@
 package ua.com.abakumov.bikecomp;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceActivity;
 
 import java.util.List;
 
 import ua.com.abakumov.bikecomp.fragment.PreferenceFragment;
 import ua.com.abakumov.bikecomp.util.Constants;
+import ua.com.abakumov.bikecomp.util.UIUtils;
+
+import static ua.com.abakumov.bikecomp.util.UIUtils.*;
 
 
 /**
@@ -18,6 +22,12 @@ public class SettingsActivity extends PreferenceActivity {
 
 
     // ----------- System --------------------------------------------------------------------------
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //setupTheme(this);
+    }
 
     @Override
     public void onBuildHeaders(List<Header> target) {

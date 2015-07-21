@@ -11,7 +11,7 @@
     tools:context="ua.com.abakumov.bikecomp.ReportActivity">
 
     <TextView
-        style="@style/header_text_style"
+        style="@android:style/TextAppearance.Large"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:gravity="center_horizontal"

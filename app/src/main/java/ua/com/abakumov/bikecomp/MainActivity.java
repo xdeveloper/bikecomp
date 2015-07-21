@@ -15,7 +15,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.WindowManager;
 
 import java.util.Date;
 
@@ -34,7 +33,7 @@ import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
-import ua.com.abakumov.bikecomp.util.Constants;
+import ua.com.abakumov.bikecomp.util.UIUtils;
 import ua.com.abakumov.bikecomp.util.Utils;
 
 import static ua.com.abakumov.bikecomp.util.Constants.BIKECOMP_TAG;
@@ -53,15 +52,12 @@ public class MainActivity extends Activity {
 
     private PowerManager.WakeLock wakeLock;
 
-    private SharedPreferences defaultSharedPreferences;
-
     private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = (sharedPreferences, key) -> {
         if ("displaySettingsBacklightStrategyKey".equals(key)) {
             setupBacklightStrategy();
-        } else if ("displaySettingsThemeKey".equals(key)) {
-            setupTheme();
+        } else if (UIUtils.SETTINGS_THEME_KEY.equals(key)) {
+            UIUtils.setupTheme(this, MainActivity.class);
         }
-
     };
 
 
@@ -70,13 +66,15 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
+
+        UIUtils.setupTheme(this);
+
         setContentView(R.layout.activity_main);
 
         addFragments();
         startServices();
-
-        defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        defaultSharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
     }
 
     @Override
@@ -87,6 +85,7 @@ public class MainActivity extends Activity {
         if (infoService != null) infoService.runQuietly(false);
 
         setupBacklightStrategy();
+        //setupTheme();
     }
 
     @Override
@@ -227,7 +226,7 @@ public class MainActivity extends Activity {
     }
 
     private void setupBacklightStrategy() {
-        String val = defaultSharedPreferences.getString("displaySettingsBacklightStrategyKey", "ALWAYS_ON_NORMAL");
+        String val = PreferenceManager.getDefaultSharedPreferences(this).getString("displaySettingsBacklightStrategyKey", "ALWAYS_ON_NORMAL");
 
         switch (val) {
             case "ALWAYS_ON_MAXIMUM":
@@ -252,21 +251,6 @@ public class MainActivity extends Activity {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(levelAndFlags, BIKECOMP_TAG);
         wakeLock.acquire();
-    }
-
-    private void setupTheme() {
-        String val = defaultSharedPreferences.getString("displaySettingsThemeKey", "DAY");
-
-        switch (val) {
-            case "DAY":
-                Log.d(BIKECOMP_TAG, "Set daily theme");
-                break;
-            case "NIGHT":
-                Log.d(BIKECOMP_TAG, "Set nightly theme");
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown theme");
-        }
     }
 
 }

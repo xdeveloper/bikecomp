@@ -71,6 +71,8 @@ public class InfoService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        EventBus.getDefault().register(this);
+
         timerTask = new ElapsedTimeFragmentTask();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -114,7 +116,6 @@ public class InfoService extends Service {
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        EventBus.getDefault().register(this);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, SECOND, 1, locationListener);
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;

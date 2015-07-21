@@ -5,7 +5,7 @@
 
     <TextView
         android:id="@+id/history_header"
-        style="@style/header_text_style"
+        style="@android:style/TextAppearance.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"

@@ -20,8 +20,8 @@
     </string-array>
 
     <string-array name="display_theme_values">
-        <item>DAY</item>
-        <item>NIGHT</item>
+        <item>Day</item>
+        <item>Night</item>
     </string-array>
 
 </resources>

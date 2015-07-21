@@ -5,12 +5,12 @@
 
     <TextView
         android:id="@+id/are_you_sure"
-        style="@style/header2_text_style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:text="@string/are_you_sure" />
+        android:text="@string/are_you_sure"
+        style="@android:style/TextAppearance.Large" />
 
     <TextView
         android:id="@+id/tap_continue_or_finish"

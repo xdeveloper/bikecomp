@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.DBHelper;
+import ua.com.abakumov.bikecomp.util.UIUtils;
 
+import static ua.com.abakumov.bikecomp.util.UIUtils.*;
 import static ua.com.abakumov.bikecomp.util.Utils.formatDate;
 import static ua.com.abakumov.bikecomp.util.Utils.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
@@ -31,6 +33,9 @@ public class ReportActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setupTheme(this);
+
         ride = getIntent().getParcelableExtra(Ride.class.getCanonicalName());
 
         saveSession(ride);

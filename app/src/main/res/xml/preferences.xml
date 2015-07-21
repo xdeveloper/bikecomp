@@ -23,7 +23,7 @@
         <!-- Theme -->
         <ListPreference
             android:dependency="displaySettingsThemeByCalendarKey"
-            android:defaultValue="DAY"
+            android:defaultValue="Day"
             android:entries="@array/display_theme"
             android:entryValues="@array/display_theme_values"
             android:key="displaySettingsThemeKey"
