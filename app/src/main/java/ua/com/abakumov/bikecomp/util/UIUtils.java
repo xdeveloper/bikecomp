@@ -5,10 +5,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import ua.com.abakumov.bikecomp.MainActivity;
-
 import static android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen;
 import static android.R.style.Theme_Holo_NoActionBar_Fullscreen;
+import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * UI specific utilities
@@ -44,12 +44,12 @@ public class UIUtils {
      */
     public static void setupTheme(Context context, Class<?> clazz) {
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String theme = defaultSharedPreferences.getString(SETTINGS_THEME_KEY, Theme.Day.name());
-        int id = Theme.byThemeName(theme);
-        context.setTheme(id);
+        context.setTheme(Theme.byThemeName(defaultSharedPreferences.getString(SETTINGS_THEME_KEY, Theme.Day.name())));
 
         if (clazz != null) {
-            context.startActivity(new Intent(context, clazz));
+            Intent intent = new Intent(context, clazz);
+            intent.setFlags(FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
     }
 

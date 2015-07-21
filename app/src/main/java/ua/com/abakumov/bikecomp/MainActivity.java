@@ -37,6 +37,8 @@ import ua.com.abakumov.bikecomp.util.UIUtils;
 import ua.com.abakumov.bikecomp.util.Utils;
 
 import static ua.com.abakumov.bikecomp.util.Constants.BIKECOMP_TAG;
+import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_BACKLIGHT_STRATEGY_KEY;
+import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.util.Utils.showToast;
 
@@ -53,9 +55,9 @@ public class MainActivity extends Activity {
     private PowerManager.WakeLock wakeLock;
 
     private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = (sharedPreferences, key) -> {
-        if ("displaySettingsBacklightStrategyKey".equals(key)) {
+        if (SETTINGS_BACKLIGHT_STRATEGY_KEY.equals(key)) {
             setupBacklightStrategy();
-        } else if (UIUtils.SETTINGS_THEME_KEY.equals(key)) {
+        } else if (SETTINGS_THEME_KEY.equals(key)) {
             UIUtils.setupTheme(this, MainActivity.class);
         }
     };
@@ -85,7 +87,6 @@ public class MainActivity extends Activity {
         if (infoService != null) infoService.runQuietly(false);
 
         setupBacklightStrategy();
-        //setupTheme();
     }
 
     @Override
