@@ -41,6 +41,8 @@ import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_BACKLIGHT_STRATEGY_
 import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.UIUtils.goHome;
 import static ua.com.abakumov.bikecomp.util.UIUtils.goReportScreen;
+import static ua.com.abakumov.bikecomp.util.UIUtils.hideNotification;
+import static ua.com.abakumov.bikecomp.util.UIUtils.showNotification;
 import static ua.com.abakumov.bikecomp.util.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.util.Utils.showToast;
 
@@ -174,6 +176,8 @@ public class MainActivity extends Activity {
         this.sessionIsRunning = true;
 
         showShortToast(R.string.session_started, getApplicationContext());
+
+        showNotification(this);
     }
 
     @SuppressWarnings(value = "unused")
@@ -189,6 +193,8 @@ public class MainActivity extends Activity {
         this.sessionIsRunning = false;
 
         showShortToast(R.string.session_stopped, getApplicationContext());
+
+        hideNotification(this);
 
         Date startDate = infoService.getStartDate();
         float distance = infoService.getDistance();

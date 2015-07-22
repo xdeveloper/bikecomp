@@ -59,4 +59,6 @@
     <string name="theme_by_calendar_disabled_summary">Вибір вручну</string>
     <string name="theme_summary">Виберіть тему</string>
     <string name="theme_title">Тема</string>
+    <string name="session_active">Заїзд триває</string>
+    <string name="session_active_text">Заїзд ще триває</string>
 </resources>

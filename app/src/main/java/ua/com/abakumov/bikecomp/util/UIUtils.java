@@ -1,19 +1,20 @@
 package ua.com.abakumov.bikecomp.util;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import java.util.Date;
-
+import ua.com.abakumov.bikecomp.MainActivity;
+import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 
 import static android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen;
 import static android.R.style.Theme_Holo_NoActionBar_Fullscreen;
-import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 /**
  * UI specific utilities
@@ -80,5 +81,27 @@ public class UIUtils {
         context.startActivity(intent);
     }
 
+    public static void showNotification(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+
+        PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+
+        Notification notification =
+                new Notification.Builder(context)
+                        .setOngoing(true)
+                        .setSmallIcon(android.R.drawable.btn_star)
+                        .setContentTitle(context.getResources().getString(R.string.session_active))
+                        .setContentText(context.getResources().getString(R.string.session_active_text))
+                        .setContentIntent(pIntent)
+                        .build();
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notification);
+    }
+
+    public static void hideNotification(Context context) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancelAll();
+    }
 
 }
