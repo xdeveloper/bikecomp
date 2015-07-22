@@ -17,6 +17,7 @@
 
         <!--  ##############################  Main screen ###################################### -->
         <activity
+            android:launchMode="singleTask"
             android:name="ua.com.abakumov.bikecomp.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"

@@ -29,7 +29,7 @@ import ua.com.abakumov.bikecomp.event.gps.NewLocation;
 import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 
-import static ua.com.abakumov.bikecomp.util.Constants.BIKECOMP_TAG;
+import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 
 /**
  * Listens location updates and publishes events
@@ -98,7 +98,7 @@ public class InfoService extends Service {
                         break;
 
                     default:
-                        Log.w(BIKECOMP_TAG, "Unknown status");
+                        Log.w(TAG, "Unknown status");
                         break;
                 }
             }

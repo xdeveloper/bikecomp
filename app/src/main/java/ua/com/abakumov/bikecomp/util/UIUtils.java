@@ -5,6 +5,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.Date;
+
+import ua.com.abakumov.bikecomp.ReportActivity;
+import ua.com.abakumov.bikecomp.domain.Ride;
+
 import static android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen;
 import static android.R.style.Theme_Holo_NoActionBar_Fullscreen;
 import static android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK;
@@ -48,13 +53,31 @@ public class UIUtils {
 
         if (clazz != null) {
             Intent intent = new Intent(context, clazz);
-            intent.setFlags(FLAG_ACTIVITY_CLEAR_TASK | FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             context.startActivity(intent);
         }
     }
 
     public static void setupTheme(Context context) {
         setupTheme(context, null);
+    }
+
+    /**
+     * Goes to android "home" screen
+     *
+     * @param context context
+     */
+    public static void goHome(Context context) {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+    public static void goReportScreen(Context context, Ride ride) {
+        Intent intent = new Intent(context, ReportActivity.class);
+        intent.putExtra(Ride.class.getCanonicalName(), ride);
+        context.startActivity(intent);
     }
 
 

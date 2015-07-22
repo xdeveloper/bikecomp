@@ -36,9 +36,11 @@ import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.util.UIUtils;
 import ua.com.abakumov.bikecomp.util.Utils;
 
-import static ua.com.abakumov.bikecomp.util.Constants.BIKECOMP_TAG;
+import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_BACKLIGHT_STRATEGY_KEY;
 import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_THEME_KEY;
+import static ua.com.abakumov.bikecomp.util.UIUtils.goHome;
+import static ua.com.abakumov.bikecomp.util.UIUtils.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.util.Utils.showToast;
 
@@ -50,10 +52,10 @@ import static ua.com.abakumov.bikecomp.util.Utils.showToast;
  */
 public class MainActivity extends Activity {
 
+    private boolean sessionIsRunning;
+
     private InfoService infoService;
-
     private PowerManager.WakeLock wakeLock;
-
     private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = (sharedPreferences, key) -> {
         if (SETTINGS_BACKLIGHT_STRATEGY_KEY.equals(key)) {
             setupBacklightStrategy();
@@ -92,7 +94,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v(BIKECOMP_TAG, "++++++++++++++++++ Main screen has been shown ++++++++++++++++++");
+        Log.v(TAG, "++++++++++++++++++ Main screen has been shown ++++++++++++++++++");
     }
 
     @Override
@@ -142,6 +144,18 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        Log.v(TAG, "onBackPressed");
+        if (sessionIsRunning) {
+            Log.v(TAG, "Session is still running. Go main screen");
+            goHome(this);
+        } else {
+            Log.v(TAG, "Session is stopped. Exit application");
+            finish();
+        }
+    }
+
     // ----------- Events handling -----------------------------------------------------------------
 
 
@@ -157,6 +171,8 @@ public class MainActivity extends Activity {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
+        this.sessionIsRunning = true;
+
         showShortToast(R.string.session_started, getApplicationContext());
     }
 
@@ -170,6 +186,8 @@ public class MainActivity extends Activity {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
+        this.sessionIsRunning = false;
+
         showShortToast(R.string.session_stopped, getApplicationContext());
 
         Date startDate = infoService.getStartDate();
@@ -178,11 +196,11 @@ public class MainActivity extends Activity {
         double averageSpeed = Utils.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
         int averagePace = (int) (distance / elapsedTime);
 
-        Intent intent = new Intent(MainActivity.this, ReportActivity.class);
-        intent.putExtra(Ride.class.getCanonicalName(),
+        // Go to report screen
+        goReportScreen(
+                this,
                 new Ride("New ride", startDate, new Date(), infoService.getElapsedTime(), averageSpeed,
                         averagePace, infoService.getDistance()));
-        startActivity(intent);
     }
 
     // ----------- Utilities -----------------------------------------------------------------------
@@ -250,7 +268,7 @@ public class MainActivity extends Activity {
 
     private void acquireWakeLock(int levelAndFlags) {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(levelAndFlags, BIKECOMP_TAG);
+        wakeLock = pm.newWakeLock(levelAndFlags, TAG);
         wakeLock.acquire();
     }
 

@@ -7,7 +7,7 @@ package ua.com.abakumov.bikecomp.util;
  */
 public class Constants {
     // Tag for logger
-    public static final String BIKECOMP_TAG = "Bikecomp";
+    public static final String TAG = "Bikecomp";
 
     public static final String SETTINGS_NAME = "settings";
 }

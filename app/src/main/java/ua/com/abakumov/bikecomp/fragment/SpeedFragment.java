@@ -89,7 +89,7 @@ public class SpeedFragment extends Fragment {
     public void onEvent(NewLocation event) {
         speed = event.getKmphSpeed();
 
-        Log.v(Constants.BIKECOMP_TAG, "Location received:" + valueOf(speed));
+        Log.v(Constants.TAG, "Location received:" + valueOf(speed));
 
         updateUI();
     }

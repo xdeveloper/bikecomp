@@ -13,7 +13,7 @@ import java.util.List;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
 
-import static ua.com.abakumov.bikecomp.util.Constants.BIKECOMP_TAG;
+import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 import static ua.com.abakumov.bikecomp.util.Utils.timeToDate;
 
 /**
@@ -39,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.d(BIKECOMP_TAG, "Create database");
+        Log.d(TAG, "Create database");
 
         sqLiteDatabase.execSQL("CREATE TABLE " + BIKECOMP_TABLE + " ("
                 + COL_ID + " integer primary key autoincrement,"
@@ -55,7 +55,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        Log.d(BIKECOMP_TAG, "Upgrade database");
+        Log.d(TAG, "Upgrade database");
     }
 
     /**
@@ -64,7 +64,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @return list of rides
      */
     public List<Ride> getAllRides() {
-        Log.d(BIKECOMP_TAG, "Get all rides");
+        Log.d(TAG, "Get all rides");
 
         List<Ride> list = new ArrayList<>();
 
@@ -107,7 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param ride ride
      */
     public void save(Ride ride) {
-        Log.d(BIKECOMP_TAG, "Saving ride");
+        Log.d(TAG, "Saving ride");
 
         SQLiteDatabase writableDatabase = getWritableDatabase();
         writableDatabase.beginTransaction();
@@ -132,7 +132,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * Delete all rides
      */
     public void deleteAllRides() {
-        Log.d(BIKECOMP_TAG, "Delete all rides");
+        Log.d(TAG, "Delete all rides");
 
         SQLiteDatabase writableDatabase = getWritableDatabase();
         writableDatabase.beginTransaction();
@@ -151,7 +151,7 @@ public class DBHelper extends SQLiteOpenHelper {
      * @param ride ride
      */
     public void deleteRide(Ride ride) {
-        Log.d(BIKECOMP_TAG, "Delete ride");
+        Log.d(TAG, "Delete ride");
 
         Integer id = ride.getId();
 
