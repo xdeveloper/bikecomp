@@ -10,6 +10,7 @@ import android.widget.TextView;
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.SessionStart;
+import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.util.Utils;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
@@ -80,6 +81,14 @@ public class AverageSpeedFragment extends Fragment {
         updateAverageSpeed();
     }
 
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStop event) {
+        this.distance = 0;
+
+        updateAverageSpeed();
+    }
+
+
 
     // ----------- Utilities -----------------------------------------------------------------------
 
@@ -100,12 +109,7 @@ public class AverageSpeedFragment extends Fragment {
     }
 
     private void updateUi() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(formatSpeed(averageSpeed));
-            }
-        });
+        getActivity().runOnUiThread(() -> ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(formatSpeed(averageSpeed)));
 
     }
 }

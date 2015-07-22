@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.util.Utils;
 import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 
@@ -51,6 +52,12 @@ public class ElapsedTimeFragment extends Fragment {
         updateUi();
     }
 
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStop event) {
+        this.elapsedTime = 0;
+
+        updateUi();
+    }
 
     // ----------- Utilities -----------------------------------------------------------------------
 

@@ -88,11 +88,10 @@ public class SpeedFragment extends Fragment {
     @SuppressWarnings(value = "unused")
     public void onEvent(NewLocation event) {
         speed = event.getKmphSpeed();
-
         Log.v(Constants.TAG, "Location received:" + valueOf(speed));
-
         updateUI();
     }
+
 
     // ----------- Utilities -----------------------------------------------------------------------
     private void gpsEnabled(boolean enabled) {

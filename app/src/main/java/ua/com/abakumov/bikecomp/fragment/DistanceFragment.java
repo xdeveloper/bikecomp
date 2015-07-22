@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 
 import static ua.com.abakumov.bikecomp.util.Utils.formatDistance;
@@ -57,6 +58,13 @@ public class DistanceFragment extends Fragment {
     @SuppressWarnings(value = "unused")
     public void onEvent(NewDistance event) {
         distance = event.getDistanceInMeters();
+
+        updateUI();
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionStop event) {
+        distance = 0;
 
         updateUI();
     }
