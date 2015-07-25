@@ -108,7 +108,12 @@ public class SpeedFragment extends Fragment {
     }
 
     private void updateUI() {
-        getActivity().runOnUiThread(() -> ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(speed)));
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(speed));
+            }
+        });
     }
 
 }

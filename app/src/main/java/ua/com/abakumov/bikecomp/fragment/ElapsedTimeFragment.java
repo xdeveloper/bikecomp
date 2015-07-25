@@ -62,9 +62,12 @@ public class ElapsedTimeFragment extends Fragment {
     // ----------- Utilities -----------------------------------------------------------------------
 
     private void updateUi() {
-        getActivity().runOnUiThread(() -> {
-            TextView elapsedTimeTextView = (TextView) getActivity().findViewById(R.id.elapsedTimeTextView);
-            elapsedTimeTextView.setText(Utils.formatElapsedTime(elapsedTime));
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView elapsedTimeTextView = (TextView) getActivity().findViewById(R.id.elapsedTimeTextView);
+                elapsedTimeTextView.setText(Utils.formatElapsedTime(elapsedTime));
+            }
         });
     }
 }

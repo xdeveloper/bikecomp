@@ -3,15 +3,17 @@ package ua.com.abakumov.bikecomp;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.DBHelper;
-import ua.com.abakumov.bikecomp.util.UIUtils;
+import ua.com.abakumov.bikecomp.util.ThemeDecider;
+import ua.com.abakumov.bikecomp.util.WithActionBarThemeDecider;
 
-import static ua.com.abakumov.bikecomp.util.UIUtils.*;
+import static ua.com.abakumov.bikecomp.util.UIUtils.setupTheme;
 import static ua.com.abakumov.bikecomp.util.Utils.formatDate;
 import static ua.com.abakumov.bikecomp.util.Utils.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
@@ -23,10 +25,11 @@ import static ua.com.abakumov.bikecomp.util.Utils.formatTime;
  * <p>
  * Created by Oleksandr Abakumov on 7/16/15.
  */
-public class ReportActivity extends Activity {
+public class ReportActivity extends AppCompatActivity {
 
     private Ride ride;
 
+    private ThemeDecider themeDecider = new WithActionBarThemeDecider();
 
     // ----------- System --------------------------------------------------------------------------
 
@@ -34,7 +37,7 @@ public class ReportActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setupTheme(this);
+        setupTheme(this, themeDecider);
 
         ride = getIntent().getParcelableExtra(Ride.class.getCanonicalName());
 

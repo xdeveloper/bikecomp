@@ -3,6 +3,9 @@ package ua.com.abakumov.bikecomp;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -19,7 +22,9 @@ import java.util.List;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.DBHelper;
+import ua.com.abakumov.bikecomp.util.ThemeDecider;
 import ua.com.abakumov.bikecomp.util.UIUtils;
+import ua.com.abakumov.bikecomp.util.WithActionBarThemeDecider;
 
 import static ua.com.abakumov.bikecomp.util.UIUtils.setupTheme;
 import static ua.com.abakumov.bikecomp.util.Utils.formatDate;
@@ -34,7 +39,9 @@ import static ua.com.abakumov.bikecomp.util.Utils.formatTime;
  * <p>
  * Created by Oleksandr Abakumov on 7/17/15.
  */
-public class HistoryActivity extends Activity {
+public class HistoryActivity extends AppCompatActivity {
+
+    private ThemeDecider themeDecider = new WithActionBarThemeDecider();
 
     private DBHelper dbHelper;
 
@@ -47,9 +54,16 @@ public class HistoryActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setupTheme(this);
+       // setupTheme(this, themeDecider);
 
         setContentView(R.layout.activity_history);
+
+      /*  Toolbar toolbar = (Toolbar) findViewById(R.id.activity_history_toolbar);
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+        }
+*/
+
 
         dbHelper = new DBHelper(this);
 

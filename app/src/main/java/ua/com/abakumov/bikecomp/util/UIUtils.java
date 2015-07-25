@@ -13,6 +13,7 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 
+import static android.R.style.Theme;
 import static android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen;
 import static android.R.style.Theme_Holo_NoActionBar_Fullscreen;
 
@@ -26,20 +27,7 @@ public class UIUtils {
     public static final String SETTINGS_BACKLIGHT_STRATEGY_KEY = "displaySettingsBacklightStrategyKey";
 
     public enum Theme {
-        Day(Theme_Holo_Light_NoActionBar_Fullscreen),
-        Night(Theme_Holo_NoActionBar_Fullscreen);
-
-        private final int themeResId;
-
-        Theme(int themeResId) {
-            this.themeResId = themeResId;
-        }
-
-        public static int byThemeName(String theme) {
-            Theme t = valueOf(theme);
-            return t.themeResId;
-        }
-
+        Day, Night
     }
 
     /**
@@ -48,9 +36,20 @@ public class UIUtils {
      * @param context context
      * @param clazz   clazz
      */
-    public static void setupTheme(Context context, Class<?> clazz) {
+    public static void setupTheme(Context context, Class<?> clazz, ThemeDecider decider) {
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        context.setTheme(Theme.byThemeName(defaultSharedPreferences.getString(SETTINGS_THEME_KEY, Theme.Day.name())));
+        String themeName = defaultSharedPreferences.getString(SETTINGS_THEME_KEY, UIUtils.Theme.Day.name());
+
+        int resid;
+        if (UIUtils.Theme.Day.name().equals(themeName)) {
+            resid = decider.dailyTheme();
+        } else if (UIUtils.Theme.Night.name().equals(themeName)) {
+            resid = decider.nightlyTheme();
+        } else {
+            resid = decider.dailyTheme();
+        }
+
+        context.setTheme(resid);
 
         if (clazz != null) {
             Intent intent = new Intent(context, clazz);
@@ -59,8 +58,8 @@ public class UIUtils {
         }
     }
 
-    public static void setupTheme(Context context) {
-        setupTheme(context, null);
+    public static void setupTheme(Context context, ThemeDecider decider) {
+        setupTheme(context, null, decider);
     }
 
     /**

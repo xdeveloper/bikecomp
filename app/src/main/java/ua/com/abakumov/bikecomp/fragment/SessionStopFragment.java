@@ -13,7 +13,7 @@ import ua.com.abakumov.bikecomp.event.SessionStop;
 /**
  * Confirm dialog.
  * Confirm the stopping of current riding session.
- * <p/>
+ * <p>
  * Created by Oleksandr Abakumov on 7/16/15.
  */
 public class SessionStopFragment extends DialogFragment {
@@ -24,11 +24,19 @@ public class SessionStopFragment extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_session_stop, container, false);
-        view.findViewById(R.id.buttonSessionContinue).setOnClickListener(v -> dismiss());
+        view.findViewById(R.id.buttonSessionContinue).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
 
-        view.findViewById(R.id.buttonSessionFinish).setOnClickListener(v -> {
-            dismiss();
-            EventBus.getDefault().post(new SessionStop());
+        view.findViewById(R.id.buttonSessionFinish).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+                EventBus.getDefault().post(new SessionStop());
+            }
         });
 
         return view;

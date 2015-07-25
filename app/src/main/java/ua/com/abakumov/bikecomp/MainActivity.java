@@ -33,15 +33,20 @@ import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
+import ua.com.abakumov.bikecomp.util.FullscreenThemeDecider;
+import ua.com.abakumov.bikecomp.util.ThemeDecider;
 import ua.com.abakumov.bikecomp.util.UIUtils;
 import ua.com.abakumov.bikecomp.util.Utils;
 
+import static android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen;
+import static android.R.style.Theme_Holo_NoActionBar_Fullscreen;
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_BACKLIGHT_STRATEGY_KEY;
 import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.UIUtils.goHome;
 import static ua.com.abakumov.bikecomp.util.UIUtils.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.UIUtils.hideNotification;
+import static ua.com.abakumov.bikecomp.util.UIUtils.setupTheme;
 import static ua.com.abakumov.bikecomp.util.UIUtils.showNotification;
 import static ua.com.abakumov.bikecomp.util.Utils.showShortToast;
 import static ua.com.abakumov.bikecomp.util.Utils.showToast;
@@ -57,12 +62,20 @@ public class MainActivity extends Activity {
     private boolean sessionIsRunning;
 
     private InfoService infoService;
+
     private PowerManager.WakeLock wakeLock;
-    private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = (sharedPreferences, key) -> {
-        if (SETTINGS_BACKLIGHT_STRATEGY_KEY.equals(key)) {
-            setupBacklightStrategy();
-        } else if (SETTINGS_THEME_KEY.equals(key)) {
-            UIUtils.setupTheme(this, MainActivity.class);
+
+    private ThemeDecider themeDecider = new FullscreenThemeDecider();
+
+
+    private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (SETTINGS_BACKLIGHT_STRATEGY_KEY.equals(key)) {
+                setupBacklightStrategy();
+            } else if (SETTINGS_THEME_KEY.equals(key)) {
+                setupTheme(MainActivity.this, MainActivity.class, themeDecider);
+            }
         }
     };
 
@@ -75,7 +88,7 @@ public class MainActivity extends Activity {
 
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
 
-        UIUtils.setupTheme(this);
+        //setupTheme(this, themeDecider);
 
         setContentView(R.layout.activity_main);
 

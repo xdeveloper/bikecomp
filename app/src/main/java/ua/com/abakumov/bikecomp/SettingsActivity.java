@@ -8,7 +8,9 @@ import java.util.List;
 
 import ua.com.abakumov.bikecomp.fragment.PreferenceFragment;
 import ua.com.abakumov.bikecomp.util.Constants;
+import ua.com.abakumov.bikecomp.util.ThemeDecider;
 import ua.com.abakumov.bikecomp.util.UIUtils;
+import ua.com.abakumov.bikecomp.util.WithActionBarThemeDecider;
 
 import static ua.com.abakumov.bikecomp.util.UIUtils.*;
 
@@ -20,13 +22,14 @@ import static ua.com.abakumov.bikecomp.util.UIUtils.*;
  */
 public class SettingsActivity extends PreferenceActivity {
 
+    private ThemeDecider themeDecider = new WithActionBarThemeDecider();
 
     // ----------- System --------------------------------------------------------------------------
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //setupTheme(this);
+        setupTheme(this, themeDecider);
     }
 
     @Override
@@ -35,8 +38,11 @@ public class SettingsActivity extends PreferenceActivity {
 
         SharedPreferences prefs = this.getSharedPreferences(Constants.SETTINGS_NAME, 0);
 
-        prefs.registerOnSharedPreferenceChangeListener((prefs1, key) -> {
-            int flag = 1;
+        prefs.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+                int flag = 1;
+            }
         });
     }
 

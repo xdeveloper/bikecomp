@@ -89,7 +89,6 @@ public class AverageSpeedFragment extends Fragment {
     }
 
 
-
     // ----------- Utilities -----------------------------------------------------------------------
 
     private void updateAverageSpeed() {
@@ -109,7 +108,13 @@ public class AverageSpeedFragment extends Fragment {
     }
 
     private void updateUi() {
-        getActivity().runOnUiThread(() -> ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(formatSpeed(averageSpeed)));
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(formatSpeed(averageSpeed));
+            }
+        });
+
 
     }
 }
