@@ -58,13 +58,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_history);
 
-      /*  Toolbar toolbar = (Toolbar) findViewById(R.id.activity_history_toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-        }
-*/
-
-
         dbHelper = new DBHelper(this);
 
         registerForContextMenu(findViewById(R.id.history_list));

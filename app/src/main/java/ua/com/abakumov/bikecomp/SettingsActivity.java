@@ -29,7 +29,7 @@ public class SettingsActivity extends PreferenceActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setupTheme(this, themeDecider);
+        //setupTheme(this, themeDecider);
     }
 
     @Override

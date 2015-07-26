@@ -20,11 +20,11 @@ import static android.support.v7.appcompat.R.style.Base_V7_Theme_AppCompat_Light
 public class WithActionBarThemeDecider implements ThemeDecider {
     @Override
     public int dailyTheme() {
-        return Base_V7_Theme_AppCompat_Light;
+        return android.R.style.Theme_Light_NoTitleBar_Fullscreen;
     }
 
     @Override
     public int nightlyTheme() {
-        return Base_V7_Theme_AppCompat;
+        return android.R.style.Theme_NoTitleBar;
     }
 }

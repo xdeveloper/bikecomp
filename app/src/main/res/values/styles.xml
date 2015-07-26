@@ -1,18 +1,8 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Base.V7.Theme.AppCompat">
+    <style name="AppTheme" parent="Base.Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
-    </style>
-
-    <style name="header_text_style">
-        <item name="android:textColor">#ffffffff</item>
-        <item name="android:textSize">30sp</item>
-    </style>
-
-    <style name="header2_text_style">
-        <item name="android:textColor">#ffffffff</item>
-        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="report_first_column">

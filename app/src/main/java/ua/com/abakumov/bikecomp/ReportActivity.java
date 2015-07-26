@@ -37,7 +37,7 @@ public class ReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setupTheme(this, themeDecider);
+        //setupTheme(this, themeDecider);
 
         ride = getIntent().getParcelableExtra(Ride.class.getCanonicalName());
 
