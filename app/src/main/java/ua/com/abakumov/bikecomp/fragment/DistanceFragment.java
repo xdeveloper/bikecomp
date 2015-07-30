@@ -20,7 +20,7 @@ import static ua.com.abakumov.bikecomp.util.Utils.metersToKilometers;
  * <p>
  * Created by oabakumov on 26.06.2015.
  */
-public class DistanceFragment extends Fragment {
+public class DistanceFragment extends android.support.v4.app.Fragment   {
 
     private EventBus eventBus;
 

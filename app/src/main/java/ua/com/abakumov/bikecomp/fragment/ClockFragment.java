@@ -18,7 +18,7 @@ import ua.com.abakumov.bikecomp.R;
 /*
  * Created by oabakumov on 26.06.2015.
  */
-public class ClockFragment extends Fragment {
+public class ClockFragment extends android.support.v4.app.Fragment {
 
     @SuppressWarnings("FieldCanBeLocal")
     private static int SECOUND = 1000;

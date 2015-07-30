@@ -22,7 +22,7 @@ import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
  * <p>
  * Created by oabakumov on 26.06.2015.
  */
-public class AverageSpeedFragment extends Fragment {
+public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
 
     private EventBus eventBus;
 

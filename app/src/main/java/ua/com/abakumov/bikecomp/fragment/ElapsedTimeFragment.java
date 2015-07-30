@@ -16,7 +16,7 @@ import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 /*
  * Created by oabakumov on 26.06.2015.
  */
-public class ElapsedTimeFragment extends Fragment {
+public class ElapsedTimeFragment extends android.support.v4.app.Fragment {
 
     private EventBus eventBus;
 

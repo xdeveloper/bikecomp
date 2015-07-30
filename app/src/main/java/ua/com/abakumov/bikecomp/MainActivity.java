@@ -1,7 +1,6 @@
 package ua.com.abakumov.bikecomp;
 
-import android.app.Activity;
-import android.app.Fragment;
+
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,11 +11,18 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.support.v4.app.FragmentManager;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.domain.Ride;
@@ -25,21 +31,12 @@ import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.SessionStopRequest;
 import ua.com.abakumov.bikecomp.event.gps.Disabled;
 import ua.com.abakumov.bikecomp.event.gps.Enabled;
-import ua.com.abakumov.bikecomp.fragment.AverageSpeedFragment;
-import ua.com.abakumov.bikecomp.fragment.ClockFragment;
-import ua.com.abakumov.bikecomp.fragment.DistanceFragment;
-import ua.com.abakumov.bikecomp.fragment.ElapsedTimeFragment;
-import ua.com.abakumov.bikecomp.fragment.HeartRateFragment;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
-import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.util.FullscreenThemeDecider;
 import ua.com.abakumov.bikecomp.util.ThemeDecider;
-import ua.com.abakumov.bikecomp.util.UIUtils;
 import ua.com.abakumov.bikecomp.util.Utils;
 
-import static android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen;
-import static android.R.style.Theme_Holo_NoActionBar_Fullscreen;
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_BACKLIGHT_STRATEGY_KEY;
 import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_THEME_KEY;
@@ -57,16 +54,19 @@ import static ua.com.abakumov.bikecomp.util.Utils.showToast;
  * <p>
  * Created by Oleksandr Abakumov on 6/28/15.
  */
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     private boolean sessionIsRunning;
 
     private InfoService infoService;
 
+    private ViewPager viewPager;
+
+    private ScreenSlidePagerAdapter viewPagerAdapter;
+
     private PowerManager.WakeLock wakeLock;
 
     private ThemeDecider themeDecider = new FullscreenThemeDecider();
-
 
     private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         @Override
@@ -85,14 +85,13 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
-
-        //setupTheme(this, themeDecider);
-
         setContentView(R.layout.activity_main);
 
-        addFragments();
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        viewPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(viewPagerAdapter);
+
         startServices();
     }
 
@@ -171,13 +170,14 @@ public class MainActivity extends Activity {
         }
     }
 
-    // ----------- Events handling -----------------------------------------------------------------
 
+    // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Enabled event) {
         showToast(R.string.enabled_gps_provider, getApplicationContext());
     }
+
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Disabled event) {
@@ -224,7 +224,6 @@ public class MainActivity extends Activity {
 
     // ----------- Utilities -----------------------------------------------------------------------
 
-
     private void startServices() {
         bindService(new Intent(this, InfoService.class), new ServiceConnection() {
 
@@ -242,25 +241,9 @@ public class MainActivity extends Activity {
         }, BIND_AUTO_CREATE);
     }
 
+
     private void stopServices() {
         stopService(new Intent(MainActivity.this, InfoService.class));
-    }
-
-    private void addFragments() {
-        Fragment speedFragment = new SpeedFragment();
-        Fragment averageSpeedFragment = new AverageSpeedFragment();
-        Fragment clockFragment = new ClockFragment();
-        Fragment elapsedTimeFragment = new ElapsedTimeFragment();
-        Fragment hrFragment = new HeartRateFragment(); // todo
-        Fragment distanceFragment = new DistanceFragment();
-
-        getFragmentManager().beginTransaction()
-                .add(R.id.mainArea, speedFragment)
-                .add(R.id.mainArea, averageSpeedFragment)
-                .add(R.id.mainArea, clockFragment)
-                .add(R.id.mainArea, elapsedTimeFragment)
-                .add(R.id.mainArea, distanceFragment)
-                .commit();
     }
 
     private void setupBacklightStrategy() {
@@ -289,6 +272,28 @@ public class MainActivity extends Activity {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(levelAndFlags, TAG);
         wakeLock.acquire();
+    }
+
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        private Map<Integer, Fragment> map;
+
+        public ScreenSlidePagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+
+            map = new HashMap<>();
+            map.put(0, new PrimaryFragment());
+            map.put(1, new SecondaryFragment());
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return map.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
     }
 
 }
