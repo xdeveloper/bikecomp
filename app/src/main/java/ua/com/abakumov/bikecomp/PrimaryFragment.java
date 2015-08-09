@@ -18,12 +18,8 @@ import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
 public class PrimaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_primary, container, false);
-    }
+        View inflate = inflater.inflate(R.layout.fragment_primary, container, false);
 
-    @Override
-    public void onStart() {
-        super.onStart();
 
         Fragment speedFragment = new SpeedFragment();
         Fragment averageSpeedFragment = new AverageSpeedFragment();
@@ -34,5 +30,17 @@ public class PrimaryFragment extends Fragment {
                 .add(R.id.primaryArea, averageSpeedFragment)
                 .add(R.id.primaryArea, distanceFragment)
                 .commit();
+
+        return inflate;
+    }
+
+    @Override
+    public void onCreate(Bundle bundle) {
+        super.onCreate(bundle);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 }

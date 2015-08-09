@@ -18,12 +18,7 @@ import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
 public class SecondaryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_secondary, container, false);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
+        View inflate = inflater.inflate(R.layout.fragment_secondary, container, false);
 
         Fragment clockFragment = new ClockFragment();
         Fragment elapsedTimeFragment = new ElapsedTimeFragment();
@@ -32,5 +27,12 @@ public class SecondaryFragment extends Fragment {
                 .add(R.id.secondaryArea, clockFragment)
                 .add(R.id.secondaryArea, elapsedTimeFragment)
                 .commit();
+
+        return inflate;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 }

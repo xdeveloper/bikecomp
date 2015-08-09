@@ -19,6 +19,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v4.app.FragmentManager;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -35,6 +37,7 @@ import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.util.FullscreenThemeDecider;
 import ua.com.abakumov.bikecomp.util.ThemeDecider;
+import ua.com.abakumov.bikecomp.util.UIUtils;
 import ua.com.abakumov.bikecomp.util.Utils;
 
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
@@ -92,6 +95,29 @@ public class MainActivity extends FragmentActivity {
         viewPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        setCurrentScreenText(R.string.primaryScreen);
+                        break;
+                    case 1:
+                        setCurrentScreenText(R.string.secondaryScreen);
+                        break;
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        setCurrentScreenText(R.string.primaryScreen);
         startServices();
     }
 
@@ -100,7 +126,7 @@ public class MainActivity extends FragmentActivity {
         super.onStart();
 
         EventBus.getDefault().register(this);
-        if (infoService != null) infoService.runQuietly(false);
+        if (infoService != null) infoService.runLoudly();
 
         setupBacklightStrategy();
     }
@@ -114,7 +140,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStop() {
         EventBus.getDefault().unregister(this);
-        infoService.runQuietly(true);
+        infoService.runQuietly();
 
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
@@ -294,6 +320,15 @@ public class MainActivity extends FragmentActivity {
         public int getCount() {
             return 2;
         }
+    }
+
+    private void setCurrentScreenText(int rid) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((TextView) findViewById(R.id.currentScreenText)).setText(rid);
+            }
+        });
     }
 
 }

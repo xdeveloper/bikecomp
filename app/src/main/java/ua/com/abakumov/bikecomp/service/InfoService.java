@@ -32,7 +32,7 @@ import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 
 /**
- * Listens location updates and publishes events
+ * Listens location updates and publishes different events
  * <p>
  * Created by Oleksandr Abakumov on 7/13/15.
  */
@@ -134,8 +134,18 @@ public class InfoService extends Service {
 
     // ----------- Custom methods ------------------------------------------------------------------
 
-    public void runQuietly(boolean runQuietly) {
-        this.runQuietly = runQuietly;
+    /**
+     * When 'quietly' then don't publish events to event bus
+     */
+    public void runQuietly() {
+        this.runQuietly = true;
+    }
+
+    /**
+     * When 'loudly' then publish events to event bus
+     */
+    public void runLoudly() {
+        this.runQuietly = false;
     }
 
     public float getDistance() {
@@ -149,6 +159,7 @@ public class InfoService extends Service {
     public Date getStartDate() {
         return startDate;
     }
+
 
     // ----------- Events handling -----------------------------------------------------------------
 

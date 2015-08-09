@@ -61,4 +61,6 @@
     <string name="theme_title">Тема</string>
     <string name="session_active">Заїзд триває</string>
     <string name="session_active_text">Заїзд ще триває</string>
+    <string name="primaryScreen">Головний екран</string>
+    <string name="secondaryScreen">Допоміжний екран</string>
 </resources>

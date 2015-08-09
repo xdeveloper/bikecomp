@@ -9,11 +9,19 @@
 
 
     <!-- Widgets are here -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:id="@+id/currentScreenText"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="40" />
 
 
     <!-- Container for buttons -->
@@ -35,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:layout="@layout/fragment_buttons"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"
+        android:layout_weight="4" />
 
 </LinearLayout>

@@ -24,6 +24,7 @@ import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.DBHelper;
 import ua.com.abakumov.bikecomp.util.ThemeDecider;
 import ua.com.abakumov.bikecomp.util.UIUtils;
+import ua.com.abakumov.bikecomp.util.Utils;
 import ua.com.abakumov.bikecomp.util.WithActionBarThemeDecider;
 
 import static ua.com.abakumov.bikecomp.util.UIUtils.setupTheme;
@@ -32,6 +33,7 @@ import static ua.com.abakumov.bikecomp.util.Utils.formatDistance;
 import static ua.com.abakumov.bikecomp.util.Utils.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
 import static ua.com.abakumov.bikecomp.util.Utils.formatTime;
+import static ua.com.abakumov.bikecomp.util.Utils.metersToKilometers;
 
 
 /**
@@ -54,7 +56,7 @@ public class HistoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-       // setupTheme(this, themeDecider);
+        // setupTheme(this, themeDecider);
 
         setContentView(R.layout.activity_history);
 
@@ -154,6 +156,7 @@ public class HistoryActivity extends AppCompatActivity {
             this.list.addAll(rowDataList);
         }
 
+        @Override
         public View getView(final int position, View convertView, ViewGroup parent) {
             // Build view
             LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -169,7 +172,7 @@ public class HistoryActivity extends AppCompatActivity {
             ((TextView) convertView.findViewById(R.id.ride_list_item_finishtime)).setText(formatTime(ride.getFinishDate()));
             ((TextView) convertView.findViewById(R.id.ride_list_item_elapsedtime)).setText(formatElapsedTime(ride.getElapsedTime()));
             ((TextView) convertView.findViewById(R.id.ride_list_item_averagespeed)).setText(formatSpeed(ride.getAverageSpeed()));
-            ((TextView) convertView.findViewById(R.id.ride_list_item_distance)).setText(formatDistance(ride.getDistance()));
+            ((TextView) convertView.findViewById(R.id.ride_list_item_distance)).setText(formatDistance(metersToKilometers(ride.getDistance())));
 
             return convertView;
         }

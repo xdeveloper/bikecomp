@@ -20,7 +20,7 @@ import static android.support.v7.appcompat.R.style.Base_V7_Theme_AppCompat_Light
 public class FullscreenThemeDecider implements ThemeDecider{
     @Override
     public int dailyTheme() {
-        return android.R.style.Theme_Material;
+        return android.R.style.Theme_Material_Light;
     }
 
     @Override
