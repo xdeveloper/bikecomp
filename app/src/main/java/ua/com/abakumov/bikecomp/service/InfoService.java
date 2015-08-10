@@ -56,7 +56,7 @@ public class InfoService extends Service {
 
     private Handler handler = new Handler();
 
-    private boolean paused;
+    private boolean paused = true;
 
     private ElapsedTimeFragmentTask timerTask;
 

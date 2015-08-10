@@ -84,6 +84,7 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
         this.distance = 0;
+        this.elapsedTime = 0;
 
         updateAverageSpeed();
     }
