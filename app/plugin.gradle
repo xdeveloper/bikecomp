@@ -1,0 +1,17 @@
+dependencies {
+    compile 'org.apache.commons:commons-email:1.4'
+}
+
+apply plugin: DevelopmentHelperPlugin
+
+import org.apache.commons.mail.*;
+
+class DevelopmentHelperPlugin implements Plugin<Project> {
+    void apply(Project project) {
+
+        project.task('sendemail', type: Exec, group: 'Developer Helpers', description: 'Send built apk to an email') << {
+            // TODO
+            // code must be here
+        }
+    }
+}
