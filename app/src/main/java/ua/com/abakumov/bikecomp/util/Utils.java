@@ -1,7 +1,6 @@
 package ua.com.abakumov.bikecomp.util;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -34,6 +33,7 @@ public final class Utils {
      * 20       ->  20.0
      *
      * @param speed speed
+     *
      * @return formatted string
      */
     public static String formatSpeed(double speed) {

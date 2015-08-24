@@ -1,6 +1,5 @@
 package ua.com.abakumov.bikecomp.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +8,11 @@ import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
-import ua.com.abakumov.bikecomp.util.Utils;
-import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
+import ua.com.abakumov.bikecomp.util.Utils;
 
 import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
 
@@ -115,7 +114,5 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
                 ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(formatSpeed(averageSpeed));
             }
         });
-
-
     }
 }

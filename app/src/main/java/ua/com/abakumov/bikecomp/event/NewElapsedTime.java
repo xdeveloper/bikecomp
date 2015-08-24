@@ -16,4 +16,11 @@ public class NewElapsedTime implements Event {
     public int getElapsedTime() {
         return elapsedTime;
     }
+
+    @Override
+    public String toString() {
+        return "NewElapsedTime{" +
+                "elapsedTime=" + elapsedTime +
+                '}';
+    }
 }

@@ -29,6 +29,7 @@ import ua.com.abakumov.bikecomp.event.gps.NewLocation;
 import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 
+import static android.location.LocationManager.GPS_PROVIDER;
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 
 /**
@@ -37,6 +38,8 @@ import static ua.com.abakumov.bikecomp.util.Constants.TAG;
  * Created by Oleksandr Abakumov on 7/13/15.
  */
 public class InfoService extends Service {
+
+    private static final float MINIMAL_DISTANCE_IN_METERS = 1;
 
     private boolean runQuietly;
 
@@ -116,12 +119,21 @@ public class InfoService extends Service {
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, SECOND, 1, locationListener);
+        Log.i(TAG, "InfoService on start");
+
+        locationManager.requestLocationUpdates(
+                GPS_PROVIDER,
+                SECOND,
+                MINIMAL_DISTANCE_IN_METERS,
+                locationListener);
+        
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
 
     public void onDestroy() {
+        Log.i(TAG, "InfoService is going to be destroyed");
+
         EventBus.getDefault().unregister(this);
         locationManager.removeUpdates(locationListener);
         super.onDestroy();
@@ -165,6 +177,8 @@ public class InfoService extends Service {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
+        Log.i(TAG, "Session start");
+
         elapsedTime = 0;
         distance = 0;
         startDate = new Date();
@@ -176,6 +190,8 @@ public class InfoService extends Service {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
+        Log.i(TAG, "Session stop");
+
         paused = true;
 
         handler.removeCallbacks(timerTask);
@@ -183,12 +199,18 @@ public class InfoService extends Service {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionPauseResume event) {
+        Log.i(TAG, "Session pause / resume");
+
         if (paused) {
             // Resume
+            Log.d(TAG, "(Paused). Is going to resume");
+
             paused = false;
             handler.removeCallbacks(timerTask);
             setupAndLaunchTimer();
         } else {
+            Log.d(TAG, "(Running). Is going to pause");
+
             paused = true;
             handler.removeCallbacks(timerTask);
         }
@@ -196,13 +218,22 @@ public class InfoService extends Service {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewLocation event) {
+        Log.d(TAG, "New location event received");
+
         if (paused) {
             // ignore
+            Log.d(TAG, "But ignored (paused)");
+
             return;
         }
 
-        // correct ?
-        distance += event.getMpsSpeed();
+        float mpsSpeed = event.getMpsSpeed();
+
+        Log.d(TAG, "Speed (mps) = " + mpsSpeed);
+
+        distance += mpsSpeed;
+
+        Log.d(TAG, "New distance calculated = " + distance);
 
         post(new NewDistance(distance));
     }
