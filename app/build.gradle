@@ -1,15 +1,19 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
-//apply from: 'plugin.gradle'
 
 android {
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+    // It would be nice to enable this ...
+    lintOptions {
+        abortOnError false
     }
 
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_7
+        targetCompatibility = JavaVersion.VERSION_1_7
+    }
+
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "ua.com.abakumov.bikecomp"
@@ -17,6 +21,7 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -28,40 +33,5 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile "com.android.support:appcompat-v7:22.2.0"
-}
-
-
-
-// ------------------------------------------- Plugin below ----------------------------------------
-dependencies {
-    compile 'org.apache.commons:commons-email:1.4'
-}
-
-apply plugin: DevelopmentHelperPlugin
-
-import org.apache.commons.mail.*;
-
-class DevelopmentHelperPlugin implements Plugin<Project> {
-    void apply(Project project) {
-
-        project.task('sendemail', group: 'Developer Helpers', description: 'Send built apk to an email') << {
-
-            MultiPartEmail email = new MultiPartEmail();
-
-            email.addTo("alexander.abakumov@gmail.com", "Alexander Abakumov");
-            email.setFrom("alexander.abakumov@gmail.com", "Alexander Abakumov");
-            email.setSubject("Bikecomp application from " + new Date());
-            email.setMsg("Install application on your Android device");
-            email.attach(new File("/Users/air/Projects/bikecomp/app/build/outputs/apk/bikecomp-alpha-1-debug.apk"))
-
-            email.setHostName("smtp.gmail.com");
-
-            email.setSmtpPort(587);
-            email.setTLS(true);
-            email.send();
-        }
-
-
-    }
+    compile "com.android.support:appcompat-v7:23.1.0"
 }

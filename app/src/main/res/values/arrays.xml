@@ -13,13 +13,13 @@
 
 
     <!-- Locale independent values-->
-    <string-array name="display_backlight_values">
+    <string-array name="display_backlight_values" translatable="false">
         <item>ALWAYS_ON_MAXIMUM</item>
         <item>ALWAYS_ON_NORMAL</item>
         <item>SYSTEM_SETTING</item>
     </string-array>
 
-    <string-array name="display_theme_values">
+    <string-array name="display_theme_values" translatable="false">
         <item>Day</item>
         <item>Night</item>
     </string-array>
