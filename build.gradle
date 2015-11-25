@@ -4,10 +4,16 @@ buildscript {
     repositories {
         jcenter()
         mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/" // at least for retrolambda
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:1.3.0'
-        classpath 'me.tatarka:gradle-retrolambda:3.2.0'
+
+        // Adds some lambdas to my code
+        classpath 'me.tatarka:gradle-retrolambda:3.2.4'
+
         classpath 'org.apache.commons:commons-email:1.4'
     }
 }

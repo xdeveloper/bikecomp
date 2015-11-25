@@ -320,12 +320,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void setCurrentScreenText(int rid) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((TextView) findViewById(R.id.currentScreenText)).setText(rid);
-            }
-        });
+        runOnUiThread(() -> ((TextView) findViewById(R.id.currentScreenText)).setText(rid));
     }
 
 }
