@@ -4,6 +4,7 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     // It would be nice to enable this ...
     lintOptions {
+        quiet true // Do not report about problems
         abortOnError false
     }
 
