@@ -88,7 +88,7 @@ public class SpeedFragment extends  android.support.v4.app.Fragment {
     @SuppressWarnings(value = "unused")
     public void onEvent(NewLocation event) {
         speed = event.getKmphSpeed();
-        Log.v(Constants.TAG, "Location received:" + valueOf(speed));
+        Log.v(Constants.TAG, "[ Speed Fragment ] Location has been received, speed is " + valueOf(speed));
         updateUI();
     }
 
