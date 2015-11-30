@@ -1,6 +1,7 @@
 package ua.com.abakumov.bikecomp.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,10 @@ import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
+import ua.com.abakumov.bikecomp.util.Constants;
 import ua.com.abakumov.bikecomp.util.Utils;
 
+import static java.lang.String.valueOf;
 import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
 
 /**
@@ -70,12 +73,16 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
     public void onEvent(NewElapsedTime event) {
         this.elapsedTime = event.getElapsedTime();
 
+        Log.v(Constants.TAG, "[ Av. Speed Fragment ] New elapsed time has been received, elapsed time (seconds) is " + valueOf(this.elapsedTime));
+
         updateAverageSpeed();
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewDistance event) {
         this.distance = event.getDistanceInMeters();
+
+        Log.v(Constants.TAG, "[ Av. Speed Fragment ] New distance has been received, distance (meters) is " + valueOf(this.distance));
 
         updateAverageSpeed();
     }
