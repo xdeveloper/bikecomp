@@ -1,6 +1,5 @@
 package ua.com.abakumov.bikecomp.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,9 @@ import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.util.Utils;
-import ua.com.abakumov.bikecomp.event.NewElapsedTime;
 
 /*
  * Created by oabakumov on 26.06.2015.
@@ -20,7 +19,7 @@ public class ElapsedTimeFragment extends android.support.v4.app.Fragment {
 
     private EventBus eventBus;
 
-    private int elapsedTime;
+    private long elapsedTime;
 
     // ----------- System --------------------------------------------------------------------------
 
@@ -46,8 +45,8 @@ public class ElapsedTimeFragment extends android.support.v4.app.Fragment {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(NewElapsedTime event) {
-        elapsedTime = event.getElapsedTime();
+    public void onEvent(NewElapsedSecounds event) {
+        elapsedTime = event.getElapsedSecounds();
 
         updateUi();
     }

@@ -44,7 +44,7 @@ public final class Utils {
         return DISTANCE_FORMAT.format(distance);
     }
 
-    public static String formatElapsedTime(int seconds) {
+    public static String formatElapsedTime(long seconds) {
         if (seconds < 60) {
             return lessThanMinute(seconds);
         }

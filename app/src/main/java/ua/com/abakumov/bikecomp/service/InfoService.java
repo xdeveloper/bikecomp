@@ -17,7 +17,7 @@ import java.util.Date;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.event.Event;
-import ua.com.abakumov.bikecomp.event.NewElapsedTime;
+import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
@@ -48,9 +48,9 @@ public class InfoService extends Service {
     private Date startDate;
 
     /**
-     * Elapsed time in seconds
+     * Elapsed time ticks
      */
-    private int elapsedTime;
+    private int elapsedTimeTicks;
 
     /**
      * Distance in meters
@@ -67,6 +67,8 @@ public class InfoService extends Service {
 
     private LocationListener locationListener;
 
+    private LatestSpeedHolder latestSpeedHolder;
+
 
     // ----------- System --------------------------------------------------------------------------
 
@@ -76,7 +78,6 @@ public class InfoService extends Service {
 
         EventBus.getDefault().register(this);
 
-        timerTask = new ElapsedTimeFragmentTask();
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
 
@@ -116,6 +117,8 @@ public class InfoService extends Service {
                 post(new Disabled());
             }
         };
+
+        latestSpeedHolder = new LatestSpeedHolder();
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -126,7 +129,7 @@ public class InfoService extends Service {
                 SECOND,
                 MINIMAL_DISTANCE_IN_METERS,
                 locationListener);
-        
+
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
@@ -164,8 +167,8 @@ public class InfoService extends Service {
         return distance;
     }
 
-    public int getElapsedTime() {
-        return elapsedTime;
+    public int getElapsedTimeTicks() {
+        return elapsedTimeTicks;
     }
 
     public Date getStartDate() {
@@ -179,11 +182,13 @@ public class InfoService extends Service {
     public void onEvent(SessionStart event) {
         Log.i(TAG, "Session start");
 
-        elapsedTime = 0;
+        elapsedTimeTicks = 0;
         distance = 0;
         startDate = new Date();
 
         paused = false;
+
+        latestSpeedHolder.updateMpsSpeed(0);
 
         setupAndLaunchTimer();
     }
@@ -220,14 +225,14 @@ public class InfoService extends Service {
     public void onEvent(NewLocation event) {
         Log.d(TAG, "New location event received");
 
-        if (paused) {
-            // ignore
-            Log.d(TAG, "But ignored (paused)");
+        latestSpeedHolder.updateMpsSpeed(event.getMpsSpeed());
+    }
 
-            return;
-        }
+    @SuppressWarnings(value = "unused")
+    public void onEvent(NewElapsedSecounds newElapsedSecounds) {
+        Log.d(TAG, "New location event received");
 
-        float mpsSpeed = event.getMpsSpeed();
+        float mpsSpeed = latestSpeedHolder.askForMpsSpeed();
 
         Log.d(TAG, "Speed (mps) = " + mpsSpeed);
 
@@ -243,14 +248,23 @@ public class InfoService extends Service {
 
 
     private void setupAndLaunchTimer() {
+        timerTask = new ElapsedTimeFragmentTask(SECOND);
         handler.postDelayed(timerTask, SECOND);
     }
 
     private class ElapsedTimeFragmentTask implements Runnable {
+        private final long stepInSecounds;
+
+        public ElapsedTimeFragmentTask(long stepInSecounds) {
+            this.stepInSecounds = stepInSecounds;
+        }
+
         @Override
         public void run() {
-            elapsedTime++;
-            post(new NewElapsedTime(elapsedTime));
+            elapsedTimeTicks++;
+
+            post(new NewElapsedSecounds(elapsedTimeTicks * stepInSecounds));
+
             handler.postDelayed(timerTask, SECOND);
         }
     }

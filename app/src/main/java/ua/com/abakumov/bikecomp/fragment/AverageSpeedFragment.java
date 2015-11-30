@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.event.NewElapsedTime;
+import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
@@ -28,7 +28,7 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
 
     private EventBus eventBus;
 
-    private int elapsedTime;
+    private long elapsedTime;
 
     private float distance;
 
@@ -70,8 +70,8 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(NewElapsedTime event) {
-        this.elapsedTime = event.getElapsedTime();
+    public void onEvent(NewElapsedSecounds event) {
+        this.elapsedTime = event.getElapsedSecounds();
 
         Log.v(Constants.TAG, "[ Av. Speed Fragment ] New elapsed time has been received, elapsed time (seconds) is " + valueOf(this.elapsedTime));
 
@@ -104,22 +104,21 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
     }
 
     private void reCalculateAverageSpeed() {
+        Log.v(Constants.TAG, "[ Av. Speed Fragment ] Recalculate average speed ...");
+        Log.v(Constants.TAG, "[ Av. Speed Fragment ] Distance: " + distance + ", elapsed time: " + elapsedTime);
+
         // No elapsed time yet (prevent ArithmeticException exception "division by zero")
         if (this.elapsedTime == 0) {
             this.averageSpeed = 0;
-
-            return;
+        } else {
+            this.averageSpeed = Utils.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
         }
-
-        this.averageSpeed = Utils.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
     }
 
     private void updateUi() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(formatSpeed(averageSpeed));
-            }
+        getActivity().runOnUiThread(() -> {
+            Log.v(Constants.TAG, "[ Av. Speed Fragment ] Average speed is " + valueOf(this.averageSpeed));
+            ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(formatSpeed(this.averageSpeed));
         });
     }
 }

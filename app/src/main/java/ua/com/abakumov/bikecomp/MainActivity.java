@@ -234,14 +234,14 @@ public class MainActivity extends FragmentActivity {
 
         Date startDate = infoService.getStartDate();
         float distance = infoService.getDistance();
-        float elapsedTime = infoService.getElapsedTime();
+        float elapsedTime = infoService.getElapsedTimeTicks();
         double averageSpeed = Utils.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
         int averagePace = (int) (distance / elapsedTime);
 
         // Go to report screen
         goReportScreen(
                 this,
-                new Ride("New ride", startDate, new Date(), infoService.getElapsedTime(), averageSpeed,
+                new Ride("New ride", startDate, new Date(), infoService.getElapsedTimeTicks(), averageSpeed,
                         averagePace, infoService.getDistance()));
     }
 
