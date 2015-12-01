@@ -43,7 +43,9 @@ public class InfoService extends Service {
 
     private boolean runQuietly;
 
-    private static final long SECOND = 1000;
+    private static final long MS_IN_SECOND = 1000;
+
+    private static final long SECOND = 1;
 
     private Date startDate;
 
@@ -126,7 +128,7 @@ public class InfoService extends Service {
 
         locationManager.requestLocationUpdates(
                 GPS_PROVIDER,
-                SECOND,
+                MS_IN_SECOND,
                 MINIMAL_DISTANCE_IN_METERS,
                 locationListener);
 
@@ -249,7 +251,7 @@ public class InfoService extends Service {
 
     private void setupAndLaunchTimer() {
         timerTask = new ElapsedTimeFragmentTask(SECOND);
-        handler.postDelayed(timerTask, SECOND);
+        handler.postDelayed(timerTask, MS_IN_SECOND);
     }
 
     private class ElapsedTimeFragmentTask implements Runnable {
@@ -265,7 +267,7 @@ public class InfoService extends Service {
 
             post(new NewElapsedSecounds(elapsedTimeTicks * stepInSecounds));
 
-            handler.postDelayed(timerTask, SECOND);
+            handler.postDelayed(timerTask, MS_IN_SECOND);
         }
     }
 
