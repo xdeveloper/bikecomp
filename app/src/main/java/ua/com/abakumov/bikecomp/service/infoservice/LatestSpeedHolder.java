@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp.service;
+package ua.com.abakumov.bikecomp.service.infoservice;
 
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -10,7 +10,7 @@ import static ua.com.abakumov.bikecomp.util.Constants.TAG;
  * <p>
  * Created by Oleksandr_Abakumov on 11/30/2015.
  */
-public class LatestSpeedHolder {
+class LatestSpeedHolder {
     private float mpsSpeed;
 
     public void updateMpsSpeed(float mpsSpeed) {

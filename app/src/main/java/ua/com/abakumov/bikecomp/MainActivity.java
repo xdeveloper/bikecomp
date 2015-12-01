@@ -33,7 +33,7 @@ import ua.com.abakumov.bikecomp.event.SessionStopRequest;
 import ua.com.abakumov.bikecomp.event.gps.Disabled;
 import ua.com.abakumov.bikecomp.event.gps.Enabled;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
-import ua.com.abakumov.bikecomp.service.InfoService;
+import ua.com.abakumov.bikecomp.service.infoservice.InfoService;
 import ua.com.abakumov.bikecomp.util.FullscreenThemeDecider;
 import ua.com.abakumov.bikecomp.util.ThemeDecider;
 import ua.com.abakumov.bikecomp.util.Utils;
@@ -150,6 +150,8 @@ public class MainActivity extends FragmentActivity {
     protected void onDestroy() {
         super.onDestroy();
         stopServices();
+
+        hideNotification(this);
     }
 
     @Override

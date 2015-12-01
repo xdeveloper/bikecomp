@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp.service;
+package ua.com.abakumov.bikecomp.service.infoservice;
 
 import android.app.Service;
 import android.content.Context;
@@ -63,7 +63,7 @@ public class InfoService extends Service {
 
     private boolean paused = true;
 
-    private ElapsedTimeFragmentTask timerTask;
+    private Runnable timerTask;
 
     private LocationManager locationManager;
 
@@ -137,10 +137,11 @@ public class InfoService extends Service {
     }
 
     public void onDestroy() {
-        Log.i(TAG, "InfoService is going to be destroyed");
+        Log.i(TAG, "[InfoService] Destroying ...");
 
         EventBus.getDefault().unregister(this);
         locationManager.removeUpdates(locationListener);
+
         super.onDestroy();
     }
 
@@ -250,25 +251,17 @@ public class InfoService extends Service {
 
 
     private void setupAndLaunchTimer() {
-        timerTask = new ElapsedTimeFragmentTask(SECOND);
+        timerTask = new Runnable() {
+            private final long stepInSecounds = SECOND;
+
+            @Override
+            public void run() {
+                elapsedTimeTicks++;
+                post(new NewElapsedSecounds(elapsedTimeTicks * stepInSecounds));
+                handler.postDelayed(timerTask, MS_IN_SECOND);
+            }
+        };
         handler.postDelayed(timerTask, MS_IN_SECOND);
-    }
-
-    private class ElapsedTimeFragmentTask implements Runnable {
-        private final long stepInSecounds;
-
-        public ElapsedTimeFragmentTask(long stepInSecounds) {
-            this.stepInSecounds = stepInSecounds;
-        }
-
-        @Override
-        public void run() {
-            elapsedTimeTicks++;
-
-            post(new NewElapsedSecounds(elapsedTimeTicks * stepInSecounds));
-
-            handler.postDelayed(timerTask, MS_IN_SECOND);
-        }
     }
 
     public class LocalBinder extends Binder {
@@ -281,5 +274,9 @@ public class InfoService extends Service {
         if (!runQuietly) {
             EventBus.getDefault().post(event);
         }
+    }
+
+    private static void forcePost(Event event) {
+        EventBus.getDefault().post(event);
     }
 }

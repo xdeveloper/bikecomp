@@ -65,28 +65,19 @@ public class ButtonsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_buttons, container, false);
 
-        view.findViewById(buttonStart).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mediaPlayerStart.start();
-                EventBus.getDefault().post(new SessionStart());
-            }
+        view.findViewById(buttonStart).setOnClickListener(view1 -> {
+            mediaPlayerStart.start();
+            EventBus.getDefault().post(new SessionStart());
         });
 
-        view.findViewById(buttonStop).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mediaPlayerStop.start();
-                EventBus.getDefault().post(new SessionStopRequest());
-            }
+        view.findViewById(buttonStop).setOnClickListener(view1 -> {
+            mediaPlayerStop.start();
+            EventBus.getDefault().post(new SessionStopRequest());
         });
 
-        view.findViewById(buttonPause).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mediaPlayerPause.start();
-                EventBus.getDefault().post(new SessionPauseResume());
-            }
+        view.findViewById(buttonPause).setOnClickListener(view1 -> {
+            mediaPlayerPause.start();
+            EventBus.getDefault().post(new SessionPauseResume());
         });
 
         return view;

@@ -18,7 +18,6 @@ import ua.com.abakumov.bikecomp.event.SessionStop;
  */
 public class SessionStopFragment extends DialogFragment {
 
-
     // ----------- System --------------------------------------------------------------------------
 
     @Override
