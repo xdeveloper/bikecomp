@@ -190,7 +190,7 @@ public class InfoService extends Service {
 
         paused = false;
 
-        latestSpeedHolder.updateMpsSpeed(0);
+        latestSpeedHolder.resetSpeed();
 
         setupAndLaunchTimer();
     }

@@ -31,4 +31,8 @@ public class LatestSpeedHolder {
     public float askForMpsSpeed() {
         return mpsSpeed;
     }
+
+    public void resetSpeed() {
+        this.mpsSpeed = 0;
+    }
 }

@@ -108,12 +108,7 @@ public class SpeedFragment extends  android.support.v4.app.Fragment {
     }
 
     private void updateUI() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(speed));
-            }
-        });
+        getActivity().runOnUiThread(() -> ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(speed)));
     }
 
 }
