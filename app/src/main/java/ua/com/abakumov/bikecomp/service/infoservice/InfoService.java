@@ -16,7 +16,7 @@ import android.util.Log;
 import java.util.Date;
 
 import de.greenrobot.event.EventBus;
-import ua.com.abakumov.bikecomp.event.Event;
+import de.greenrobot.event.NoSubscriberEvent;
 import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionStart;
@@ -40,8 +40,6 @@ import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 public class InfoService extends Service {
 
     private static final float MINIMAL_DISTANCE_IN_METERS = 1;
-
-    private boolean runQuietly;
 
     private static final long MS_IN_SECOND = 1000;
 
@@ -71,6 +69,11 @@ public class InfoService extends Service {
 
     private LatestSpeedHolder latestSpeedHolder;
 
+    public class LocalBinder extends Binder {
+        public InfoService getService() {
+            return InfoService.this;
+        }
+    }
 
     // ----------- System --------------------------------------------------------------------------
 
@@ -81,26 +84,27 @@ public class InfoService extends Service {
         EventBus.getDefault().register(this);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
         locationListener = new LocationListener() {
 
             @Override
             public void onLocationChanged(Location location) {
-                post(new NewLocation(location.getSpeed()));
+                EventBus.getDefault().post(new NewLocation(location.getSpeed()));
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
                 switch (status) {
                     case LocationProvider.AVAILABLE:
-                        post(new Available());
+                        EventBus.getDefault().post(new Available());
                         break;
 
                     case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                        post(new TemporaryUnavailable());
+                        EventBus.getDefault().post(new TemporaryUnavailable());
                         break;
 
                     case LocationProvider.OUT_OF_SERVICE:
-                        post(new OutOfService());
+                        EventBus.getDefault().post(new OutOfService());
                         break;
 
                     default:
@@ -111,12 +115,12 @@ public class InfoService extends Service {
 
             @Override
             public void onProviderEnabled(String provider) {
-                post(new Enabled());
+                EventBus.getDefault().post(new Enabled());
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                post(new Disabled());
+                EventBus.getDefault().post(new Disabled());
             }
         };
 
@@ -124,7 +128,7 @@ public class InfoService extends Service {
     }
 
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "InfoService on start");
+        Log.i(TAG, "[InfoService] On start");
 
         locationManager.requestLocationUpdates(
                 GPS_PROVIDER,
@@ -151,20 +155,6 @@ public class InfoService extends Service {
 
 
     // ----------- Custom methods ------------------------------------------------------------------
-
-    /**
-     * When 'quietly' then don't publish events to event bus
-     */
-    public void runQuietly() {
-        this.runQuietly = true;
-    }
-
-    /**
-     * When 'loudly' then publish events to event bus
-     */
-    public void runLoudly() {
-        this.runQuietly = false;
-    }
 
     public float getDistance() {
         return distance;
@@ -243,12 +233,16 @@ public class InfoService extends Service {
 
         Log.d(TAG, "New distance calculated = " + distance);
 
-        post(new NewDistance(distance));
+        EventBus.getDefault().post(new NewDistance(distance));
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(NoSubscriberEvent event) {
+        // Ignore
     }
 
 
     // ----------- Utilities -----------------------------------------------------------------------
-
 
     private void setupAndLaunchTimer() {
         timerTask = new Runnable() {
@@ -257,26 +251,10 @@ public class InfoService extends Service {
             @Override
             public void run() {
                 elapsedTimeTicks++;
-                post(new NewElapsedSecounds(elapsedTimeTicks * stepInSecounds));
+                EventBus.getDefault().post(new NewElapsedSecounds(elapsedTimeTicks * stepInSecounds));
                 handler.postDelayed(timerTask, MS_IN_SECOND);
             }
         };
         handler.postDelayed(timerTask, MS_IN_SECOND);
-    }
-
-    public class LocalBinder extends Binder {
-        public InfoService getService() {
-            return InfoService.this;
-        }
-    }
-
-    private void post(Event event) {
-        if (!runQuietly) {
-            EventBus.getDefault().post(event);
-        }
-    }
-
-    private static void forcePost(Event event) {
-        EventBus.getDefault().post(event);
     }
 }

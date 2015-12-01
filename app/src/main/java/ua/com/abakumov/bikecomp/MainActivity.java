@@ -123,7 +123,6 @@ public class MainActivity extends FragmentActivity {
         super.onStart();
 
         EventBus.getDefault().register(this);
-        if (infoService != null) infoService.runLoudly();
 
         setupBacklightStrategy();
     }
@@ -137,7 +136,6 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onStop() {
         EventBus.getDefault().unregister(this);
-        infoService.runQuietly();
 
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
@@ -272,14 +270,15 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void setupBacklightStrategy() {
-        String val = PreferenceManager.getDefaultSharedPreferences(this).getString("displaySettingsBacklightStrategyKey", "ALWAYS_ON_NORMAL");
+        String val = PreferenceManager.getDefaultSharedPreferences(this).
+                getString("displaySettingsBacklightStrategyKey", "ALWAYS_ON_NORMAL");
 
         switch (val) {
             case "ALWAYS_ON_MAXIMUM":
-                acquireWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK);
+                acquireWakeLock(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 break;
             case "ALWAYS_ON_NORMAL":
-                acquireWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK);
+                acquireWakeLock(PowerManager.PARTIAL_WAKE_LOCK);
                 break;
             case "SYSTEM_SETTING":
                 // Release lock if it was acquired earlier
