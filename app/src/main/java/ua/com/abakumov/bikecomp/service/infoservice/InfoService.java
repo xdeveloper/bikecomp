@@ -222,6 +222,27 @@ public class InfoService extends Service {
     }
 
     @SuppressWarnings(value = "unused")
+    public void onEvent(Disabled event) {
+        Log.d(TAG, "Disabled provider");
+
+        latestSpeedHolder.resetSpeed();
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(TemporaryUnavailable event) {
+        Log.d(TAG, "TemporaryUnavailable provider");
+
+        latestSpeedHolder.resetSpeed();
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(OutOfService event) {
+        Log.d(TAG, "OutOfService provider");
+
+        latestSpeedHolder.resetSpeed();
+    }
+
+    @SuppressWarnings(value = "unused")
     public void onEvent(NewElapsedSecounds newElapsedSecounds) {
         Log.d(TAG, "New location event received");
 

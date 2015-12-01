@@ -27,7 +27,7 @@ import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
  * <p>
  * Created by oabakumov on 26.06.2015.
  */
-public class SpeedFragment extends  android.support.v4.app.Fragment {
+public class SpeedFragment extends android.support.v4.app.Fragment {
 
     private EventBus eventBus;
 
@@ -95,6 +95,12 @@ public class SpeedFragment extends  android.support.v4.app.Fragment {
 
     // ----------- Utilities -----------------------------------------------------------------------
     private void gpsEnabled(boolean enabled) {
+        if (!enabled) {
+            speed = 0;
+            updateUI();
+        }
+
+
         /*ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
         satellite.setImageResource(R.drawable.gps_satellite);
         satellite.setImageAlpha(enabled ? 100 : 60);*/
