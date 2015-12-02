@@ -1,6 +1,11 @@
 package ua.com.abakumov.bikecomp.util;
 
-import android.content.Context;
+import android.app.Activity;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -8,6 +13,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import ua.com.abakumov.bikecomp.R;
 
 /**
  * Useful utilities
@@ -87,18 +94,35 @@ public final class Utils {
         return 3.6 * speed;
     }
 
-    public static void showToast(int resId, Context context) {
-        Toast toast = Toast.makeText(context, resId, Toast.LENGTH_LONG);
-        toast.show();
+    private interface Callback {
+        void callback(View view);
     }
 
-    public static void showToast(String text, Context context) {
-        Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
-        toast.show();
+    public static void showToast(int rid, Activity activity) {
+        showToast(activity, (View v) -> {
+            ((TextView) v.findViewById(R.id.new_toast_layout_text)).setText(rid);
+        });
     }
 
-    public static void showShortToast(int resId, Context context) {
-        Toast toast = Toast.makeText(context, resId, Toast.LENGTH_SHORT);
+    public static void showToast(Activity activity, String text) {
+        showToast(activity, (View v) -> {
+            ((TextView) v.findViewById(R.id.new_toast_layout_text)).setText(text);
+        });
+    }
+
+    private static void showToast(Activity activity, Callback callback) {
+        LayoutInflater inflater = activity.getLayoutInflater();
+
+        View layout = inflater.inflate(
+                R.layout.new_toast_layout,
+                (ViewGroup) activity.findViewById(R.id.new_toast_layout_id));
+
+        callback.callback(layout);
+
+        Toast toast = new Toast(activity.getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
         toast.show();
     }
 
