@@ -31,7 +31,6 @@ import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 
 import static android.location.LocationManager.GPS_PROVIDER;
-import static android.util.Log.d;
 import static android.util.Log.v;
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 
