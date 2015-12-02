@@ -24,12 +24,15 @@ import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.Available;
 import ua.com.abakumov.bikecomp.event.gps.Disabled;
 import ua.com.abakumov.bikecomp.event.gps.Enabled;
+import ua.com.abakumov.bikecomp.event.gps.GpsTrouble;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 import ua.com.abakumov.bikecomp.event.gps.NewLocation;
 import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 
 import static android.location.LocationManager.GPS_PROVIDER;
+import static android.util.Log.d;
+import static android.util.Log.v;
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 
 /**
@@ -201,13 +204,13 @@ public class InfoService extends Service {
 
         if (paused) {
             // Resume
-            Log.d(TAG, "(Paused). Is going to resume");
+            v(TAG, "(Paused). Is going to resume");
 
             paused = false;
             handler.removeCallbacks(timerTask);
             setupAndLaunchTimer();
         } else {
-            Log.d(TAG, "(Running). Is going to pause");
+            v(TAG, "(Running). Is going to pause");
 
             paused = true;
             handler.removeCallbacks(timerTask);
@@ -216,43 +219,29 @@ public class InfoService extends Service {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewLocation event) {
-        Log.d(TAG, "New location event received");
+        v(TAG, "New location event received");
 
         latestSpeedHolder.updateMpsSpeed(event.getMpsSpeed());
     }
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(Disabled event) {
-        Log.d(TAG, "Disabled provider");
-
-        latestSpeedHolder.resetSpeed();
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(TemporaryUnavailable event) {
-        Log.d(TAG, "TemporaryUnavailable provider");
-
-        latestSpeedHolder.resetSpeed();
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(OutOfService event) {
-        Log.d(TAG, "OutOfService provider");
+    public void onEvent(GpsTrouble event) {
+        v(TAG, "GPS trouble");
 
         latestSpeedHolder.resetSpeed();
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewElapsedSecounds newElapsedSecounds) {
-        Log.d(TAG, "New location event received");
+        v(TAG, "New location event received");
 
         float mpsSpeed = latestSpeedHolder.askForMpsSpeed();
 
-        Log.d(TAG, "Speed (mps) = " + mpsSpeed);
+        v(TAG, "Speed (mps) = " + mpsSpeed);
 
         distance += mpsSpeed;
 
-        Log.d(TAG, "New distance calculated = " + distance);
+        v(TAG, "New distance calculated = " + distance);
 
         EventBus.getDefault().post(new NewDistance(distance));
     }

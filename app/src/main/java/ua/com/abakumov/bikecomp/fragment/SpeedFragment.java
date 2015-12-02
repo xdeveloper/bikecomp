@@ -1,24 +1,19 @@
 package ua.com.abakumov.bikecomp.fragment;
 
-import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import de.greenrobot.event.EventBus;
-import ua.com.abakumov.bikecomp.util.Constants;
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.event.gps.Available;
-import ua.com.abakumov.bikecomp.event.gps.Disabled;
-import ua.com.abakumov.bikecomp.event.gps.Enabled;
-import ua.com.abakumov.bikecomp.event.gps.OutOfService;
+import ua.com.abakumov.bikecomp.event.gps.GpsTrouble;
 import ua.com.abakumov.bikecomp.event.gps.NewLocation;
-import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 
+import static android.util.Log.v;
 import static java.lang.String.valueOf;
+import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
 
 
@@ -48,7 +43,7 @@ public class SpeedFragment extends android.support.v4.app.Fragment {
         eventBus = EventBus.getDefault();
         eventBus.register(this);
 
-        updateUI();
+        updateUISpeedCanBeShown();
     }
 
     @Override
@@ -61,45 +56,26 @@ public class SpeedFragment extends android.support.v4.app.Fragment {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
-    public void onEvent(Enabled event) {
-        gpsEnabled(true);
-    }
+    public void onEvent(GpsTrouble event) {
+        speed = 0;
 
-    @SuppressWarnings(value = "unused")
-    public void onEvent(Disabled event) {
-        gpsEnabled(false);
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(Available event) {
-        gpsAvailable(true);
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(TemporaryUnavailable event) {
-        gpsAvailable(false);
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(OutOfService event) {
-        gpsAvailable(false);
+        updateUISpeedCanBeShown();
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewLocation event) {
         speed = event.getKmphSpeed();
-        Log.v(Constants.TAG, "[ Speed Fragment ] Location has been received, speed is " + valueOf(speed));
+        v(TAG, "[ Speed Fragment ] Location has been received, speed is " + valueOf(speed));
         updateUI();
     }
 
 
     // ----------- Utilities -----------------------------------------------------------------------
     private void gpsEnabled(boolean enabled) {
-        if (!enabled) {
+       /* if (!enabled) {
             speed = 0;
             updateUI();
-        }
-
+        }*/
 
         /*ImageView satellite = (ImageView) getActivity().findViewById(R.id.gpsSateliteImageView);
         satellite.setImageResource(R.drawable.gps_satellite);
@@ -114,7 +90,15 @@ public class SpeedFragment extends android.support.v4.app.Fragment {
     }
 
     private void updateUI() {
-        getActivity().runOnUiThread(() -> ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(speed)));
+        getActivity().runOnUiThread(() ->
+                ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(speed)));
+    }
+
+    private void updateUISpeedCanBeShown() {
+        v(TAG, "[ Speed Fragment ] No speed");
+
+        getActivity().runOnUiThread(() ->
+                ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(" ... "));
     }
 
 }

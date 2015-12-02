@@ -1,7 +1,6 @@
 package ua.com.abakumov.bikecomp.fragment;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +12,11 @@ import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
-import ua.com.abakumov.bikecomp.util.Constants;
 import ua.com.abakumov.bikecomp.util.Utils;
 
+import static android.util.Log.v;
 import static java.lang.String.valueOf;
+import static ua.com.abakumov.bikecomp.util.Constants.TAG;
 import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
 
 /**
@@ -24,7 +24,7 @@ import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
  * <p>
  * Created by oabakumov on 26.06.2015.
  */
-public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
+public class AverageSpeedFragment extends android.support.v4.app.Fragment {
 
     private EventBus eventBus;
 
@@ -73,7 +73,8 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
     public void onEvent(NewElapsedSecounds event) {
         this.elapsedTime = event.getElapsedSecounds();
 
-        Log.v(Constants.TAG, "[ Av. Speed Fragment ] New elapsed time has been received, elapsed time (seconds) is " + valueOf(this.elapsedTime));
+        v(TAG, "[ Av. Speed Fragment ] New elapsed time has been received, elapsed time (seconds) is " +
+                valueOf(this.elapsedTime));
 
         updateAverageSpeed();
     }
@@ -82,7 +83,8 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
     public void onEvent(NewDistance event) {
         this.distance = event.getDistanceInMeters();
 
-        Log.v(Constants.TAG, "[ Av. Speed Fragment ] New distance has been received, distance (meters) is " + valueOf(this.distance));
+        v(TAG, "[ Av. Speed Fragment ] New distance has been received, distance (meters) is " +
+                valueOf(this.distance));
 
         updateAverageSpeed();
     }
@@ -104,8 +106,8 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
     }
 
     private void reCalculateAverageSpeed() {
-        Log.v(Constants.TAG, "[ Av. Speed Fragment ] Recalculate average speed ...");
-        Log.v(Constants.TAG, "[ Av. Speed Fragment ] Distance: " + distance + ", elapsed time: " + elapsedTime);
+        v(TAG, "[ Av. Speed Fragment ] Recalculate average speed ...");
+        v(TAG, "[ Av. Speed Fragment ] Distance: " + distance + ", elapsed time: " + elapsedTime);
 
         // No elapsed time yet (prevent ArithmeticException exception "division by zero")
         if (this.elapsedTime == 0) {
@@ -113,11 +115,12 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment  {
         } else {
             this.averageSpeed = Utils.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
         }
+
+        v(TAG, "[ Av. Speed Fragment ] Average speed is " + valueOf(this.averageSpeed));
     }
 
     private void updateUi() {
         getActivity().runOnUiThread(() -> {
-            Log.v(Constants.TAG, "[ Av. Speed Fragment ] Average speed is " + valueOf(this.averageSpeed));
             ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(formatSpeed(this.averageSpeed));
         });
     }
