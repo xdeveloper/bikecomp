@@ -60,7 +60,7 @@
     <string name="theme_summary">Select Theme</string>
     <string name="theme_title">Theme</string>
     <string name="session_active">Ride is on the run</string>
-    <string name="session_active_text">Ride is still running</string>
+    <string name="session_active_text">Tap to see the details.</string>
     <string name="primaryScreen">Primary screen</string>
     <string name="secondaryScreen">Secondary screen</string>
 </resources>

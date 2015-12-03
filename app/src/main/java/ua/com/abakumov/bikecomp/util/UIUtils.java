@@ -74,33 +74,48 @@ public class UIUtils {
         context.startActivity(intent);
     }
 
+    /**
+     * Go to Report screen (screen after ride is completed)
+     *
+     * @param context context
+     * @param ride    ride object
+     */
     public static void goReportScreen(Context context, Ride ride) {
         Intent intent = new Intent(context, ReportActivity.class);
         intent.putExtra(Ride.class.getCanonicalName(), ride);
         context.startActivity(intent);
     }
 
+    /**
+     * Show notification
+     *
+     * @param context context
+     */
     public static void showNotification(Context context) {
-        Intent intent = new Intent(context, MainActivity.class);
-
-        PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
 
         Notification notification =
                 new Notification.Builder(context)
                         .setOngoing(true)
-                        .setSmallIcon(android.R.drawable.btn_star)
+                        .setSmallIcon(android.R.drawable.star_big_on)
                         .setContentTitle(context.getResources().getString(R.string.session_active))
                         .setContentText(context.getResources().getString(R.string.session_active_text))
-                        .setContentIntent(pIntent)
+                        .setContentIntent(pendingIntent)
                         .build();
 
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManager notificationManager =
+                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notification);
     }
 
+    /**
+     * Hide notification panel
+     *
+     * @param context context
+     */
     public static void hideNotification(Context context) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancelAll();
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
     }
 
 }

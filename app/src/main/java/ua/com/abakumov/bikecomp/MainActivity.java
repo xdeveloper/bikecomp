@@ -136,11 +136,15 @@ public class MainActivity extends FragmentActivity {
     protected void onStop() {
         EventBus.getDefault().unregister(this);
 
+        releaseWakeLock();
+
+        super.onStop();
+    }
+
+    private void releaseWakeLock() {
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
         }
-
-        super.onStop();
     }
 
     @Override
@@ -173,11 +177,17 @@ public class MainActivity extends FragmentActivity {
 
         // Quit application
         if (id == R.id.action_quit) {
-            stopServices();
-            System.exit(0);
+            quitApplication();
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void quitApplication() {
+        releaseWakeLock();
+        hideNotification(this);
+        stopServices();
+        finish();
     }
 
     @Override
@@ -240,7 +250,7 @@ public class MainActivity extends FragmentActivity {
         // Go to report screen
         goReportScreen(
                 this,
-                new Ride("New ride", startDate, new Date(), infoService.getElapsedTimeTicks(), averageSpeed,
+                new Ride("Ride " + new Date(), startDate, new Date(), infoService.getElapsedTimeTicks(), averageSpeed,
                         averagePace, infoService.getDistance()));
     }
 
@@ -281,9 +291,7 @@ public class MainActivity extends FragmentActivity {
                 break;
             case "SYSTEM_SETTING":
                 // Release lock if it was acquired earlier
-                if (wakeLock != null && wakeLock.isHeld()) {
-                    wakeLock.release();
-                }
+                releaseWakeLock();
                 break;
 
             default:

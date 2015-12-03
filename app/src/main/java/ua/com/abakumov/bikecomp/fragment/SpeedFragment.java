@@ -43,7 +43,7 @@ public class SpeedFragment extends android.support.v4.app.Fragment {
         eventBus = EventBus.getDefault();
         eventBus.register(this);
 
-        updateUISpeedCanBeShown();
+        updateUI();
     }
 
     @Override
@@ -58,8 +58,7 @@ public class SpeedFragment extends android.support.v4.app.Fragment {
     @SuppressWarnings(value = "unused")
     public void onEvent(GpsTrouble event) {
         speed = 0;
-
-        updateUISpeedCanBeShown();
+        updateUI();
     }
 
     @SuppressWarnings(value = "unused")
@@ -93,12 +92,4 @@ public class SpeedFragment extends android.support.v4.app.Fragment {
         getActivity().runOnUiThread(() ->
                 ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(formatSpeed(speed)));
     }
-
-    private void updateUISpeedCanBeShown() {
-        v(TAG, "[ Speed Fragment ] No speed");
-
-        getActivity().runOnUiThread(() ->
-                ((TextView) getActivity().findViewById(R.id.speedTextView)).setText(" ... "));
-    }
-
 }
