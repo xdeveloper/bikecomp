@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color_test">#FF0000</color>
-    <color name="indicator_color">#ff7ba210</color>
+    <color name="indicator_color">#59d9bf</color>
 </resources>
