@@ -1,12 +1,5 @@
 package ua.com.abakumov.bikecomp.fragment;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionStart;
@@ -24,9 +17,7 @@ import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
  * <p>
  * Created by oabakumov on 26.06.2015.
  */
-public class AverageSpeedFragment extends android.support.v4.app.Fragment {
-
-    private EventBus eventBus;
+public class AverageSpeedFragment extends IndicatorFragment {
 
     private long elapsedTime;
 
@@ -38,25 +29,29 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment {
     // ----------- System --------------------------------------------------------------------------
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_average_speed, container, false);
+    protected int getLayoutRid() {
+        return R.layout.fragment_average_speed;
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-
-        eventBus = EventBus.getDefault();
-        eventBus.register(this);
-
-        updateAverageSpeed();
+    protected int getIndicatorNameRid() {
+        return R.string.average_speed;
     }
 
     @Override
-    public void onStop() {
-        eventBus.unregister(this);
+    protected int getMeasurementRid() {
+        return R.string.kmh;
+    }
 
-        super.onStop();
+
+    @Override
+    protected int getRootId() {
+        return R.id.avs_fragment_id;
+    }
+
+    @Override
+    protected String getIndicatorText() {
+        return formatSpeed(this.averageSpeed);
     }
 
 
@@ -66,7 +61,7 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment {
     public void onEvent(SessionStart event) {
         this.averageSpeed = 0;
 
-        updateUi();
+        updateUI();
     }
 
     @SuppressWarnings(value = "unused")
@@ -102,7 +97,7 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment {
 
     private void updateAverageSpeed() {
         reCalculateAverageSpeed();
-        updateUi();
+        updateUI();
     }
 
     private void reCalculateAverageSpeed() {
@@ -117,11 +112,5 @@ public class AverageSpeedFragment extends android.support.v4.app.Fragment {
         }
 
         v(TAG, "[ Av. Speed Fragment ] Average speed is " + valueOf(this.averageSpeed));
-    }
-
-    private void updateUi() {
-        getActivity().runOnUiThread(() -> {
-            ((TextView) getActivity().findViewById(R.id.averageSpeedTextView)).setText(formatSpeed(this.averageSpeed));
-        });
     }
 }

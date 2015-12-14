@@ -1,13 +1,5 @@
 package ua.com.abakumov.bikecomp.fragment;
 
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
@@ -20,38 +12,10 @@ import static ua.com.abakumov.bikecomp.util.Utils.metersToKilometers;
  * <p>
  * Created by oabakumov on 26.06.2015.
  */
-public class DistanceFragment extends android.support.v4.app.Fragment   {
-
-    private EventBus eventBus;
+public class DistanceFragment extends IndicatorFragment {
 
     //  Meters
     private float distance;
-
-
-    // ----------- System --------------------------------------------------------------------------
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_distance, container, false);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        eventBus = EventBus.getDefault();
-        eventBus.register(this);
-
-        updateUI();
-    }
-
-
-    @Override
-    public void onStop() {
-        eventBus.unregister(this);
-        super.onStop();
-    }
-
 
     // ----------- Events handling -----------------------------------------------------------------
 
@@ -72,8 +36,30 @@ public class DistanceFragment extends android.support.v4.app.Fragment   {
 
     // ----------- Utilities -----------------------------------------------------------------------
 
-    private void updateUI() {
-        ((TextView) getActivity().findViewById(R.id.distanceTextView)).setText(formatDistance(metersToKilometers(distance)));
+    @Override
+    protected int getLayoutRid() {
+        return R.layout.fragment_distance;
+    }
+
+    @Override
+    protected int getIndicatorNameRid() {
+        return R.string.distance;
+    }
+
+    @Override
+    protected int getMeasurementRid() {
+        return R.string.km;
+    }
+
+
+    @Override
+    protected int getRootId() {
+        return R.id.distance_fragment_id;
+    }
+
+    @Override
+    protected String getIndicatorText() {
+        return formatDistance(metersToKilometers(distance));
     }
 
 }

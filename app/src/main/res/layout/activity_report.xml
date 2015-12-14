@@ -49,12 +49,12 @@
         </TableRow>
 
         <TableRow android:layout_marginBottom="20dp">
-            <TextView android:text="@string/elapsedtime" style="@style/report_first_column"/>
+            <TextView android:text="@string/elapsed_time" style="@style/report_first_column"/>
             <TextView android:id="@+id/report_elapsedtime" android:text="3:12:43"/>
         </TableRow>
 
         <TableRow>
-            <TextView android:text="@string/avg_speed" style="@style/report_first_column"/>
+            <TextView android:text="@string/average_speed" style="@style/report_first_column"/>
             <TextView android:id="@+id/report_average_speed" android:text="30.4 Km/h"/>
         </TableRow>
 

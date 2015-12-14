@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center|center_horizontal"
+    android:orientation="vertical">
+
+    <!-- Main -->
+    <TextView
+        android:id="@+id/indicatorMainTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="-10dp"
+        android:gravity="center|fill_horizontal|center_horizontal|fill_vertical"
+        android:text="0.0"
+        android:textColor="@color/indicator_color"
+        android:textSize="80sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <!-- Indicator name -->
+        <TextView
+            android:id="@+id/indicatorNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center|top"
+            android:textSize="14sp" />
+
+        <!-- Indicator measurement -->
+        <TextView
+            android:id="@+id/indicatorMeasurementTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center|top"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+</LinearLayout>

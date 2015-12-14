@@ -1,12 +1,5 @@
 package ua.com.abakumov.bikecomp.fragment;
 
-import android.app.Fragment;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -18,7 +11,7 @@ import ua.com.abakumov.bikecomp.R;
 /*
  * Created by oabakumov on 26.06.2015.
  */
-public class ClockFragment extends android.support.v4.app.Fragment {
+public class ClockFragment extends IndicatorFragment {
 
     @SuppressWarnings("FieldCanBeLocal")
     private static int SECOUND = 1000;
@@ -29,52 +22,51 @@ public class ClockFragment extends android.support.v4.app.Fragment {
 
 
     // ----------- System --------------------------------------------------------------------------
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
+    protected void afterStart() {
         // Show time immediately
-        updateTime();
+        updateUI();
 
         // Schedule periodical update
         timer = new Timer();
         timer.schedule(new ClockFragmentTimerTask(), SECOUND, SECOUND);
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
+    protected void beforeStop() {
         timer.cancel();
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_clock, container, false);
+    protected int getRootId() {
+        return R.id.clock_fragment_id;
     }
 
+    @Override
+    protected String getIndicatorText() {
+        return simpleDateFormat.format(Calendar.getInstance().getTime());
+    }
+
+
+    @Override
+    protected int getLayoutRid() {
+        return R.layout.fragment_clock;
+    }
+
+    @Override
+    protected int getIndicatorNameRid() {
+        return R.string.clock;
+    }
+
+    @Override
+    protected int getMeasurementRid() {
+        return R.string.nothing;
+    }
 
     // ----------- Utilities -----------------------------------------------------------------------
 
     private class ClockFragmentTimerTask extends TimerTask {
         @Override
         public void run() {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    updateTime();
-                }
-            });
+            getActivity().runOnUiThread(() -> updateUI());
         }
-    }
-
-    private void updateTime() {
-        TextView textView = (TextView) getActivity().findViewById(R.id.clockTextView);
-        textView.setText(getTime());
-    }
-
-    private String getTime() {
-        return simpleDateFormat.format(Calendar.getInstance().getTime());
     }
 }

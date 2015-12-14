@@ -92,7 +92,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/elapsedtime" />
+            android:text="@string/elapsed_time" />
 
         <TextView
             android:id="@+id/ride_list_item_elapsedtime"
@@ -108,7 +108,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/avg_speed" />
+            android:text="@string/average_speed" />
 
         <TextView
             android:id="@+id/ride_list_item_averagespeed"
