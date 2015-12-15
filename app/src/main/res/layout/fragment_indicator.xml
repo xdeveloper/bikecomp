@@ -8,15 +8,12 @@
     <!-- Main -->
     <TextView
         android:id="@+id/indicatorMainTextView"
+        style="@style/indicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="-10dp"
-        android:gravity="center|fill_horizontal|center_horizontal|fill_vertical"
-        android:text="0.0"
-        android:textColor="@color/indicator_color"
-        android:textSize="80sp"
-        android:textStyle="bold" />
+        android:gravity="center|fill_horizontal|center_horizontal|fill_vertical" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,22 +24,22 @@
 
         <!-- Indicator name -->
         <TextView
-            android:text="Speed"
             android:id="@+id/indicatorNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center|top"
+            android:text="Speed"
             android:textSize="14sp" />
 
         <!-- Indicator measurement -->
         <TextView
-            android:text="(kmh)"
             android:id="@+id/indicatorMeasurementTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center|top"
+            android:text="(kmh)"
             android:textSize="14sp" />
     </LinearLayout>
 

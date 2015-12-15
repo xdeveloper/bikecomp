@@ -22,4 +22,12 @@
         <item name="android:background">@drawable/button_selector</item>
     </style>
 
+    <!-- Indicator's look -->
+    <style name="indicator">
+        <item name="android:textColor">@color/indicator_color</item>
+        <item name="android:textSize">100sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">0.0</item>
+    </style>
+
 </resources>
