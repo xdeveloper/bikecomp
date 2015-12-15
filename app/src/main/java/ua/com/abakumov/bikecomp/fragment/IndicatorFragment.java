@@ -1,5 +1,7 @@
 package ua.com.abakumov.bikecomp.fragment;
 
+import android.content.res.AssetManager;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
@@ -16,6 +18,8 @@ import ua.com.abakumov.bikecomp.R;
  * Created by Oleksandr_Abakumov on 12/14/2015.
  */
 public abstract class IndicatorFragment extends android.support.v4.app.Fragment {
+    private static final String MAIN_TEXT_TEXT_VIEW_FONT = "fonts/RopaSans-Regular.ttf";
+
     private EventBus eventBus;
 
     @LayoutRes
@@ -35,7 +39,12 @@ public abstract class IndicatorFragment extends android.support.v4.app.Fragment 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(getLayoutRid(), container, false);
-        ((TextView) v.findViewById(R.id.indicatorMainTextView)).setText(getInitialMainTextRid());
+
+        TextView mainTextView = (TextView) v.findViewById(R.id.indicatorMainTextView);
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), MAIN_TEXT_TEXT_VIEW_FONT);
+        mainTextView.setText(getInitialMainTextRid());
+        mainTextView.setTypeface(typeface);
+
         ((TextView) v.findViewById(R.id.indicatorNameTextView)).setText(getIndicatorNameRid());
         ((TextView) v.findViewById(R.id.indicatorMeasurementTextView)).setText(getMeasurementRid());
         return v;
