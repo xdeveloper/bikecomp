@@ -6,9 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ua.com.abakumov.bikecomp.fragment.ClockFragment;
-import ua.com.abakumov.bikecomp.fragment.ElapsedTimeFragment;
-import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
+import ua.com.abakumov.bikecomp.fragment.indicators.ClockFragment;
+import ua.com.abakumov.bikecomp.fragment.indicators.ElapsedTimeFragment;
 
 /**
  * <Class Name and Purpose>

@@ -7,7 +7,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
-import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -27,12 +26,16 @@ import ua.com.abakumov.bikecomp.event.gps.Enabled;
 import ua.com.abakumov.bikecomp.event.gps.GpsTrouble;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 import ua.com.abakumov.bikecomp.event.gps.NewLocation;
+import ua.com.abakumov.bikecomp.event.gps.NewSpeed;
 import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
+import ua.com.abakumov.bikecomp.util.LogUtils;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.util.Log.v;
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
+import static ua.com.abakumov.bikecomp.util.LogUtils.information;
+import static ua.com.abakumov.bikecomp.util.LogUtils.verbose;
 
 /**
  * Listens location updates and publishes different events
@@ -71,11 +74,7 @@ public class InfoService extends Service {
 
     private LatestSpeedHolder latestSpeedHolder;
 
-    public class LocalBinder extends Binder {
-        public InfoService getService() {
-            return InfoService.this;
-        }
-    }
+    private LocationHolder locationHolder;
 
     // ----------- System --------------------------------------------------------------------------
 
@@ -87,11 +86,15 @@ public class InfoService extends Service {
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        locationListener = new LocationListener() {
+        locationHolder = new LocationHolder();
 
+        locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                EventBus.getDefault().post(new NewLocation(location.getSpeed()));
+                locationHolder.newLocation(location);
+
+                EventBus.getDefault().post(new NewDistance(locationHolder.latestDistance()));
+                EventBus.getDefault().post(new NewSpeed(location.getSpeed()));
             }
 
             @Override
@@ -110,7 +113,7 @@ public class InfoService extends Service {
                         break;
 
                     default:
-                        Log.w(TAG, "Unknown status");
+                        verbose("Unknown status");
                         break;
                 }
             }
@@ -129,8 +132,12 @@ public class InfoService extends Service {
         latestSpeedHolder = new LatestSpeedHolder();
     }
 
+    public IBinder onBind(Intent intent) {
+        return new LocalBinder(this);
+    }
+
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i(TAG, "[InfoService] On start");
+        information("InfoService on start");
 
         locationManager.requestLocationUpdates(
                 GPS_PROVIDER,
@@ -139,6 +146,7 @@ public class InfoService extends Service {
                 locationListener);
 
         super.onStartCommand(intent, flags, startId);
+
         return START_STICKY;
     }
 
@@ -149,10 +157,6 @@ public class InfoService extends Service {
         locationManager.removeUpdates(locationListener);
 
         super.onDestroy();
-    }
-
-    public IBinder onBind(Intent intent) {
-        return new LocalBinder();
     }
 
 

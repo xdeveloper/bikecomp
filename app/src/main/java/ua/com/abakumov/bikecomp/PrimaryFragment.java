@@ -6,9 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import ua.com.abakumov.bikecomp.fragment.AverageSpeedFragment;
-import ua.com.abakumov.bikecomp.fragment.DistanceFragment;
-import ua.com.abakumov.bikecomp.fragment.SpeedFragment;
+import ua.com.abakumov.bikecomp.fragment.indicators.AverageSpeedFragment;
+import ua.com.abakumov.bikecomp.fragment.indicators.DistanceFragment;
+import ua.com.abakumov.bikecomp.fragment.indicators.SpeedFragment;
 
 /**
  * <Class Name and Purpose>

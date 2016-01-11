@@ -34,11 +34,14 @@ import ua.com.abakumov.bikecomp.event.gps.Disabled;
 import ua.com.abakumov.bikecomp.event.gps.Enabled;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.infoservice.InfoService;
+import ua.com.abakumov.bikecomp.service.infoservice.LocalBinder;
 import ua.com.abakumov.bikecomp.util.FullscreenThemeDecider;
+import ua.com.abakumov.bikecomp.util.LogUtils;
 import ua.com.abakumov.bikecomp.util.ThemeDecider;
 import ua.com.abakumov.bikecomp.util.Utils;
 
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
+import static ua.com.abakumov.bikecomp.util.LogUtils.verbose;
 import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_BACKLIGHT_STRATEGY_KEY;
 import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.UIUtils.goHome;
@@ -129,7 +132,8 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.v(TAG, "++++++++++++++++++ Main screen has been shown ++++++++++++++++++");
+
+        verbose("Main screen has been shown");
     }
 
     @Override
@@ -261,7 +265,7 @@ public class MainActivity extends FragmentActivity {
 
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                infoService = ((InfoService.LocalBinder) iBinder).getService();
+                infoService = ((LocalBinder) iBinder).getService();
                 infoService.startService(new Intent(MainActivity.this, InfoService.class));
             }
 
