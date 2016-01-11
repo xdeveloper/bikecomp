@@ -23,13 +23,10 @@ import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.Available;
 import ua.com.abakumov.bikecomp.event.gps.Disabled;
 import ua.com.abakumov.bikecomp.event.gps.Enabled;
-import ua.com.abakumov.bikecomp.event.gps.GpsTrouble;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
-import ua.com.abakumov.bikecomp.event.gps.NewLocation;
 import ua.com.abakumov.bikecomp.event.gps.NewSpeed;
 import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
-import ua.com.abakumov.bikecomp.util.LogUtils;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.util.Log.v;
@@ -71,8 +68,6 @@ public class InfoService extends Service {
     private LocationManager locationManager;
 
     private LocationListener locationListener;
-
-    private LatestSpeedHolder latestSpeedHolder;
 
     private LocationHolder locationHolder;
 
@@ -129,7 +124,6 @@ public class InfoService extends Service {
             }
         };
 
-        latestSpeedHolder = new LatestSpeedHolder();
     }
 
     public IBinder onBind(Intent intent) {
@@ -179,15 +173,12 @@ public class InfoService extends Service {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
-        Log.i(TAG, "Session start");
+        information("Session start");
 
         elapsedTimeTicks = 0;
         distance = 0;
         startDate = new Date();
-
         paused = false;
-
-        latestSpeedHolder.resetSpeed();
 
         setupAndLaunchTimer();
     }
@@ -218,35 +209,6 @@ public class InfoService extends Service {
             paused = true;
             handler.removeCallbacks(timerTask);
         }
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(NewLocation event) {
-        v(TAG, "New location event received");
-
-        latestSpeedHolder.updateMpsSpeed(event.getMpsSpeed());
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(GpsTrouble event) {
-        v(TAG, "GPS trouble");
-
-        latestSpeedHolder.resetSpeed();
-    }
-
-    @SuppressWarnings(value = "unused")
-    public void onEvent(NewElapsedSecounds newElapsedSecounds) {
-        v(TAG, "New location event received");
-
-        float mpsSpeed = latestSpeedHolder.askForMpsSpeed();
-
-        v(TAG, "Speed (mps) = " + mpsSpeed);
-
-        distance += mpsSpeed;
-
-        v(TAG, "New distance calculated = " + distance);
-
-        EventBus.getDefault().post(new NewDistance(distance));
     }
 
     @SuppressWarnings(value = "unused")

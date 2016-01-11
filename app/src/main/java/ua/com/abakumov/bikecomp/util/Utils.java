@@ -40,7 +40,6 @@ public final class Utils {
      * 20       ->  20.0
      *
      * @param speed speed
-     *
      * @return formatted string
      */
     public static String formatSpeed(double speed) {
@@ -92,38 +91,6 @@ public final class Utils {
      */
     public static double metersPerSecoundToKilometersPerHour(float speed) {
         return 3.6 * speed;
-    }
-
-    private interface Callback {
-        void callback(View view);
-    }
-
-    public static void showToast(int rid, Activity activity) {
-        showToast(activity, (View v) -> {
-            ((TextView) v.findViewById(R.id.new_toast_layout_text)).setText(rid);
-        });
-    }
-
-    public static void showToast(Activity activity, String text) {
-        showToast(activity, (View v) -> {
-            ((TextView) v.findViewById(R.id.new_toast_layout_text)).setText(text);
-        });
-    }
-
-    private static void showToast(Activity activity, Callback callback) {
-        LayoutInflater inflater = activity.getLayoutInflater();
-
-        View layout = inflater.inflate(
-                R.layout.new_toast_layout,
-                (ViewGroup) activity.findViewById(R.id.new_toast_layout_id));
-
-        callback.callback(layout);
-
-        Toast toast = new Toast(activity.getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(layout);
-        toast.show();
     }
 
     public static float metersToKilometers(float distanceInMeters) {

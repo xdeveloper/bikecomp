@@ -1,5 +1,6 @@
 package ua.com.abakumov.bikecomp.util;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,15 +8,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.annimon.stream.function.FunctionalInterface;
 
 import ua.com.abakumov.bikecomp.MainActivity;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
-
-import static android.R.style.Theme;
-import static android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen;
-import static android.R.style.Theme_Holo_NoActionBar_Fullscreen;
 
 /**
  * UI specific utilities
@@ -25,6 +30,40 @@ import static android.R.style.Theme_Holo_NoActionBar_Fullscreen;
 public class UIUtils {
     public static final String SETTINGS_THEME_KEY = "displaySettingsThemeKey";
     public static final String SETTINGS_BACKLIGHT_STRATEGY_KEY = "displaySettingsBacklightStrategyKey";
+
+
+    @FunctionalInterface
+    private interface Callback {
+        void callback(View view);
+    }
+
+    public static void showToast(int rid, Activity activity) {
+        showToast(activity, (View v) -> {
+            ((TextView) v.findViewById(R.id.new_toast_layout_text)).setText(rid);
+        });
+    }
+
+    public static void showToast(Activity activity, String text) {
+        showToast(activity, (View v) -> {
+            ((TextView) v.findViewById(R.id.new_toast_layout_text)).setText(text);
+        });
+    }
+
+    private static void showToast(Activity activity, Callback callback) {
+        LayoutInflater inflater = activity.getLayoutInflater();
+
+        View layout = inflater.inflate(
+                R.layout.new_toast_layout,
+                (ViewGroup) activity.findViewById(R.id.new_toast_layout_id));
+
+        callback.callback(layout);
+
+        Toast toast = new Toast(activity.getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
 
     public enum Theme {
         Day, Night

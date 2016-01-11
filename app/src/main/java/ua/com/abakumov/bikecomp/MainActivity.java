@@ -36,8 +36,8 @@ import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.infoservice.InfoService;
 import ua.com.abakumov.bikecomp.service.infoservice.LocalBinder;
 import ua.com.abakumov.bikecomp.util.FullscreenThemeDecider;
-import ua.com.abakumov.bikecomp.util.LogUtils;
 import ua.com.abakumov.bikecomp.util.ThemeDecider;
+import ua.com.abakumov.bikecomp.util.UIUtils;
 import ua.com.abakumov.bikecomp.util.Utils;
 
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
@@ -49,7 +49,6 @@ import static ua.com.abakumov.bikecomp.util.UIUtils.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.UIUtils.hideNotification;
 import static ua.com.abakumov.bikecomp.util.UIUtils.setupTheme;
 import static ua.com.abakumov.bikecomp.util.UIUtils.showNotification;
-import static ua.com.abakumov.bikecomp.util.Utils.showToast;
 
 
 /**
@@ -211,20 +210,20 @@ public class MainActivity extends FragmentActivity {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Enabled event) {
-        showToast(R.string.enabled_gps_provider, this);
+        UIUtils.showToast(R.string.enabled_gps_provider, this);
     }
 
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Disabled event) {
-        showToast(R.string.disabled_gps_provider, this);
+        UIUtils.showToast(R.string.disabled_gps_provider, this);
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
         this.sessionIsRunning = true;
 
-        showToast(R.string.session_started, this);
+        UIUtils.showToast(R.string.session_started, this);
 
         showNotification(this);
     }
@@ -241,7 +240,7 @@ public class MainActivity extends FragmentActivity {
     public void onEvent(SessionStop event) {
         this.sessionIsRunning = false;
 
-        showToast(R.string.session_stopped, this);
+        UIUtils.showToast(R.string.session_stopped, this);
 
         hideNotification(this);
 
