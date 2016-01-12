@@ -1,10 +1,18 @@
 package ua.com.abakumov.bikecomp.fragment.indicators;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Timer;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.gps.GpsTrouble;
 import ua.com.abakumov.bikecomp.event.gps.NewSpeed;
 
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 
 
 /**
@@ -14,21 +22,52 @@ import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
  */
 public class SpeedFragment extends IndicatorFragment {
 
+    // TODO: move this constant to the system preferences
+    private static final int COUNT_DOWN_MAXIMUM_SECOUNDS = 3;
+
     // Kilometers per hour
     private double speed;
 
-    // ----------- Events handling -----------------------------------------------------------------
+    // private int countDownSecounds;
 
-    @SuppressWarnings(value = "unused")
-    public void onEvent(GpsTrouble event) {
-        speed = 0;
-        updateUI();
+    private long lastSpeedEventTime;
+
+    private ScheduledThreadPoolExecutor executor;
+
+
+    @Override
+    protected void afterStart() {
+        super.afterStart();
+
+        executor = new ScheduledThreadPoolExecutor(1);
+        executor.scheduleAtFixedRate(() -> {
+            verbose("It's time to check speed validity");
+
+            // Every COUNT_DOWN_MAXIMUM_SECOUNDS I have to verify whether
+            // last received speed is not too old to be shown on the screen
+            // (for example we have lost GPS connection and latest received
+            // speed isn't actual any longer.
+            // So - I have to show zero on the screen in that case.
+
+            Calendar calendarLastSpeedEvent = Calendar.getInstance();
+            calendarLastSpeedEvent.setTimeInMillis(lastSpeedEventTime);
+            calendarLastSpeedEvent.add(Calendar.SECOND, COUNT_DOWN_MAXIMUM_SECOUNDS);
+
+            Calendar calendarNow = Calendar.getInstance();
+
+            if (calendarLastSpeedEvent.before(calendarNow)) {
+                resetSpeed();
+            }
+
+        }, COUNT_DOWN_MAXIMUM_SECOUNDS, COUNT_DOWN_MAXIMUM_SECOUNDS, TimeUnit.SECONDS);
     }
 
-    @SuppressWarnings(value = "unused")
-    public void onEvent(NewSpeed event) {
-        speed = event.getKmphSpeed();
-        updateUI();
+
+    @Override
+    protected void beforeStop() {
+        super.beforeStop();
+
+        executor.shutdown();
     }
 
     @Override
@@ -54,5 +93,25 @@ public class SpeedFragment extends IndicatorFragment {
     @Override
     public String getIndicatorText() {
         return formatSpeed(speed);
+    }
+
+    // ----------- Events handling -----------------------------------------------------------------
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(GpsTrouble event) {
+        resetSpeed();
+    }
+
+    private void resetSpeed() {
+        speed = 0;
+        updateUI();
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(NewSpeed event) {
+        speed = event.getKmphSpeed();
+        lastSpeedEventTime = event.getEventTime();
+
+        updateUI();
     }
 }

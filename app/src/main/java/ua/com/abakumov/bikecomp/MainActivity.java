@@ -32,12 +32,14 @@ import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.SessionStopRequest;
 import ua.com.abakumov.bikecomp.event.gps.Disabled;
 import ua.com.abakumov.bikecomp.event.gps.Enabled;
+import ua.com.abakumov.bikecomp.event.gps.GpsTrouble;
+import ua.com.abakumov.bikecomp.event.gps.OutOfService;
+import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.service.LocalBinder;
 import ua.com.abakumov.bikecomp.util.theme.FullscreenThemeDecider;
 import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
-import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 import ua.com.abakumov.bikecomp.util.helper.Helper;
 
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
@@ -49,6 +51,7 @@ import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showNotification;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showToast;
 
 
 /**
@@ -210,20 +213,25 @@ public class MainActivity extends FragmentActivity {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Enabled event) {
-        UIHelper.showToast(R.string.enabled_gps_provider, this);
+        showToast(R.string.enabled_gps_provider, this);
     }
 
-
     @SuppressWarnings(value = "unused")
-    public void onEvent(Disabled event) {
-        UIHelper.showToast(R.string.disabled_gps_provider, this);
+    public void onEvent(GpsTrouble event) {
+        if (event instanceof Disabled) {
+            showToast(R.string.disabled_gps_provider, this);
+        } else if (event instanceof OutOfService) {
+            showToast(R.string.status_out_of_service, this);
+        } else if (event instanceof TemporaryUnavailable) {
+            showToast(R.string.status_temporary_unavailable, this);
+        }
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
         this.sessionIsRunning = true;
 
-        UIHelper.showToast(R.string.session_started, this);
+        showToast(R.string.session_started, this);
 
         showNotification(this);
     }
@@ -240,21 +248,25 @@ public class MainActivity extends FragmentActivity {
     public void onEvent(SessionStop event) {
         this.sessionIsRunning = false;
 
-        UIHelper.showToast(R.string.session_stopped, this);
+        showToast(R.string.session_stopped, this);
 
         hideNotification(this);
 
         Date startDate = infoService.getStartDate();
         float distance = infoService.getDistance();
-        float elapsedTime = infoService.getElapsedTimeTicks();
-        double averageSpeed = Helper.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
-        int averagePace = (int) (distance / elapsedTime);
+        float elapsedSecounds = infoService.getElapsedSecounds();
+        double averageSpeed = Helper.metersPerSecoundToKilometersPerHour(distance / elapsedSecounds);
+        int averagePace = (int) (distance / elapsedSecounds);
 
         // Go to report screen
-        goReportScreen(
-                this,
-                new Ride("Ride " + new Date(), startDate, new Date(), infoService.getElapsedTimeTicks(), averageSpeed,
-                        averagePace, infoService.getDistance()));
+        goReportScreen(this,
+                new Ride("Ride " + new Date(),
+                        startDate,
+                        new Date(),
+                        infoService.getElapsedSecounds(),
+                        averageSpeed,
+                        averagePace,
+                        infoService.getDistance()));
     }
 
     // ----------- Utilities -----------------------------------------------------------------------
@@ -281,13 +293,14 @@ public class MainActivity extends FragmentActivity {
         stopService(new Intent(MainActivity.this, InfoService.class));
     }
 
+    // TODO: a lot of troubles are here
     private void setupBacklightStrategy() {
         String val = PreferenceManager.getDefaultSharedPreferences(this).
                 getString("displaySettingsBacklightStrategyKey", "ALWAYS_ON_NORMAL");
 
         switch (val) {
             case "ALWAYS_ON_MAXIMUM":
-                acquireWakeLock(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                acquireWakeLock(PowerManager.PARTIAL_WAKE_LOCK);
                 break;
             case "ALWAYS_ON_NORMAL":
                 acquireWakeLock(PowerManager.PARTIAL_WAKE_LOCK);

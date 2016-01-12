@@ -5,5 +5,5 @@ package ua.com.abakumov.bikecomp.event;
  * <p/>
  * Created by Oleksandr Abakumov on 7/8/15.
  */
-public class SessionStop implements Event {
+public class SessionStop extends Event {
 }

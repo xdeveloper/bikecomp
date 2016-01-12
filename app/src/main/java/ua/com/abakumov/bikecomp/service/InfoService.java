@@ -8,11 +8,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.location.LocationProvider;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
 import java.util.Date;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.NoSubscriberEvent;
@@ -50,27 +51,17 @@ public class InfoService extends Service {
 
     private Date startDate;
 
-    /**
-     * Elapsed time ticks
-     */
-    private int elapsedTimeTicks;
-
-    /**
-     * Distance in meters
-     */
-    private float distance;
-
-    private Handler handler = new Handler();
+    private int elapsedSecounds;
 
     private boolean paused = true;
-
-    private Runnable timerTask;
 
     private LocationManager locationManager;
 
     private LocationListener locationListener;
 
     private LocationHolder locationHolder;
+
+    private ScheduledThreadPoolExecutor executor;
 
 
     // ----------- System --------------------------------------------------------------------------
@@ -161,11 +152,11 @@ public class InfoService extends Service {
     // ----------- Custom methods ------------------------------------------------------------------
 
     public float getDistance() {
-        return distance;
+        return locationHolder.getDistance();
     }
 
-    public int getElapsedTimeTicks() {
-        return elapsedTimeTicks;
+    public int getElapsedSecounds() {
+        return elapsedSecounds;
     }
 
     public Date getStartDate() {
@@ -179,12 +170,12 @@ public class InfoService extends Service {
     public void onEvent(SessionStart event) {
         information("Session start");
 
-        elapsedTimeTicks = 0;
-        distance = 0;
+        elapsedSecounds = 0;
+        locationHolder.reset();
         startDate = new Date();
         paused = false;
 
-        setupAndLaunchTimer();
+        startTimer();
     }
 
     @SuppressWarnings(value = "unused")
@@ -193,7 +184,7 @@ public class InfoService extends Service {
 
         paused = true;
 
-        handler.removeCallbacks(timerTask);
+        stopTimer();
     }
 
     @SuppressWarnings(value = "unused")
@@ -205,13 +196,12 @@ public class InfoService extends Service {
             v(TAG, "(Paused). Is going to resume");
 
             paused = false;
-            handler.removeCallbacks(timerTask);
-            setupAndLaunchTimer();
+            startTimer();
         } else {
             v(TAG, "(Running). Is going to pause");
 
             paused = true;
-            handler.removeCallbacks(timerTask);
+            stopTimer();
         }
     }
 
@@ -220,20 +210,18 @@ public class InfoService extends Service {
         // Ignore
     }
 
-
     // ----------- Utilities -----------------------------------------------------------------------
 
-    private void setupAndLaunchTimer() {
-        timerTask = new Runnable() {
-            private final long stepInSecounds = SECOND;
 
-            @Override
-            public void run() {
-                elapsedTimeTicks++;
-                post(new NewElapsedSecounds(elapsedTimeTicks * stepInSecounds));
-                handler.postDelayed(timerTask, MS_IN_SECOND);
-            }
-        };
-        handler.postDelayed(timerTask, MS_IN_SECOND);
+    private void startTimer() {
+        executor = new ScheduledThreadPoolExecutor(1);
+        executor.scheduleAtFixedRate(() -> {
+            elapsedSecounds++;
+            post(new NewElapsedSecounds(elapsedSecounds));
+        }, SECOND, SECOND, TimeUnit.SECONDS);
+    }
+
+    private void stopTimer() {
+        executor.shutdown();
     }
 }

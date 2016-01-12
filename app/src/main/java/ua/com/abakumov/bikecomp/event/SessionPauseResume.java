@@ -5,5 +5,5 @@ package ua.com.abakumov.bikecomp.event;
  * <p/>
  * Created by Oleksandr Abakumov on 7/9/15.
  */
-public class SessionPauseResume implements Event {
+public class SessionPauseResume extends Event {
 }

@@ -1,9 +1,20 @@
 package ua.com.abakumov.bikecomp.event;
 
+import java.util.Date;
+
 /**
- * Marker interface for all events
- * <p/>
+ * Ancestor for all events
+ * <p>
  * Created by Oleksandr Abakumov on 7/8/15.
  */
-public interface Event {
+public abstract class Event {
+    private final long eventTime;
+
+    public Event() {
+        this.eventTime = new Date().getTime();
+    }
+
+    public long getEventTime() {
+        return eventTime;
+    }
 }

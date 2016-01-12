@@ -7,5 +7,5 @@ import ua.com.abakumov.bikecomp.event.Event;
  * <p/>
  * Created by Oleksandr Abakumov on 7/8/15.
  */
-public class Enabled implements Event {
+public class Enabled extends Event {
 }

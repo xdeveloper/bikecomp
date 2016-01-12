@@ -7,5 +7,5 @@ import ua.com.abakumov.bikecomp.event.Event;
  * <p>
  * Created by Oleksandr_Abakumov on 12/2/2015.
  */
-public abstract class GpsTrouble implements Event {
+public abstract class GpsTrouble extends Event {
 }

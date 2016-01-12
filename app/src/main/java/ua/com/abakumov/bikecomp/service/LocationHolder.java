@@ -45,4 +45,13 @@ public class LocationHolder {
     public float getDistance() {
         return distance;
     }
+
+    /**
+     * Reset
+     */
+    public void reset() {
+        distance = 0;
+        previousLocation = null;
+        currentLocation = null;
+    }
 }

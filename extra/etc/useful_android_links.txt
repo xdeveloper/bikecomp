@@ -6,3 +6,7 @@ https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html
 
 --- Icons
 http://androiddrawables.com/Menu.html
+
+--- Gps emulation
+Store: Lockito
+
