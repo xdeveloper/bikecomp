@@ -8,15 +8,18 @@ import android.location.Location;
  * Created by Oleksandr_Abakumov on 1/11/2016.
  */
 public class LocationHolder {
+
     private Location previousLocation;
+
     private Location currentLocation;
+
 
     /**
      * New location available
      *
      * @param location location
      */
-    public void newLocation(Location location) {
+    public void updateLocation(Location location) {
         if (previousLocation == null) {
             previousLocation = location;
             currentLocation = location;
@@ -27,11 +30,11 @@ public class LocationHolder {
     }
 
     /**
-     * Get a distance between two latest locations
+     * Get a distance between two latest locations (current and the previous one)
      *
      * @return distance in meters
      */
-    public float latestDistance() {
+    public float getLatestDistance() {
         if (currentLocation == null || previousLocation == null) {
             return 0;
         } else if (currentLocation.equals(previousLocation)) {

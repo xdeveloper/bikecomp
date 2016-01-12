@@ -8,13 +8,13 @@ import ua.com.abakumov.bikecomp.event.Event;
  * Created by Oleksandr Abakumov on 7/8/15.
  */
 public class NewDistance implements Event {
-    private float distanceInMeters;
+    private float distance;
 
-    public NewDistance(float distanceInMeters) {
-        this.distanceInMeters = distanceInMeters;
+    public NewDistance(float distance) {
+        this.distance = distance;
     }
 
-    public float getDistanceInMeters() {
-        return distanceInMeters;
+    public float getDistance() {
+        return distance;
     }
 }

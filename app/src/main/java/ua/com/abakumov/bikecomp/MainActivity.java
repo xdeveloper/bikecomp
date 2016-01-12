@@ -35,20 +35,20 @@ import ua.com.abakumov.bikecomp.event.gps.Enabled;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.service.LocalBinder;
-import ua.com.abakumov.bikecomp.util.FullscreenThemeDecider;
-import ua.com.abakumov.bikecomp.util.ThemeDecider;
-import ua.com.abakumov.bikecomp.util.UIUtils;
-import ua.com.abakumov.bikecomp.util.Utils;
+import ua.com.abakumov.bikecomp.util.theme.FullscreenThemeDecider;
+import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
+import ua.com.abakumov.bikecomp.util.helper.UIHelper;
+import ua.com.abakumov.bikecomp.util.helper.Helper;
 
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
-import static ua.com.abakumov.bikecomp.util.LogUtils.verbose;
-import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_BACKLIGHT_STRATEGY_KEY;
-import static ua.com.abakumov.bikecomp.util.UIUtils.SETTINGS_THEME_KEY;
-import static ua.com.abakumov.bikecomp.util.UIUtils.goHome;
-import static ua.com.abakumov.bikecomp.util.UIUtils.goReportScreen;
-import static ua.com.abakumov.bikecomp.util.UIUtils.hideNotification;
-import static ua.com.abakumov.bikecomp.util.UIUtils.setupTheme;
-import static ua.com.abakumov.bikecomp.util.UIUtils.showNotification;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_BACKLIGHT_STRATEGY_KEY;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_THEME_KEY;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goHome;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showNotification;
 
 
 /**
@@ -210,20 +210,20 @@ public class MainActivity extends FragmentActivity {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Enabled event) {
-        UIUtils.showToast(R.string.enabled_gps_provider, this);
+        UIHelper.showToast(R.string.enabled_gps_provider, this);
     }
 
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Disabled event) {
-        UIUtils.showToast(R.string.disabled_gps_provider, this);
+        UIHelper.showToast(R.string.disabled_gps_provider, this);
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
         this.sessionIsRunning = true;
 
-        UIUtils.showToast(R.string.session_started, this);
+        UIHelper.showToast(R.string.session_started, this);
 
         showNotification(this);
     }
@@ -240,14 +240,14 @@ public class MainActivity extends FragmentActivity {
     public void onEvent(SessionStop event) {
         this.sessionIsRunning = false;
 
-        UIUtils.showToast(R.string.session_stopped, this);
+        UIHelper.showToast(R.string.session_stopped, this);
 
         hideNotification(this);
 
         Date startDate = infoService.getStartDate();
         float distance = infoService.getDistance();
         float elapsedTime = infoService.getElapsedTimeTicks();
-        double averageSpeed = Utils.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
+        double averageSpeed = Helper.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
         int averagePace = (int) (distance / elapsedTime);
 
         // Go to report screen

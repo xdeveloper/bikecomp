@@ -4,7 +4,7 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.gps.GpsTrouble;
 import ua.com.abakumov.bikecomp.event.gps.NewSpeed;
 
-import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
 
 
 /**

@@ -1,13 +1,15 @@
-package ua.com.abakumov.bikecomp.util;
+package ua.com.abakumov.bikecomp.util.helper;
 
 import android.util.Log;
+
+import ua.com.abakumov.bikecomp.util.Constants;
 
 /**
  * Logging helper
  * <p>
  * Created by Oleksandr_Abakumov on 1/11/2016.
  */
-public class LogUtils {
+public class LogHelper {
 
     public static final void verbose(String message) {
         Log.v(Constants.TAG, surround(message));

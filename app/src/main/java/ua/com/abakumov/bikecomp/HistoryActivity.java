@@ -1,11 +1,8 @@
 package ua.com.abakumov.bikecomp;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -21,19 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
-import ua.com.abakumov.bikecomp.util.DBHelper;
-import ua.com.abakumov.bikecomp.util.ThemeDecider;
-import ua.com.abakumov.bikecomp.util.UIUtils;
-import ua.com.abakumov.bikecomp.util.Utils;
-import ua.com.abakumov.bikecomp.util.WithActionBarThemeDecider;
+import ua.com.abakumov.bikecomp.util.helper.DBHelper;
+import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
+import ua.com.abakumov.bikecomp.util.theme.WithActionBarThemeDecider;
 
-import static ua.com.abakumov.bikecomp.util.UIUtils.setupTheme;
-import static ua.com.abakumov.bikecomp.util.Utils.formatDate;
-import static ua.com.abakumov.bikecomp.util.Utils.formatDistance;
-import static ua.com.abakumov.bikecomp.util.Utils.formatElapsedTime;
-import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
-import static ua.com.abakumov.bikecomp.util.Utils.formatTime;
-import static ua.com.abakumov.bikecomp.util.Utils.metersToKilometers;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDate;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDistance;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.formatElapsedTime;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.formatTime;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.metersToKilometers;
 
 
 /**

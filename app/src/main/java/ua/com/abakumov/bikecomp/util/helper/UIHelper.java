@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp.util;
+package ua.com.abakumov.bikecomp.util.helper;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -21,13 +21,14 @@ import ua.com.abakumov.bikecomp.MainActivity;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
+import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
 
 /**
  * UI specific utilities
  * <p>
  * Created by Oleksandr Abakumov on 7/21/15.
  */
-public class UIUtils {
+public class UIHelper {
     public static final String SETTINGS_THEME_KEY = "displaySettingsThemeKey";
     public static final String SETTINGS_BACKLIGHT_STRATEGY_KEY = "displaySettingsBacklightStrategyKey";
 
@@ -77,12 +78,12 @@ public class UIUtils {
      */
     public static void setupTheme(Context context, Class<?> clazz, ThemeDecider decider) {
         SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String themeName = defaultSharedPreferences.getString(SETTINGS_THEME_KEY, UIUtils.Theme.Day.name());
+        String themeName = defaultSharedPreferences.getString(SETTINGS_THEME_KEY, UIHelper.Theme.Day.name());
 
         int resid;
-        if (UIUtils.Theme.Day.name().equals(themeName)) {
+        if (UIHelper.Theme.Day.name().equals(themeName)) {
             resid = decider.dailyTheme();
-        } else if (UIUtils.Theme.Night.name().equals(themeName)) {
+        } else if (UIHelper.Theme.Night.name().equals(themeName)) {
             resid = decider.nightlyTheme();
         } else {
             resid = decider.dailyTheme();

@@ -8,11 +8,8 @@ import java.util.List;
 
 import ua.com.abakumov.bikecomp.fragment.PreferenceFragment;
 import ua.com.abakumov.bikecomp.util.Constants;
-import ua.com.abakumov.bikecomp.util.ThemeDecider;
-import ua.com.abakumov.bikecomp.util.UIUtils;
-import ua.com.abakumov.bikecomp.util.WithActionBarThemeDecider;
-
-import static ua.com.abakumov.bikecomp.util.UIUtils.*;
+import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
+import ua.com.abakumov.bikecomp.util.theme.WithActionBarThemeDecider;
 
 
 /**

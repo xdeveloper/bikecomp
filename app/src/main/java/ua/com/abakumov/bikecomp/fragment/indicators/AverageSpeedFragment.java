@@ -5,13 +5,12 @@ import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
-import ua.com.abakumov.bikecomp.util.Utils;
+import ua.com.abakumov.bikecomp.util.helper.Helper;
 
 import static android.util.Log.v;
 import static java.lang.String.valueOf;
-import static ua.com.abakumov.bikecomp.util.Constants.TAG;
-import static ua.com.abakumov.bikecomp.util.LogUtils.verbose;
-import static ua.com.abakumov.bikecomp.util.Utils.formatSpeed;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
 
 /**
  * Shows average speed
@@ -60,37 +59,40 @@ public class AverageSpeedFragment extends IndicatorFragment {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
-        this.averageSpeed = 0;
-
-        updateUI();
+        resetAll();
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewElapsedSecounds event) {
         this.elapsedTime = event.getElapsedSecounds();
+
         updateAverageSpeed();
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewDistance event) {
-        this.distance = event.getDistanceInMeters();
+        this.distance += event.getDistance();
 
-        v(TAG, "[ Av. Speed Fragment ] New distance has been received, distance (meters) is " +
-                valueOf(this.distance));
+        verbose("New distance has been received " + valueOf(this.distance));
 
         updateAverageSpeed();
     }
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
-        this.distance = 0;
-        this.elapsedTime = 0;
-
-        updateAverageSpeed();
+        resetAll();
     }
 
 
     // ----------- Utilities -----------------------------------------------------------------------
+
+    private void resetAll() {
+        this.averageSpeed = 0;
+        this.distance = 0;
+        this.elapsedTime = 0;
+
+        updateUI();
+    }
 
     private void updateAverageSpeed() {
         reCalculateAverageSpeed();
@@ -101,11 +103,10 @@ public class AverageSpeedFragment extends IndicatorFragment {
         verbose("Recalculate average speed");
         verbose("Distance: " + distance + ", elapsed time: " + elapsedTime);
 
-        // No elapsed time yet (prevent ArithmeticException exception "division by zero")
-        if (this.elapsedTime == 0) {
+        if (this.elapsedTime == 0 || this.distance == 0) {
             this.averageSpeed = 0;
         } else {
-            this.averageSpeed = Utils.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
+            this.averageSpeed = Helper.metersPerSecoundToKilometersPerHour(distance / elapsedTime);
         }
 
         verbose("Average speed is " + valueOf(this.averageSpeed));

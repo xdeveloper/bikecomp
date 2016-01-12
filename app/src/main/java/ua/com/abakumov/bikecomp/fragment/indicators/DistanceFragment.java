@@ -4,8 +4,8 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 
-import static ua.com.abakumov.bikecomp.util.Utils.formatDistance;
-import static ua.com.abakumov.bikecomp.util.Utils.metersToKilometers;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDistance;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.metersToKilometers;
 
 /**
  * Shows distance on the screen
@@ -21,7 +21,7 @@ public class DistanceFragment extends IndicatorFragment {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewDistance event) {
-        distance = event.getDistanceInMeters();
+        distance = event.getDistance();
 
         updateUI();
     }

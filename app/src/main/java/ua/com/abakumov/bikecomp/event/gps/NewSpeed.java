@@ -1,7 +1,7 @@
 package ua.com.abakumov.bikecomp.event.gps;
 
 import ua.com.abakumov.bikecomp.event.Event;
-import ua.com.abakumov.bikecomp.util.Utils;
+import ua.com.abakumov.bikecomp.util.helper.Helper;
 
 /**
  * Event for speed
@@ -16,12 +16,8 @@ public class NewSpeed implements Event {
     public NewSpeed(float speed) {
         this.speed = speed;
     }
-
-    public float getSpeed() {
-        return speed;
-    }
-
+    
     public double getKmphSpeed() {
-        return Utils.metersPerSecoundToKilometersPerHour(speed);
+        return Helper.metersPerSecoundToKilometersPerHour(speed);
     }
 }

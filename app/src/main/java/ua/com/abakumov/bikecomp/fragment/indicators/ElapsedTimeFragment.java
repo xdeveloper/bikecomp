@@ -4,7 +4,7 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 
-import static ua.com.abakumov.bikecomp.util.Utils.formatElapsedTime;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.formatElapsedTime;
 
 /*
  * Created by oabakumov on 26.06.2015.

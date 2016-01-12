@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp.util;
+package ua.com.abakumov.bikecomp.util.helper;
 
 import android.app.Activity;
 import android.view.Gravity;
@@ -21,7 +21,7 @@ import ua.com.abakumov.bikecomp.R;
  * <p>
  * Created by Oleksandr Abakumov on 7/4/15.
  */
-public final class Utils {
+public final class Helper {
     private static NumberFormat ZERO_FORMAT = new DecimalFormat("0.0");
 
     private static NumberFormat USUAL_FORMAT = new DecimalFormat("##.0");

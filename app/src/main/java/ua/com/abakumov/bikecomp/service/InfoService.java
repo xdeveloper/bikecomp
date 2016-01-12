@@ -27,12 +27,14 @@ import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 import ua.com.abakumov.bikecomp.event.gps.NewSpeed;
 import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
+import ua.com.abakumov.bikecomp.util.helper.EventBusHelper;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.util.Log.v;
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
-import static ua.com.abakumov.bikecomp.util.LogUtils.information;
-import static ua.com.abakumov.bikecomp.util.LogUtils.verbose;
+import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 
 /**
  * Listens location updates and publishes different events
@@ -71,6 +73,7 @@ public class InfoService extends Service {
 
     private LocationHolder locationHolder;
 
+
     // ----------- System --------------------------------------------------------------------------
 
     @Override
@@ -86,25 +89,25 @@ public class InfoService extends Service {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                locationHolder.newLocation(location);
+                locationHolder.updateLocation(location);
 
-                EventBus.getDefault().post(new NewDistance(locationHolder.latestDistance()));
-                EventBus.getDefault().post(new NewSpeed(location.getSpeed()));
+                post(new NewDistance(locationHolder.getLatestDistance()));
+                post(new NewSpeed(location.getSpeed()));
             }
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
                 switch (status) {
                     case LocationProvider.AVAILABLE:
-                        EventBus.getDefault().post(new Available());
+                        post(new Available());
                         break;
 
                     case LocationProvider.TEMPORARILY_UNAVAILABLE:
-                        EventBus.getDefault().post(new TemporaryUnavailable());
+                        post(new TemporaryUnavailable());
                         break;
 
                     case LocationProvider.OUT_OF_SERVICE:
-                        EventBus.getDefault().post(new OutOfService());
+                        post(new OutOfService());
                         break;
 
                     default:
@@ -115,12 +118,12 @@ public class InfoService extends Service {
 
             @Override
             public void onProviderEnabled(String provider) {
-                EventBus.getDefault().post(new Enabled());
+                post(new Enabled());
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-                EventBus.getDefault().post(new Disabled());
+                post(new Disabled());
             }
         };
 
@@ -226,7 +229,7 @@ public class InfoService extends Service {
             @Override
             public void run() {
                 elapsedTimeTicks++;
-                EventBus.getDefault().post(new NewElapsedSecounds(elapsedTimeTicks * stepInSecounds));
+                post(new NewElapsedSecounds(elapsedTimeTicks * stepInSecounds));
                 handler.postDelayed(timerTask, MS_IN_SECOND);
             }
         };

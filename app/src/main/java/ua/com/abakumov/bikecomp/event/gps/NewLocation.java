@@ -1,6 +1,6 @@
 package ua.com.abakumov.bikecomp.event.gps;
 
-import ua.com.abakumov.bikecomp.util.Utils;
+import ua.com.abakumov.bikecomp.util.helper.Helper;
 import ua.com.abakumov.bikecomp.event.Event;
 
 /**
@@ -36,7 +36,7 @@ public class NewLocation implements Event {
      * @return speed
      */
     public double getKmphSpeed() {
-        return Utils.metersPerSecoundToKilometersPerHour(metersPerSecoundSpeed);
+        return Helper.metersPerSecoundToKilometersPerHour(metersPerSecoundSpeed);
     }
 
 }

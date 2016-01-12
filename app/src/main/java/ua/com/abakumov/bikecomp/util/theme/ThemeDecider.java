@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp.util;
+package ua.com.abakumov.bikecomp.util.theme;
 
 /**
  * <Class Name and Purpose>

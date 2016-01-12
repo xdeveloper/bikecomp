@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp.util;
+package ua.com.abakumov.bikecomp.util.helper;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,7 +14,6 @@ import java.util.List;
 import ua.com.abakumov.bikecomp.domain.Ride;
 
 import static ua.com.abakumov.bikecomp.util.Constants.TAG;
-import static ua.com.abakumov.bikecomp.util.Utils.timeToDate;
 
 /**
  * DAO/Helper (sqlite)
@@ -84,8 +83,8 @@ public class DBHelper extends SQLiteOpenHelper {
             do {
                 int id = cursor.getInt(idIndex);
                 String title = cursor.getString(titleIndex);
-                Date startDate = timeToDate(cursor.getLong(startDateIndex));
-                Date finishDate = timeToDate(cursor.getLong(finishDateIndex));
+                Date startDate = Helper.timeToDate(cursor.getLong(startDateIndex));
+                Date finishDate = Helper.timeToDate(cursor.getLong(finishDateIndex));
                 int elapsedTime = cursor.getInt(elapsedTimeIndex);
                 double avSpeed = cursor.getDouble(avTimeIndex);
                 int avPace = cursor.getInt(avPaceIndex);
