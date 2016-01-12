@@ -27,7 +27,6 @@ import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 import ua.com.abakumov.bikecomp.event.gps.NewSpeed;
 import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
-import ua.com.abakumov.bikecomp.util.helper.EventBusHelper;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.util.Log.v;
@@ -89,9 +88,11 @@ public class InfoService extends Service {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                locationHolder.updateLocation(location);
+                if (!paused) {
+                    locationHolder.updateLocation(location);
 
-                post(new NewDistance(locationHolder.getLatestDistance()));
+                    post(new NewDistance(locationHolder.getDistance()));
+                }
                 post(new NewSpeed(location.getSpeed()));
             }
 

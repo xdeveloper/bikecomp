@@ -13,6 +13,8 @@ public class LocationHolder {
 
     private Location currentLocation;
 
+    private float distance;
+
 
     /**
      * New location available
@@ -27,20 +29,20 @@ public class LocationHolder {
             previousLocation = currentLocation;
             currentLocation = location;
         }
+
+        calculateDistance();
+    }
+
+    private void calculateDistance() {
+        distance += currentLocation.distanceTo(previousLocation);
     }
 
     /**
-     * Get a distance between two latest locations (current and the previous one)
+     * Get overall distance
      *
      * @return distance in meters
      */
-    public float getLatestDistance() {
-        if (currentLocation == null || previousLocation == null) {
-            return 0;
-        } else if (currentLocation.equals(previousLocation)) {
-            return 0;
-        } else {
-            return currentLocation.distanceTo(previousLocation);
-        }
+    public float getDistance() {
+        return distance;
     }
 }

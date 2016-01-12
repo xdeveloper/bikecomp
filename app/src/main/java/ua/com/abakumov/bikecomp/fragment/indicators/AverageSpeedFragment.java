@@ -71,7 +71,7 @@ public class AverageSpeedFragment extends IndicatorFragment {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(NewDistance event) {
-        this.distance += event.getDistance();
+        this.distance = event.getDistance();
 
         verbose("New distance has been received " + valueOf(this.distance));
 
