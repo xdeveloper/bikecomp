@@ -12,7 +12,7 @@
         android:label="@string/app_name">
 
         <service
-            android:name=".service.infoservice.InfoService"
+            android:name=".service.InfoService"
             android:exported="false" />
 
         <!--  ##############################  Main screen ###################################### -->
