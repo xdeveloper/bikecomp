@@ -45,7 +45,6 @@ public class ClockFragment extends IndicatorFragment {
         return simpleDateFormat.format(Calendar.getInstance().getTime());
     }
 
-
     @Override
     protected int getLayoutRid() {
         return R.layout.fragment_clock;
@@ -66,7 +65,7 @@ public class ClockFragment extends IndicatorFragment {
     private class ClockFragmentTimerTask extends TimerTask {
         @Override
         public void run() {
-            getActivity().runOnUiThread(() -> updateUI());
+            getActivity().runOnUiThread(ClockFragment.this::updateUI);
         }
     }
 }
