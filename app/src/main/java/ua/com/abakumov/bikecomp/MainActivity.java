@@ -3,7 +3,6 @@ package ua.com.abakumov.bikecomp;
 
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
@@ -16,7 +15,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -38,20 +36,27 @@ import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.service.LocalBinder;
+import ua.com.abakumov.bikecomp.util.Constants;
+import ua.com.abakumov.bikecomp.util.helper.Helper;
+import ua.com.abakumov.bikecomp.util.helper.ScreenHelper;
 import ua.com.abakumov.bikecomp.util.theme.FullscreenThemeDecider;
 import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
-import ua.com.abakumov.bikecomp.util.helper.Helper;
 
-import static ua.com.abakumov.bikecomp.util.Constants.TAG;
-import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_BACKLIGHT_STRATEGY_KEY;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_THEME_KEY;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goHome;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showNotification;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showToast;
+import static ua.com.abakumov.bikecomp.PreferencesHelper.getPreferenceByKey;
+import static ua.com.abakumov.bikecomp.R.id.action_history;
+import static ua.com.abakumov.bikecomp.R.id.action_quit;
+import static ua.com.abakumov.bikecomp.R.id.action_settings;
+import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_KEEP_ON;
+import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_MIDDLE;
+import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_SYSTEM_DEFAULT;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_BACKLIGHT_STRATEGY_KEY;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.*;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.*;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MAX;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MIDDLE;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.ALWAYS_ON;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.SYS_DEFAULT;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.*;
 
 
 /**
@@ -142,8 +147,6 @@ public class MainActivity extends FragmentActivity {
     protected void onStop() {
         EventBus.getDefault().unregister(this);
 
-        releaseWakeLock();
-
         super.onStop();
     }
 
@@ -163,37 +166,24 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        switch (item.getItemId()) {
+            // Go to History
+            case action_history:
+                startActivity(new Intent(this, HistoryActivity.class));
+                break;
 
-        // Go to History
-        if (id == R.id.action_history) {
-            startActivity(new Intent(this, HistoryActivity.class));
-        }
+            // Go to Settings
+            case action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
 
-        // Go to Settings
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-        }
-
-        // Quit application
-        if (id == R.id.action_quit) {
-            quitApplication();
+            // Quit application
+            case action_quit:
+                quitApplication();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void releaseWakeLock() {
-        if (wakeLock != null && wakeLock.isHeld()) {
-            wakeLock.release();
-        }
-    }
-
-    private void quitApplication() {
-        releaseWakeLock();
-        hideNotification(this);
-        stopServices();
-        finish();
     }
 
     @Override
@@ -209,8 +199,8 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-
     // ----------- Events handling -----------------------------------------------------------------
+
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Enabled event) {
@@ -289,37 +279,36 @@ public class MainActivity extends FragmentActivity {
         }, BIND_AUTO_CREATE);
     }
 
-
     private void stopServices() {
         stopService(new Intent(MainActivity.this, InfoService.class));
     }
 
-    // TODO: a lot of troubles are here
     private void setupBacklightStrategy() {
-        String val = PreferenceManager.getDefaultSharedPreferences(this).
-                getString("displaySettingsBacklightStrategyKey", "ALWAYS_ON_NORMAL");
+        final String backlightSetting =
+                getPreferenceByKey(SETTINGS_BACKLIGHT_STRATEGY_KEY, SCREEN_SYSTEM_DEFAULT, this);
 
-        switch (val) {
-            case "ALWAYS_ON_MAXIMUM":
-                acquireWakeLock(PowerManager.PARTIAL_WAKE_LOCK);
+        switch (backlightSetting) {
+            case SCREEN_KEEP_ON:
+                verbose("Maximum brightness always on");
+                setScreenLock(ALWAYS_ON, getWindow());
+                setBrightness(MAX, getWindow());
                 break;
-            case "ALWAYS_ON_NORMAL":
-                acquireWakeLock(PowerManager.PARTIAL_WAKE_LOCK);
+
+            case SCREEN_MIDDLE:
+                verbose("Middle brightness always on");
+                setScreenLock(ALWAYS_ON, getWindow());
+                setBrightness(MIDDLE, getWindow());
                 break;
-            case "SYSTEM_SETTING":
-                // Release lock if it was acquired earlier
-                releaseWakeLock();
+
+            case SCREEN_SYSTEM_DEFAULT:
+                verbose("Middle brightness system default");
+                setScreenLock(SYS_DEFAULT, getWindow());
+                setBrightness(MIDDLE, getWindow());
                 break;
 
             default:
-                throw new IllegalArgumentException("Unknown backlight strategy");
+                warning("Unknown value: " + backlightSetting);
         }
-    }
-
-    private void acquireWakeLock(int levelAndFlags) {
-        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        wakeLock = pm.newWakeLock(levelAndFlags, TAG);
-        wakeLock.acquire();
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -348,4 +337,9 @@ public class MainActivity extends FragmentActivity {
         runOnUiThread(() -> ((TextView) findViewById(R.id.currentScreenText)).setText(rid));
     }
 
+    private void quitApplication() {
+        hideNotification(this);
+        stopServices();
+        finish();
+    }
 }

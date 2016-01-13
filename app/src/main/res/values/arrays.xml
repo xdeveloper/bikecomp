@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="display_backlight_settings">
-        <item>Keep maximum</item>
-        <item>Keep normal</item>
-        <item>System setting</item>
+        <item>Keep on maximum</item>
+        <item>Middle level</item>
+        <item>System default</item>
     </string-array>
 
     <string-array name="display_theme">
@@ -14,9 +14,9 @@
 
     <!-- Locale independent values-->
     <string-array name="display_backlight_values" translatable="false">
-        <item>ALWAYS_ON_MAXIMUM</item>
-        <item>ALWAYS_ON_NORMAL</item>
-        <item>SYSTEM_SETTING</item>
+        <item>SCREEN_KEEP_ON</item>
+        <item>SCREEN_MIDDLE</item>
+        <item>SCREEN_SYSTEM_DEFAULT</item>
     </string-array>
 
     <string-array name="display_theme_values" translatable="false">

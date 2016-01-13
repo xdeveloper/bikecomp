@@ -19,6 +19,10 @@ public class LogHelper {
         Log.i(Constants.TAG, surround(message));
     }
 
+    public static void warning(String message) {
+        Log.w(Constants.TAG, surround(message));
+    }
+
     private static String surround(String message) {
         return "**********************" + message + "**********************";
     }

@@ -12,6 +12,8 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +25,8 @@ import ua.com.abakumov.bikecomp.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
 
+import static android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+
 /**
  * UI specific utilities
  * <p>
@@ -30,7 +34,6 @@ import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
  */
 public class UIHelper {
     public static final String SETTINGS_THEME_KEY = "displaySettingsThemeKey";
-    public static final String SETTINGS_BACKLIGHT_STRATEGY_KEY = "displaySettingsBacklightStrategyKey";
 
 
     @FunctionalInterface

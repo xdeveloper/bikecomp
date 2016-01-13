@@ -10,4 +10,8 @@ public class Constants {
     public static final String TAG = "Bikecomp";
 
     public static final String SETTINGS_NAME = "settings";
+    public static final String SETTINGS_BACKLIGHT_STRATEGY_KEY = "DISPLAY_SETTINGS_BACKLIGHT_STRATEGY_KEY";
+    public static final String SCREEN_SYSTEM_DEFAULT = "SCREEN_SYSTEM_DEFAULT";
+    public static final String SCREEN_KEEP_ON = "SCREEN_KEEP_ON";
+    public static final String SCREEN_MIDDLE = "SCREEN_MIDDLE";
 }

@@ -59,7 +59,7 @@ public class SpeedFragment extends IndicatorFragment {
                 resetSpeed();
             }
 
-        }, COUNT_DOWN_MAXIMUM_SECOUNDS, COUNT_DOWN_MAXIMUM_SECOUNDS, TimeUnit.SECONDS);
+        }, 0, COUNT_DOWN_MAXIMUM_SECOUNDS, TimeUnit.SECONDS);
     }
 
 

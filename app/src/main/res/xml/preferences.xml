@@ -7,7 +7,7 @@
             android:defaultValue="ALWAYS_ON_NORMAL"
             android:entries="@array/display_backlight_settings"
             android:entryValues="@array/display_backlight_values"
-            android:key="displaySettingsBacklightStrategyKey"
+            android:key="DISPLAY_SETTINGS_BACKLIGHT_STRATEGY_KEY"
             android:summary="%s"
             android:title="@string/backlight_strategy_title" />
 
