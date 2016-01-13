@@ -147,12 +147,6 @@ public class MainActivity extends FragmentActivity {
         super.onStop();
     }
 
-    private void releaseWakeLock() {
-        if (wakeLock != null && wakeLock.isHeld()) {
-            wakeLock.release();
-        }
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -189,6 +183,12 @@ public class MainActivity extends FragmentActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void releaseWakeLock() {
+        if (wakeLock != null && wakeLock.isHeld()) {
+            wakeLock.release();
+        }
+    }
+
     private void quitApplication() {
         releaseWakeLock();
         hideNotification(this);
@@ -198,12 +198,13 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     public void onBackPressed() {
-        Log.v(TAG, "onBackPressed");
+        verbose("Back pressed");
+
         if (sessionIsRunning) {
-            Log.v(TAG, "Session is still running. Go main screen");
+            verbose("Session is still running. Go main screen");
             goHome(this);
         } else {
-            Log.v(TAG, "Session is stopped. Exit application");
+            verbose("Session is stopped. Exit application");
             finish();
         }
     }
