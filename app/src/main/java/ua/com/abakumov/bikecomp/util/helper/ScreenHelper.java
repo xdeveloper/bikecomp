@@ -1,8 +1,10 @@
 package ua.com.abakumov.bikecomp.util.helper;
 
+import android.content.ContentResolver;
 import android.view.Window;
 import android.view.WindowManager;
 
+import static android.provider.Settings.System.*;
 import static android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
 
 /**
@@ -10,7 +12,7 @@ import static android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
  */
 public class ScreenHelper {
     public enum BrightnessLevel {
-        MAX(255), MIDDLE(127), MIN(1);
+        MAX(255), MIDDLE(127), AUTO(1);
 
         private final int level;
 
@@ -35,8 +37,16 @@ public class ScreenHelper {
     }
 
     public static void setBrightness(BrightnessLevel brightness, Window window) {
-        WindowManager.LayoutParams layoutParams = window.getAttributes();
-        layoutParams.screenBrightness = brightness.getLevel();
-        window.setAttributes(layoutParams);
+        ContentResolver contentResolver = window.getContext().getContentResolver();
+
+        if (brightness == BrightnessLevel.AUTO) {
+            putFloat(contentResolver, "screen_auto_brightness_adj", brightness.getLevel());
+        } else {
+            putInt(contentResolver, SCREEN_BRIGHTNESS, brightness.getLevel());
+        }
+
+        WindowManager.LayoutParams attributes = window.getAttributes();
+        attributes.screenBrightness = brightness.getLevel();
+        window.setAttributes(attributes);
     }
 }

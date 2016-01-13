@@ -36,9 +36,7 @@ import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.service.LocalBinder;
-import ua.com.abakumov.bikecomp.util.Constants;
 import ua.com.abakumov.bikecomp.util.helper.Helper;
-import ua.com.abakumov.bikecomp.util.helper.ScreenHelper;
 import ua.com.abakumov.bikecomp.util.theme.FullscreenThemeDecider;
 import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
 
@@ -54,6 +52,7 @@ import static ua.com.abakumov.bikecomp.util.helper.LogHelper.*;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.*;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MAX;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MIDDLE;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.AUTO;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.ALWAYS_ON;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.SYS_DEFAULT;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.*;
@@ -303,7 +302,7 @@ public class MainActivity extends FragmentActivity {
             case SCREEN_SYSTEM_DEFAULT:
                 verbose("Middle brightness system default");
                 setScreenLock(SYS_DEFAULT, getWindow());
-                setBrightness(MIDDLE, getWindow());
+                setBrightness(AUTO, getWindow());
                 break;
 
             default:
