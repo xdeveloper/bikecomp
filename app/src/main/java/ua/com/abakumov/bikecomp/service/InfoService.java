@@ -28,6 +28,7 @@ import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 import ua.com.abakumov.bikecomp.event.gps.NewSpeed;
 import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
+import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
 import static android.location.LocationManager.GPS_PROVIDER;
 import static android.util.Log.v;
@@ -121,10 +122,12 @@ public class InfoService extends Service {
 
     }
 
+    @Override
     public IBinder onBind(Intent intent) {
         return new LocalBinder(this);
     }
 
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         information("InfoService on start");
 
@@ -134,13 +137,15 @@ public class InfoService extends Service {
                 MINIMAL_DISTANCE_IN_METERS,
                 locationListener);
 
+        UIHelper.startInForeground(this);
+
         super.onStartCommand(intent, flags, startId);
 
         return START_STICKY;
     }
 
     public void onDestroy() {
-        Log.i(TAG, "[InfoService] Destroying ...");
+        information("Destroying ...");
 
         EventBus.getDefault().unregister(this);
         locationManager.removeUpdates(locationListener);

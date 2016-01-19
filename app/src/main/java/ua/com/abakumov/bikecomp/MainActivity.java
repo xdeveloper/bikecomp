@@ -222,8 +222,6 @@ public class MainActivity extends FragmentActivity {
         this.sessionIsRunning = true;
 
         showToast(R.string.session_started, this);
-
-        showNotification(this);
     }
 
     @SuppressWarnings(value = "unused")
@@ -239,8 +237,6 @@ public class MainActivity extends FragmentActivity {
         this.sessionIsRunning = false;
 
         showToast(R.string.session_stopped, this);
-
-        hideNotification(this);
 
         Date startDate = infoService.getStartDate();
         float distance = infoService.getDistance();

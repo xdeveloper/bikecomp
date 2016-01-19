@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,8 +13,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +24,8 @@ import ua.com.abakumov.bikecomp.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
 
-import static android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
+import static android.content.Context.NOTIFICATION_SERVICE;
+import static ua.com.abakumov.bikecomp.util.Constants.NOTIFICATION_TAG;
 
 /**
  * UI specific utilities
@@ -135,21 +135,24 @@ public class UIHelper {
      * @param context context
      */
     public static void showNotification(Context context) {
+        ((NotificationManager) context.getSystemService(NOTIFICATION_SERVICE))
+                .notify(NOTIFICATION_TAG, buildNotificationBuilder(context)
+                        .build());
+    }
+
+    public static Notification.Builder buildNotificationBuilder(Context context) {
+        Notification.Builder builder = new Notification.Builder(context)
+                .setOngoing(true)
+                .setSmallIcon(android.R.drawable.arrow_up_float)
+                .setContentTitle(context.getResources().getString(R.string.session_active))
+                .setContentText(context.getResources().getString(R.string.session_active_text));
+
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
 
-        Notification notification =
-                new Notification.Builder(context)
-                        .setOngoing(true)
-                        .setSmallIcon(android.R.drawable.star_big_on)
-                        .setContentTitle(context.getResources().getString(R.string.session_active))
-                        .setContentText(context.getResources().getString(R.string.session_active_text))
-                        .setContentIntent(pendingIntent)
-                        .build();
+        builder.setContentIntent(pendingIntent);
+        return builder;
 
-        NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notification);
     }
 
     /**
@@ -158,7 +161,10 @@ public class UIHelper {
      * @param context context
      */
     public static void hideNotification(Context context) {
-        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
+        ((NotificationManager) context.getSystemService(NOTIFICATION_SERVICE)).cancelAll();
     }
 
+    public static void startInForeground(Service service) {
+        service.startForeground(NOTIFICATION_TAG, UIHelper.buildNotificationBuilder(service).build());
+    }
 }
