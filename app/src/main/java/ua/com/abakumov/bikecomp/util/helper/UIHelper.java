@@ -88,38 +88,6 @@ public class UIHelper {
     }
 
     /**
-     * Setup theme based on preferences or calendar
-     *
-     * @param context context
-     * @param clazz   clazz
-     */
-    public static void setupTheme(Context context, Class<?> clazz, ThemeDecider decider) {
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String themeName = defaultSharedPreferences.getString(SETTINGS_THEME_KEY, UIHelper.Theme.Day.name());
-
-        int resid;
-        if (UIHelper.Theme.Day.name().equals(themeName)) {
-            resid = decider.dailyTheme();
-        } else if (UIHelper.Theme.Night.name().equals(themeName)) {
-            resid = decider.nightlyTheme();
-        } else {
-            resid = decider.dailyTheme();
-        }
-
-        context.setTheme(resid);
-
-        if (clazz != null) {
-            Intent intent = new Intent(context, clazz);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            context.startActivity(intent);
-        }
-    }
-
-    public static void setupTheme(Context context, ThemeDecider decider) {
-        setupTheme(context, null, decider);
-    }
-
-    /**
      * Setup theme by application settings
      * <p>
      * NOTE: remember - invoke this before super.onCreate();
