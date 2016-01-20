@@ -8,7 +8,9 @@
     <!-- Main -->
     <TextView
         android:id="@+id/indicatorMainTextView"
-        style="@style/indicator"
+        android:textColor="?attr/indicator_textColor"
+        android:textSize="?attr/indicator_textSize"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

@@ -2,12 +2,20 @@
 
     <!-- Base application theme. -->
     <style name="BikeCompTheme_Dark" parent="Base.Theme.AppCompat">
-        <!-- Customize your theme here. -->
+        <item name="indicator_textColor">#FFF</item>
+        <item name="indicator_textSize">100sp</item>
+
     </style>
 
     <style name="BikeCompTheme_Light" parent="Base.Theme.AppCompat.Light">
-        <!-- Customize your theme here. -->
+        <item name="indicator_textColor">#555</item>
+        <item name="indicator_textSize">100sp</item>
+
     </style>
+
+    <attr name="indicator_textColor" format="color" />
+    <attr name="indicator_textSize" format="dimension" />
+
 
     <style name="report_first_column">
         <item name="android:layout_marginRight">10dp</item>
@@ -24,14 +32,6 @@
         <item name="android:layout_height">70dp</item>
         <item name="android:layout_margin">8dp</item>
         <item name="android:background">@drawable/button_selector</item>
-    </style>
-
-    <!-- Indicator's look -->
-    <style name="indicator">
-        <item name="android:textColor">@color/indicator_color</item>
-        <item name="android:textSize">100sp</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:text">0.0</item>
     </style>
 
 </resources>
