@@ -8,13 +8,12 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.PowerManager;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -48,14 +47,21 @@ import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_KEEP_ON;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_MIDDLE;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_SYSTEM_DEFAULT;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_BACKLIGHT_STRATEGY_KEY;
-import static ua.com.abakumov.bikecomp.util.helper.LogHelper.*;
-import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.*;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.AUTO;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MAX;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MIDDLE;
-import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.AUTO;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.ALWAYS_ON;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.SYS_DEFAULT;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.*;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setBrightness;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setScreenLock;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_THEME_KEY;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goHome;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showToast;
 
 
 /**
@@ -63,7 +69,7 @@ import static ua.com.abakumov.bikecomp.util.helper.UIHelper.*;
  * <p>
  * Created by Oleksandr Abakumov on 6/28/15.
  */
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
 
     private boolean sessionIsRunning;
 
@@ -72,8 +78,6 @@ public class MainActivity extends FragmentActivity {
     private ViewPager viewPager;
 
     private ScreenSlidePagerAdapter viewPagerAdapter;
-
-    private PowerManager.WakeLock wakeLock;
 
     private ThemeDecider themeDecider = new FullscreenThemeDecider();
 

@@ -9,8 +9,8 @@
 
     <application
         android:allowBackup="true"
-        android:theme="@style/AppTheme"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        android:theme="@style/BikeCompTheme">
 
         <service
             android:name=".service.InfoService"
@@ -18,11 +18,10 @@
 
         <!--  ##############################  Main screen ###################################### -->
         <activity
-            android:launchMode="singleTask"
             android:name="ua.com.abakumov.bikecomp.MainActivity"
-            android:theme="@style/Widget.AppCompat.Light.ActivityChooserView"
             android:configChanges="orientation"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
