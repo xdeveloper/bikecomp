@@ -3,13 +3,15 @@ package ua.com.abakumov.bikecomp;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceManager;
 
 import java.util.List;
 
 import ua.com.abakumov.bikecomp.fragment.PreferenceFragment;
-import ua.com.abakumov.bikecomp.util.Constants;
-import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
-import ua.com.abakumov.bikecomp.util.theme.WithActionBarThemeDecider;
+import ua.com.abakumov.bikecomp.util.helper.LogHelper;
+import ua.com.abakumov.bikecomp.util.helper.UIHelper;
+
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_THEME_KEY;
 
 
 /**
@@ -19,28 +21,36 @@ import ua.com.abakumov.bikecomp.util.theme.WithActionBarThemeDecider;
  */
 public class SettingsActivity extends PreferenceActivity {
 
-    private ThemeDecider themeDecider = new WithActionBarThemeDecider();
+    SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
+        switch (key) {
+            case SETTINGS_THEME_KEY:
+                LogHelper.information("Changed application theme.Apply new theme.");
+
+                finish();
+                startActivity(getIntent());
+                break;
+        }
+    };
 
     // ----------- System --------------------------------------------------------------------------
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        UIHelper.setupTheme(this);
 
-        //setupTheme(this, themeDecider);
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(listener);
+
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    protected void onDestroy() {
+        PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(listener);
+        super.onDestroy();
     }
 
     @Override
     public void onBuildHeaders(List<Header> target) {
         loadHeadersFromResource(R.xml.preferences_headers, target);
-
-        SharedPreferences prefs = this.getSharedPreferences(Constants.SETTINGS_NAME, 0);
-
-        prefs.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-                int flag = 1;
-            }
-        });
     }
 
     @Override

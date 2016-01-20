@@ -5,10 +5,8 @@ import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -36,31 +34,15 @@ import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.service.LocalBinder;
 import ua.com.abakumov.bikecomp.util.helper.Helper;
-import ua.com.abakumov.bikecomp.util.theme.FullscreenThemeDecider;
-import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
+import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
-import static ua.com.abakumov.bikecomp.PreferencesHelper.getPreferenceByKey;
 import static ua.com.abakumov.bikecomp.R.id.action_history;
 import static ua.com.abakumov.bikecomp.R.id.action_quit;
 import static ua.com.abakumov.bikecomp.R.id.action_settings;
-import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_KEEP_ON;
-import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_MIDDLE;
-import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_SYSTEM_DEFAULT;
-import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_BACKLIGHT_STRATEGY_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
-import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
-import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.AUTO;
-import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MAX;
-import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MIDDLE;
-import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.ALWAYS_ON;
-import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.SYS_DEFAULT;
-import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setBrightness;
-import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setScreenLock;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goHome;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showToast;
 
 
@@ -79,26 +61,13 @@ public class MainActivity extends AppCompatActivity {
 
     private ScreenSlidePagerAdapter viewPagerAdapter;
 
-    private ThemeDecider themeDecider = new FullscreenThemeDecider();
-
-    private SharedPreferences.OnSharedPreferenceChangeListener onSharedPreferenceChangeListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (SETTINGS_BACKLIGHT_STRATEGY_KEY.equals(key)) {
-                setupBacklightStrategy();
-            } else if (SETTINGS_THEME_KEY.equals(key)) {
-                setupTheme(MainActivity.this, MainActivity.class, themeDecider);
-            }
-        }
-    };
-
-
     // ----------- System --------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        UIHelper.setupTheme(this);
+
         super.onCreate(savedInstanceState);
-        PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener);
         setContentView(R.layout.activity_main);
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
@@ -135,8 +104,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
 
         EventBus.getDefault().register(this);
-
-        setupBacklightStrategy();
+        UIHelper.setupBacklightStrategy(this.getWindow());
     }
 
     @Override
@@ -280,34 +248,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopServices() {
         stopService(new Intent(MainActivity.this, InfoService.class));
-    }
-
-    private void setupBacklightStrategy() {
-        final String backlightSetting =
-                getPreferenceByKey(SETTINGS_BACKLIGHT_STRATEGY_KEY, SCREEN_SYSTEM_DEFAULT, this);
-
-        switch (backlightSetting) {
-            case SCREEN_KEEP_ON:
-                verbose("Maximum brightness always on");
-                setScreenLock(ALWAYS_ON, getWindow());
-                setBrightness(MAX, getWindow());
-                break;
-
-            case SCREEN_MIDDLE:
-                verbose("Middle brightness always on");
-                setScreenLock(ALWAYS_ON, getWindow());
-                setBrightness(MIDDLE, getWindow());
-                break;
-
-            case SCREEN_SYSTEM_DEFAULT:
-                verbose("Middle brightness system default");
-                setScreenLock(SYS_DEFAULT, getWindow());
-                setBrightness(AUTO, getWindow());
-                break;
-
-            default:
-                warning("Unknown value: " + backlightSetting);
-        }
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

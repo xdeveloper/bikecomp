@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,10 +23,23 @@ import ua.com.abakumov.bikecomp.MainActivity;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
-import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
+import static ua.com.abakumov.bikecomp.PreferencesHelper.getPreferenceByKey;
 import static ua.com.abakumov.bikecomp.util.Constants.NOTIFICATION_TAG;
+import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_KEEP_ON;
+import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_MIDDLE;
+import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_SYSTEM_DEFAULT;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_BACKLIGHT_STRATEGY_KEY;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.AUTO;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MAX;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MIDDLE;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.ALWAYS_ON;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.SYS_DEFAULT;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setBrightness;
+import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setScreenLock;
 
 /**
  * UI specific utilities
@@ -106,6 +120,25 @@ public class UIHelper {
     }
 
     /**
+     * Setup theme by application settings
+     * <p>
+     * NOTE: remember - invoke this before super.onCreate();
+     *
+     * @param context context
+     */
+    public static void setupTheme(Context context) {
+        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String themeName = defaultSharedPreferences.getString(SETTINGS_THEME_KEY, UIHelper.Theme.Day.name());
+
+        if (Theme.Day.name().equals(themeName)) {
+            context.setTheme(R.style.BikeCompTheme_Light);
+        } else if (Theme.Night.name().equals(themeName)) {
+            context.setTheme(R.style.BikeCompTheme_Dark);
+        }
+    }
+
+
+    /**
      * Goes to android "home" screen
      *
      * @param context context
@@ -166,5 +199,36 @@ public class UIHelper {
 
     public static void startInForeground(Service service) {
         service.startForeground(NOTIFICATION_TAG, UIHelper.buildNotificationBuilder(service).build());
+    }
+
+    public static void setupBacklightStrategy(Window window) {
+        final String backlightSetting =
+                getPreferenceByKey(
+                        SETTINGS_BACKLIGHT_STRATEGY_KEY,
+                        SCREEN_SYSTEM_DEFAULT,
+                        window.getContext());
+
+        switch (backlightSetting) {
+            case SCREEN_KEEP_ON:
+                verbose("Maximum brightness always on");
+                setScreenLock(ALWAYS_ON, window);
+                setBrightness(MAX, window);
+                break;
+
+            case SCREEN_MIDDLE:
+                verbose("Middle brightness always on");
+                setScreenLock(ALWAYS_ON, window);
+                setBrightness(MIDDLE, window);
+                break;
+
+            case SCREEN_SYSTEM_DEFAULT:
+                verbose("Middle brightness system default");
+                setScreenLock(SYS_DEFAULT, window);
+                setBrightness(AUTO, window);
+                break;
+
+            default:
+                warning("Unknown value: " + backlightSetting);
+        }
     }
 }

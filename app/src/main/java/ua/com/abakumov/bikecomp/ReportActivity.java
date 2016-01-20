@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.helper.DBHelper;
-import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
-import ua.com.abakumov.bikecomp.util.theme.WithActionBarThemeDecider;
 
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDate;
@@ -27,8 +25,6 @@ import static ua.com.abakumov.bikecomp.util.helper.Helper.formatTime;
 public class ReportActivity extends AppCompatActivity {
 
     private Ride ride;
-
-    private ThemeDecider themeDecider = new WithActionBarThemeDecider();
 
     // ----------- System --------------------------------------------------------------------------
 

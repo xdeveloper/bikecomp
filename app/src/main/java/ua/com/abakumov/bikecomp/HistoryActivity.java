@@ -19,8 +19,6 @@ import java.util.List;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.helper.DBHelper;
-import ua.com.abakumov.bikecomp.util.theme.ThemeDecider;
-import ua.com.abakumov.bikecomp.util.theme.WithActionBarThemeDecider;
 
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDate;
@@ -37,8 +35,6 @@ import static ua.com.abakumov.bikecomp.util.helper.Helper.metersToKilometers;
  * Created by Oleksandr Abakumov on 7/17/15.
  */
 public class HistoryActivity extends AppCompatActivity {
-
-    private ThemeDecider themeDecider = new WithActionBarThemeDecider();
 
     private DBHelper dbHelper;
 

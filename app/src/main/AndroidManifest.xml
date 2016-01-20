@@ -9,8 +9,8 @@
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
-        android:theme="@style/BikeCompTheme">
+        android:theme="@style/BikeCompTheme_Dark"
+        android:label="@string/app_name">
 
         <service
             android:name=".service.InfoService"
