@@ -64,5 +64,6 @@
     <string name="session_active_text">Tap to see the details.</string>
     <string name="primaryScreen">Primary screen</string>
     <string name="secondaryScreen">Secondary screen</string>
+    <string name="session_paused_resumed">Paused / Resumed</string>
     <string name="nothing" />
 </resources>

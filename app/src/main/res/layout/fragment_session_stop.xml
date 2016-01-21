@@ -34,13 +34,13 @@
 
         <Button
             android:id="@+id/buttonSessionContinue"
-            style="@style/button_standard"
+            style="@style/ButtonStandard"
             android:layout_below="@id/tap_continue_or_finish"
             android:text="@string/no" />
 
         <Button
             android:id="@+id/buttonSessionFinish"
-            style="@style/button_standard"
+            style="@style/ButtonStandard"
             android:layout_toRightOf="@id/buttonSessionContinue"
             android:text="@string/yes" />
     </LinearLayout>

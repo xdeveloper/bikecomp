@@ -9,7 +9,7 @@
 
     <application
         android:allowBackup="true"
-        android:theme="@style/BikeCompTheme_Dark"
+        android:theme="@style/BikeCompTheme_Light"
         android:label="@string/app_name">
 
         <service

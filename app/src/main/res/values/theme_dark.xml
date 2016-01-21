@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BikeCompTheme_Dark" parent="Base.Theme.AppCompat">
+        <item name="Indicator">@style/Indicator.Dark</item>
+        <item name="NewToastOuter">@style/NewToastOuter.Dark</item>
+        <item name="NewToastInner">@style/NewToastInner.Dark</item>
+    </style>
+
+    <style name="Indicator.Dark">
+        <item name="android:textColor">#FFF</item>
+    </style>
+
+    <style name="NewToastOuter.Dark">
+        <item name="android:background">#FFF</item>
+    </style>
+
+    <style name="NewToastInner.Dark">
+        <item name="android:background">#000</item>
+    </style>
+
+</resources>

@@ -23,48 +23,48 @@
         android:padding="10dp"
         android:layout_marginTop="10dp">
 
-        <TableRow android:layout_marginBottom="25dp" style="@style/report_row_margin">
-            <TextView android:text="@string/title" style="@style/report_first_column" />
+        <TableRow android:layout_marginBottom="25dp" style="@style/ReportRowMargin">
+            <TextView android:text="@string/title" style="@style/ReportFirstColumn" />
             <TextView android:id="@+id/report_title" android:text="Nice bike trip"/>
         </TableRow>
 
-        <TableRow  style="@style/report_row_margin">
-            <TextView android:text="@string/start_date" style="@style/report_first_column"/>
+        <TableRow  style="@style/ReportRowMargin">
+            <TextView android:text="@string/start_date" style="@style/ReportFirstColumn"/>
             <TextView android:id="@+id/report_startdate" android:text="08/12/1902"/>
         </TableRow>
 
         <TableRow>
-            <TextView android:text="@string/start_time" style="@style/report_first_column"/>
+            <TextView android:text="@string/start_time" style="@style/ReportFirstColumn"/>
             <TextView android:id="@+id/report_starttime" android:text="3:33:21 pm"/>
         </TableRow>
 
-        <TableRow  style="@style/report_row_margin">
-            <TextView android:text="@string/finish_date" style="@style/report_first_column"/>
+        <TableRow  style="@style/ReportRowMargin">
+            <TextView android:text="@string/finish_date" style="@style/ReportFirstColumn"/>
             <TextView android:id="@+id/report_finishdate" android:text="08/12/1902"/>
         </TableRow>
 
         <TableRow>
-            <TextView android:text="@string/finish_time" style="@style/report_first_column"/>
+            <TextView android:text="@string/finish_time" style="@style/ReportFirstColumn"/>
             <TextView android:id="@+id/report_finishtime" android:text="3:33:21 pm"/>
         </TableRow>
 
         <TableRow android:layout_marginBottom="20dp">
-            <TextView android:text="@string/elapsed_time" style="@style/report_first_column"/>
+            <TextView android:text="@string/elapsed_time" style="@style/ReportFirstColumn"/>
             <TextView android:id="@+id/report_elapsedtime" android:text="3:12:43"/>
         </TableRow>
 
         <TableRow>
-            <TextView android:text="@string/average_speed" style="@style/report_first_column"/>
+            <TextView android:text="@string/average_speed" style="@style/ReportFirstColumn"/>
             <TextView android:id="@+id/report_average_speed" android:text="30.4 Km/h"/>
         </TableRow>
 
         <TableRow>
-            <TextView android:text="@string/average_pace" style="@style/report_first_column"/>
+            <TextView android:text="@string/average_pace" style="@style/ReportFirstColumn"/>
             <TextView android:id="@+id/report_average_pace" android:text="2:11 per kilometer"/>
         </TableRow>
 
         <TableRow>
-            <TextView android:text="@string/distance" style="@style/report_first_column"/>
+            <TextView android:text="@string/distance" style="@style/ReportFirstColumn"/>
             <TextView android:id="@+id/report_distance" android:text="100.3 kilometers"/>
         </TableRow>
 

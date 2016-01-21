@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Indicator">
+        <item name="android:textSize">100sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">-- --</item>
+    </style>
+
+    <style name="NewToastOuter">
+        <item name="android:layout_margin">1dp</item>
+    </style>
+
+    <style name="NewToastInner">
+        <item name="android:layout_margin">3dp</item>
+    </style>
+
+
+    <style name="ReportFirstColumn">
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+    </style>
+
+    <style name="ReportRowMargin">
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+    </style>
+
+    <style name="ButtonStandard">
+        <item name="android:layout_width">70dp</item>
+        <item name="android:layout_height">70dp</item>
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:background">@drawable/dark_button_selector</item>
+    </style>
+
+</resources>

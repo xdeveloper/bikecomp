@@ -22,6 +22,7 @@ import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.domain.Ride;
+import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.SessionStopRequest;
@@ -194,6 +195,11 @@ public class MainActivity extends AppCompatActivity {
         this.sessionIsRunning = true;
 
         showToast(R.string.session_started, this);
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionPauseResume event) {
+        showToast(R.string.session_paused_resumed, this);
     }
 
     @SuppressWarnings(value = "unused")

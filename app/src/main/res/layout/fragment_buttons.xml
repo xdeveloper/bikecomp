@@ -9,8 +9,8 @@
     <ImageButton
         android:src="@android:drawable/ic_menu_compass"
         android:id="@+id/buttonStart"
-        style="@style/button_standard"
-        android:background="@drawable/button_selector"
+        style="@style/ButtonStandard"
+        android:background="@drawable/dark_button_selector"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/start" />
 
@@ -18,8 +18,8 @@
     <ImageButton
         android:id="@+id/buttonPause"
         android:src="@android:drawable/ic_media_pause"
-        android:background="@drawable/button_selector"
-        style="@style/button_standard"
+        android:background="@drawable/dark_button_selector"
+        style="@style/ButtonStandard"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/pause" />
 
@@ -28,8 +28,8 @@
         android:drawableStart="@android:drawable/ic_menu_delete"
         android:src="@android:drawable/ic_menu_myplaces"
         android:id="@+id/buttonStop"
-        style="@style/button_standard"
-        android:background="@drawable/button_selector"
+        style="@style/ButtonStandard"
+        android:background="@drawable/dark_button_selector"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/finish" />
 

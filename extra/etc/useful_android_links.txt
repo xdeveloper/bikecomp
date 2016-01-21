@@ -1,7 +1,7 @@
 Useful android development links:
 ---------------------------------
 
-
+--- Special tool for preparing icons for difference resolutions
 https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html
 
 --- Icons
@@ -11,5 +11,5 @@ https://dribbble.com/shots/.VpioJJIzJpA.facebook
 --- Gps emulation
 Store: Lockito
 
-
-
+--- Used it as the example for themes development!
+https://github.com/dersoncheng/MultipleTheme

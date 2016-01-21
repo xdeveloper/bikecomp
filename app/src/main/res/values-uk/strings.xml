@@ -64,4 +64,5 @@
     <string name="session_active_text">Натисніть щоб побачити деталі</string>
     <string name="primaryScreen">Головний екран</string>
     <string name="secondaryScreen">Допоміжний екран</string>
+    <string name="session_paused_resumed">Пауза / Продовжити</string>
 </resources>

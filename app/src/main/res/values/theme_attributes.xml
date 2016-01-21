@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="Indicator" format="reference"/>
+    <attr name="NewToastOuter" format="reference"/>
+    <attr name="NewToastInner" format="reference"/>
+
+</resources>
