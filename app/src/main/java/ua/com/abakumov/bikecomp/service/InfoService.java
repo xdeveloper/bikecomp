@@ -168,6 +168,10 @@ public class InfoService extends Service {
         return startDate;
     }
 
+    public boolean isSessionRunning() {
+        return !paused;
+    }
+
 
     // ----------- Events handling -----------------------------------------------------------------
 

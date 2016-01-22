@@ -8,11 +8,14 @@ import android.preference.PreferenceManager;
 import java.util.List;
 
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.event.ReloadApplication;
 import ua.com.abakumov.bikecomp.fragment.PreferenceFragment;
+import ua.com.abakumov.bikecomp.util.helper.EventBusHelper;
 import ua.com.abakumov.bikecomp.util.helper.LogHelper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_THEME_KEY;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.restartActivity;
 
 
 /**
@@ -26,9 +29,8 @@ public class SettingsActivity extends PreferenceActivity {
         switch (key) {
             case SETTINGS_THEME_KEY:
                 LogHelper.information("Changed application theme.Apply new theme.");
-
-                finish();
-                startActivity(getIntent());
+                EventBusHelper.post(new ReloadApplication());
+                restartActivity(this);
                 break;
         }
     };

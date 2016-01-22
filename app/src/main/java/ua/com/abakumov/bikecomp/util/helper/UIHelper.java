@@ -19,13 +19,12 @@ import android.widget.Toast;
 
 import com.annimon.stream.function.FunctionalInterface;
 
-import ua.com.abakumov.bikecomp.activity.main.MainActivity;
 import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.activity.main.MainActivity;
 import ua.com.abakumov.bikecomp.activity.report.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
-import static ua.com.abakumov.bikecomp.util.helper.PreferencesHelper.getPreferenceByKey;
 import static ua.com.abakumov.bikecomp.util.Constants.NOTIFICATION_TAG;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_KEEP_ON;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_MIDDLE;
@@ -33,6 +32,7 @@ import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_SYSTEM_DEFAULT;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_BACKLIGHT_STRATEGY_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
+import static ua.com.abakumov.bikecomp.util.helper.PreferencesHelper.getPreferenceByKey;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.AUTO;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MAX;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.BrightnessLevel.MIDDLE;
@@ -48,7 +48,6 @@ import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setScreenLock;
  */
 public class UIHelper {
     public static final String SETTINGS_THEME_KEY = "displaySettingsThemeKey";
-
 
     @FunctionalInterface
     private interface Callback {
@@ -104,7 +103,6 @@ public class UIHelper {
             context.setTheme(R.style.BikeCompTheme_Dark);
         }
     }
-
 
     /**
      * Goes to android "home" screen
@@ -199,4 +197,10 @@ public class UIHelper {
                 warning("Unknown value: " + backlightSetting);
         }
     }
+
+    public static void restartActivity(Activity activity) {
+        activity.finish();
+        activity.startActivity(activity.getIntent());
+    }
+
 }

@@ -25,7 +25,9 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.activity.history.HistoryActivity;
 import ua.com.abakumov.bikecomp.activity.settings.SettingsActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
+import ua.com.abakumov.bikecomp.event.ReloadApplication;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
+import ua.com.abakumov.bikecomp.event.SessionRunning;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.SessionStopRequest;
@@ -37,6 +39,7 @@ import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.service.LocalBinder;
+import ua.com.abakumov.bikecomp.util.helper.EventBusHelper;
 import ua.com.abakumov.bikecomp.util.helper.Helper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
@@ -47,6 +50,7 @@ import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goHome;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.restartActivity;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showToast;
 
 
@@ -69,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
         UIHelper.setupTheme(this);
 
         super.onCreate(savedInstanceState);
@@ -100,36 +105,30 @@ public class MainActivity extends AppCompatActivity {
         });
 
         setCurrentScreenText(R.string.primaryScreen);
-        startServices();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-
-        EventBus.getDefault().register(this);
         UIHelper.setupBacklightStrategy(this.getWindow());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        startServices();
         verbose("Main screen has been shown");
     }
 
     @Override
     protected void onStop() {
-        EventBus.getDefault().unregister(this);
-
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopServices();
-
+        EventBus.getDefault().unregister(this);
         hideNotification(this);
     }
 
@@ -236,6 +235,11 @@ public class MainActivity extends AppCompatActivity {
                         infoService.getDistance()));
     }
 
+    @SuppressWarnings(value = "unused")
+    public void onEvent(ReloadApplication event) {
+        restartActivity(this);
+    }
+
     // ----------- Utilities -----------------------------------------------------------------------
 
     private void startServices() {
@@ -245,6 +249,10 @@ public class MainActivity extends AppCompatActivity {
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 infoService = ((LocalBinder) iBinder).getService();
                 infoService.startService(new Intent(MainActivity.this, InfoService.class));
+
+                if (infoService.isSessionRunning()) {
+                    EventBusHelper.post(new SessionRunning());
+                }
             }
 
             @Override
