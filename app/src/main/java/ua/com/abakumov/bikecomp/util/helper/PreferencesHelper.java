@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp;
+package ua.com.abakumov.bikecomp.util.helper;
 
 import android.preference.PreferenceManager;
 
