@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.helper.DBHelper;
+import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDate;
@@ -30,9 +31,9 @@ public class ReportActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        UIHelper.setupTheme(this);
 
-        //setupTheme(this, themeDecider);
+        super.onCreate(savedInstanceState);
 
         ride = getIntent().getParcelableExtra(Ride.class.getCanonicalName());
 

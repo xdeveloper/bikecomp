@@ -25,7 +25,7 @@ import ua.com.abakumov.bikecomp.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
-import static ua.com.abakumov.bikecomp.PreferencesHelper.getPreferenceByKey;
+import static ua.com.abakumov.bikecomp.util.helper.PreferencesHelper.getPreferenceByKey;
 import static ua.com.abakumov.bikecomp.util.Constants.NOTIFICATION_TAG;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_KEEP_ON;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_MIDDLE;
