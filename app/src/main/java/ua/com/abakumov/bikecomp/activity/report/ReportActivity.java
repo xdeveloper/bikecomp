@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp;
+package ua.com.abakumov.bikecomp.activity.report;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,11 +7,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.activity.history.HistoryActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.helper.DBHelper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDate;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;

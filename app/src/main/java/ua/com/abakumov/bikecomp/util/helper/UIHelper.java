@@ -19,9 +19,9 @@ import android.widget.Toast;
 
 import com.annimon.stream.function.FunctionalInterface;
 
-import ua.com.abakumov.bikecomp.MainActivity;
+import ua.com.abakumov.bikecomp.activity.main.MainActivity;
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.ReportActivity;
+import ua.com.abakumov.bikecomp.activity.report.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 
 import static android.content.Context.NOTIFICATION_SERVICE;

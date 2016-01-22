@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp;
+package ua.com.abakumov.bikecomp.activity.main;
 
 
 import android.app.FragmentTransaction;
@@ -21,6 +21,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.greenrobot.event.EventBus;
+import ua.com.abakumov.bikecomp.R;
+import ua.com.abakumov.bikecomp.activity.history.HistoryActivity;
+import ua.com.abakumov.bikecomp.activity.settings.SettingsActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionStart;

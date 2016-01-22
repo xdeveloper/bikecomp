@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp;
+package ua.com.abakumov.bikecomp.activity.history;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.helper.DBHelper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;

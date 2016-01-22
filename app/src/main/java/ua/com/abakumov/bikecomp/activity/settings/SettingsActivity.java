@@ -1,4 +1,4 @@
-package ua.com.abakumov.bikecomp;
+package ua.com.abakumov.bikecomp.activity.settings;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 
 import java.util.List;
 
+import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.fragment.PreferenceFragment;
 import ua.com.abakumov.bikecomp.util.helper.LogHelper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;

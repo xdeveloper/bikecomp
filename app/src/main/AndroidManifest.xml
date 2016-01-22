@@ -18,7 +18,7 @@
 
         <!--  ##############################  Main screen ###################################### -->
         <activity
-            android:name="ua.com.abakumov.bikecomp.MainActivity"
+            android:name=".activity.main.MainActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:launchMode="singleTask"
@@ -31,7 +31,7 @@
 
         <!--  ###############################  Report screen ################################### -->
         <activity
-            android:name="ua.com.abakumov.bikecomp.ReportActivity"
+            android:name=".activity.report.ReportActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -43,7 +43,7 @@
 
         <!--  ###########################  Statistics screen ################################### -->
         <activity
-            android:name=".HistoryActivity"
+            android:name=".activity.history.HistoryActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -55,7 +55,7 @@
 
         <!--  ###########################  Settings screen ##################################### -->
         <activity
-            android:name=".SettingsActivity"
+            android:name=".activity.settings.SettingsActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
