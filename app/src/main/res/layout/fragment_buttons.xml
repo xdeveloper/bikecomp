@@ -7,30 +7,26 @@
 
     <!-- Start -->
     <ImageButton
-        android:src="@android:drawable/ic_menu_compass"
         android:id="@+id/buttonStart"
-        style="@style/ButtonStandard"
-        android:background="@drawable/dark_button_selector"
+        style="?attr/ButtonStandard"
         android:gravity="center_vertical|center_horizontal"
+        android:src="@android:drawable/ic_menu_compass"
         android:text="@string/start" />
 
     <!-- Pause -->
     <ImageButton
         android:id="@+id/buttonPause"
-        android:src="@android:drawable/ic_media_pause"
-        android:background="@drawable/dark_button_selector"
-        style="@style/ButtonStandard"
+        style="?attr/ButtonStandard"
         android:gravity="center_vertical|center_horizontal"
+        android:src="@android:drawable/ic_media_pause"
         android:text="@string/pause" />
 
     <!-- Stop -->
     <ImageButton
-        android:drawableStart="@android:drawable/ic_menu_delete"
-        android:src="@android:drawable/ic_menu_myplaces"
         android:id="@+id/buttonStop"
-        style="@style/ButtonStandard"
-        android:background="@drawable/dark_button_selector"
+        style="?attr/ButtonStandard"
         android:gravity="center_vertical|center_horizontal"
+        android:src="@android:drawable/ic_menu_myplaces"
         android:text="@string/finish" />
 
 </LinearLayout>

@@ -8,13 +8,11 @@
     </style>
 
     <style name="NewToastOuter">
-        <item name="android:layout_margin">1dp</item>
-    </style>
+        <item name="android:layout_margin">5dp</item>
 
-    <style name="NewToastInner">
-        <item name="android:layout_margin">3dp</item>
+        <!-- TODO: uncomment later -->
+        <!--<item name="android:background">@drawable/new_toast_drawable</item>-->
     </style>
-
 
     <style name="ReportFirstColumn">
         <item name="android:layout_marginRight">10dp</item>
@@ -30,7 +28,6 @@
         <item name="android:layout_width">70dp</item>
         <item name="android:layout_height">70dp</item>
         <item name="android:layout_margin">8dp</item>
-        <item name="android:background">@drawable/dark_button_selector</item>
     </style>
 
 </resources>

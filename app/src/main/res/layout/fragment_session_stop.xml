@@ -5,12 +5,12 @@
 
     <TextView
         android:id="@+id/are_you_sure"
+        style="@android:style/TextAppearance.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:gravity="center_horizontal"
-        android:text="@string/are_you_sure"
-        style="@android:style/TextAppearance.Large" />
+        android:text="@string/are_you_sure" />
 
     <TextView
         android:id="@+id/tap_continue_or_finish"
@@ -34,13 +34,13 @@
 
         <Button
             android:id="@+id/buttonSessionContinue"
-            style="@style/ButtonStandard"
+            style="?attr/ButtonStandard"
             android:layout_below="@id/tap_continue_or_finish"
             android:text="@string/no" />
 
         <Button
             android:id="@+id/buttonSessionFinish"
-            style="@style/ButtonStandard"
+            style="?attr/ButtonStandard"
             android:layout_toRightOf="@id/buttonSessionContinue"
             android:text="@string/yes" />
     </LinearLayout>

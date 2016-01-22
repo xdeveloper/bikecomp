@@ -4,7 +4,7 @@
     <style name="BikeCompTheme_Dark" parent="Base.Theme.AppCompat">
         <item name="Indicator">@style/Indicator.Dark</item>
         <item name="NewToastOuter">@style/NewToastOuter.Dark</item>
-        <item name="NewToastInner">@style/NewToastInner.Dark</item>
+        <item name="ButtonStandard">@style/ButtonStandard.Dark</item>
     </style>
 
     <style name="Indicator.Dark">
@@ -13,10 +13,12 @@
 
     <style name="NewToastOuter.Dark">
         <item name="android:background">#FFF</item>
+        <item name="android:textColor">#000</item>
     </style>
 
-    <style name="NewToastInner.Dark">
-        <item name="android:background">#000</item>
+    <style name="ButtonStandard.Dark">
+        <item name="android:background">@drawable/dark_button_selector</item>
+        <item name="android:textColor">#000</item>
     </style>
 
 </resources>
