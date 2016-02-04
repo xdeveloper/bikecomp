@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
         UIHelper.setupTheme(this);
 
         super.onCreate(savedInstanceState);
@@ -111,25 +110,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         UIHelper.setupBacklightStrategy(this.getWindow());
+        EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        startServices();
+        connectToService();
         verbose("Main screen has been shown");
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     protected void onStop() {
+        EventBus.getDefault().unregister(this);
+
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        EventBus.getDefault().unregister(this);
         hideNotification(this);
+        super.onDestroy();
     }
 
     @Override
@@ -242,13 +248,17 @@ public class MainActivity extends AppCompatActivity {
 
     // ----------- Utilities -----------------------------------------------------------------------
 
-    private void startServices() {
+    private void connectToService() {
         bindService(new Intent(this, InfoService.class), new ServiceConnection() {
 
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
                 infoService = ((LocalBinder) iBinder).getService();
-                infoService.startService(new Intent(MainActivity.this, InfoService.class));
+
+                if (!infoService.isServiceRunning()) {
+                    infoService.startService(new Intent(MainActivity.this, InfoService.class));
+                    return;
+                }
 
                 if (infoService.isSessionRunning()) {
                     EventBusHelper.post(new SessionRunning());

@@ -54,6 +54,8 @@ public class InfoService extends Service {
 
     private int elapsedSecounds;
 
+    private boolean runningService;
+
     private boolean paused = true;
 
     private LocationManager locationManager;
@@ -70,6 +72,8 @@ public class InfoService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        runningService = false;
 
         EventBus.getDefault().register(this);
 
@@ -131,6 +135,8 @@ public class InfoService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         information("InfoService on start");
 
+        runningService = true;
+
         locationManager.requestLocationUpdates(
                 GPS_PROVIDER,
                 MS_IN_SECOND,
@@ -146,6 +152,8 @@ public class InfoService extends Service {
 
     public void onDestroy() {
         information("Destroying ...");
+
+        runningService = false;
 
         EventBus.getDefault().unregister(this);
         locationManager.removeUpdates(locationListener);
@@ -170,6 +178,10 @@ public class InfoService extends Service {
 
     public boolean isSessionRunning() {
         return !paused;
+    }
+
+    public boolean isServiceRunning() {
+        return this.runningService;
     }
 
 

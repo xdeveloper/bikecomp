@@ -1,8 +1,8 @@
 package ua.com.abakumov.bikecomp.event;
 
 /**
- * <Class Name and Purpose>
- * <p/>
+ * Fire when need to reload application (change theme etc.)
+ * <p>
  * Created by Oleksandr Abakumov on 7/8/15.
  */
 public class ReloadApplication extends Event {
