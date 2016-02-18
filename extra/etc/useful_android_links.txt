@@ -6,7 +6,10 @@ https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html
 
 --- Icons
 http://androiddrawables.com/Menu.html
-https://dribbble.com/shots/.VpioJJIzJpA.facebook
+
+(the best!) (must add link to them in my app)
+https://icons8.com/app/#/win
+
 
 --- Gps emulation
 Store: Lockito

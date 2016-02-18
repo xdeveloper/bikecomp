@@ -8,6 +8,8 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -128,21 +130,13 @@ public class UIHelper {
         context.startActivity(intent);
     }
 
-    /**
-     * Show notification
-     *
-     * @param context context
-     */
-    public static void showNotification(Context context) {
-        ((NotificationManager) context.getSystemService(NOTIFICATION_SERVICE))
-                .notify(NOTIFICATION_TAG, buildNotificationBuilder(context)
-                        .build());
-    }
-
     public static Notification.Builder buildNotificationBuilder(Context context) {
+        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(), R.drawable.np_bike_big);
+
         Notification.Builder builder = new Notification.Builder(context)
                 .setOngoing(true)
-                .setSmallIcon(android.R.drawable.arrow_up_float)
+                .setSmallIcon(R.drawable.np_bike)
+                .setLargeIcon(largeIcon)
                 .setContentTitle(context.getResources().getString(R.string.session_active))
                 .setContentText(context.getResources().getString(R.string.session_active_text));
 
@@ -164,7 +158,7 @@ public class UIHelper {
     }
 
     public static void startInForeground(Service service) {
-        service.startForeground(NOTIFICATION_TAG, UIHelper.buildNotificationBuilder(service).build());
+        service.startForeground(NOTIFICATION_TAG, buildNotificationBuilder(service).build());
     }
 
     public static void setupBacklightStrategy(Window window) {

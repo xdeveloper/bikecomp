@@ -58,6 +58,8 @@ public class InfoService extends Service {
 
     private boolean paused = true;
 
+    private boolean stopped = true;
+
     private LocationManager locationManager;
 
     private LocationListener locationListener;
@@ -72,15 +74,12 @@ public class InfoService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        information("Creating ...");
 
         runningService = false;
-
         EventBus.getDefault().register(this);
-
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         locationHolder = new LocationHolder();
-
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
@@ -123,7 +122,6 @@ public class InfoService extends Service {
                 post(new Disabled());
             }
         };
-
     }
 
     @Override
@@ -134,9 +132,7 @@ public class InfoService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         information("InfoService on start");
-
         runningService = true;
-
         locationManager.requestLocationUpdates(
                 GPS_PROVIDER,
                 MS_IN_SECOND,
@@ -146,40 +142,78 @@ public class InfoService extends Service {
         UIHelper.startInForeground(this);
 
         super.onStartCommand(intent, flags, startId);
-
         return START_STICKY;
     }
 
     public void onDestroy() {
         information("Destroying ...");
-
-        runningService = false;
-
-        EventBus.getDefault().unregister(this);
         locationManager.removeUpdates(locationListener);
-
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
 
     // ----------- Custom methods ------------------------------------------------------------------
 
+    /**
+     * Get distance so far
+     *
+     * @return distance
+     */
     public float getDistance() {
         return locationHolder.getDistance();
     }
 
+    /**
+     * Get elapsed secounds
+     *
+     * @return secounds
+     */
     public int getElapsedSecounds() {
         return elapsedSecounds;
     }
 
+    /**
+     * Session start date
+     *
+     * @return date
+     */
     public Date getStartDate() {
         return startDate;
     }
 
+    /**
+     * Session is running now
+     *
+     * @return boolean
+     */
     public boolean isSessionRunning() {
-        return !paused;
+        return !stopped;
     }
 
+    /**
+     * Session is stopped now
+     *
+     * @return boolean
+     */
+    public boolean isSessionStopped() {
+        return stopped;
+    }
+
+    /**
+     * Session is on pause
+     *
+     * @return boolean
+     */
+    public boolean isSessionPaused() {
+        return paused;
+    }
+
+    /**
+     * Service is running (not session but only service)
+     *
+     * @return boolean
+     */
     public boolean isServiceRunning() {
         return this.runningService;
     }
@@ -195,6 +229,7 @@ public class InfoService extends Service {
         locationHolder.reset();
         startDate = new Date();
         paused = false;
+        stopped = false;
 
         startTimer();
     }
@@ -204,6 +239,7 @@ public class InfoService extends Service {
         Log.i(TAG, "Session stop");
 
         paused = true;
+        stopped = true;
 
         stopTimer();
     }

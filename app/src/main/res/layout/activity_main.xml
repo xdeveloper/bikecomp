@@ -34,16 +34,17 @@
         android:orientation="vertical">
 
         <!-- Buttons -->
+        <fragment
+            android:id="@+id/fragmentButtons"
+            android:name="ua.com.abakumov.bikecomp.fragment.ButtonsFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/fragment_buttons"
+            android:layout_gravity="bottom"
+            android:layout_weight="4" />
 
     </android.support.v7.widget.LinearLayoutCompat>
 
-    <fragment
-        android:id="@+id/fragmentButtons"
-        android:name="ua.com.abakumov.bikecomp.fragment.ButtonsFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout="@layout/fragment_buttons"
-        android:layout_gravity="bottom"
-        android:layout_weight="4" />
+
 
 </LinearLayout>

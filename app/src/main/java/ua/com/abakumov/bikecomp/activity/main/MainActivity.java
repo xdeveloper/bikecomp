@@ -26,6 +26,7 @@ import ua.com.abakumov.bikecomp.activity.history.HistoryActivity;
 import ua.com.abakumov.bikecomp.activity.settings.SettingsActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.event.ReloadApplication;
+import ua.com.abakumov.bikecomp.event.SessionPaused;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionRunning;
 import ua.com.abakumov.bikecomp.event.SessionStart;
@@ -47,7 +48,6 @@ import static ua.com.abakumov.bikecomp.R.id.action_history;
 import static ua.com.abakumov.bikecomp.R.id.action_quit;
 import static ua.com.abakumov.bikecomp.R.id.action_settings;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goHome;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.restartActivity;
@@ -82,6 +82,10 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            private void setCurrentScreenText(int rid) {
+                runOnUiThread(() -> ((TextView) findViewById(R.id.currentScreenText)).setText(rid));
+            }
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -102,8 +106,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-
-        setCurrentScreenText(R.string.primaryScreen);
+        viewPager.setCurrentItem(1);
     }
 
     @Override
@@ -134,7 +137,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        hideNotification(this);
+        if (infoService.isSessionStopped()) {
+            quitApplication();
+        }
+
         super.onDestroy();
     }
 
@@ -164,19 +170,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBackPressed() {
-        verbose("Back pressed");
-
-        if (sessionIsRunning) {
-            verbose("Session is still running. Go main screen");
-            goHome(this);
-        } else {
-            verbose("Session is stopped. Exit application");
-            finish();
-        }
     }
 
     // ----------- Events handling -----------------------------------------------------------------
@@ -248,35 +241,6 @@ public class MainActivity extends AppCompatActivity {
 
     // ----------- Utilities -----------------------------------------------------------------------
 
-    private void connectToService() {
-        bindService(new Intent(this, InfoService.class), new ServiceConnection() {
-
-            @Override
-            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-                infoService = ((LocalBinder) iBinder).getService();
-
-                if (!infoService.isServiceRunning()) {
-                    infoService.startService(new Intent(MainActivity.this, InfoService.class));
-                    return;
-                }
-
-                if (infoService.isSessionRunning()) {
-                    EventBusHelper.post(new SessionRunning());
-                }
-            }
-
-            @Override
-            public void onServiceDisconnected(ComponentName componentName) {
-                infoService = null;
-
-            }
-        }, BIND_AUTO_CREATE);
-    }
-
-    private void stopServices() {
-        stopService(new Intent(MainActivity.this, InfoService.class));
-    }
-
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         private Map<Integer, Fragment> map;
 
@@ -299,13 +263,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setCurrentScreenText(int rid) {
-        runOnUiThread(() -> ((TextView) findViewById(R.id.currentScreenText)).setText(rid));
+    private void connectToService() {
+        bindService(new Intent(this, InfoService.class), new ServiceConnection() {
+
+            @Override
+            public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+                infoService = ((LocalBinder) iBinder).getService();
+
+                if (!infoService.isServiceRunning()) {
+                    infoService.startService(new Intent(MainActivity.this, InfoService.class));
+                    return;
+                }
+
+                // Running
+                if (infoService.isSessionRunning() && !infoService.isSessionPaused()) {
+                    EventBusHelper.post(new SessionRunning());
+                }
+
+                // Running
+                if (infoService.isSessionRunning() && infoService.isSessionPaused()) {
+                    EventBusHelper.post(new SessionPaused());
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName componentName) {
+                infoService = null;
+
+            }
+        }, BIND_AUTO_CREATE);
     }
 
+    private void stopService() {
+        stopService(new Intent(MainActivity.this, InfoService.class));
+    }
+
+    /**
+     * Stop everything and quit
+     */
     private void quitApplication() {
         hideNotification(this);
-        stopServices();
+        stopService();
         finish();
     }
 }

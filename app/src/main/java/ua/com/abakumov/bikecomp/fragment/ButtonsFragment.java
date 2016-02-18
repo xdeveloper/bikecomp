@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
+import ua.com.abakumov.bikecomp.event.SessionPaused;
 import ua.com.abakumov.bikecomp.event.SessionRunning;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
@@ -45,19 +46,19 @@ public class ButtonsFragment extends Fragment {
 
     // ----------- System --------------------------------------------------------------------------
 
-    @Override
+  /*  @Override
     public void onSaveInstanceState(Bundle out) {
         // Save state
         out.putBoolean(Constants.SESS_ST, this.sessionStarted);
     }
-
+*/
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-        // Restore state
+       /* // Restore state
         this.sessionStarted = bundle != null && bundle.getBoolean(Constants.SESS_ST);
-
+*/
         mediaPlayerStart = create(getActivity().getApplicationContext(), start);
         mediaPlayerStop = create(getActivity().getApplicationContext(), stop);
         mediaPlayerPause = create(getActivity().getApplicationContext(), stop);
@@ -112,6 +113,13 @@ public class ButtonsFragment extends Fragment {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionRunning event) {
+        this.sessionStarted = true;
+
+        buttonsState();
+    }
+
+    @SuppressWarnings(value = "unused")
+    public void onEvent(SessionPaused event) {
         this.sessionStarted = true;
 
         buttonsState();
