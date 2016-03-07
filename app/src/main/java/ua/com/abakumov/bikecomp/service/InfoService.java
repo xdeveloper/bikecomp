@@ -280,6 +280,10 @@ public class InfoService extends Service {
     }
 
     private void stopTimer() {
+        if (executor == null) {
+            return;
+        }
+
         executor.shutdown();
     }
 }

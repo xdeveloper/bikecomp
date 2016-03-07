@@ -3,13 +3,13 @@ package ua.com.abakumov.bikecomp.activity.settings;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
+import android.preference.PreferenceFragment;
 
 import java.util.List;
 
 import de.greenrobot.event.NoSubscriberEvent;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.ReloadApplication;
-import ua.com.abakumov.bikecomp.fragment.PreferenceFragment;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
@@ -27,6 +27,21 @@ import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
  * Created by Oleksandr Abakumov on 6/28/15.
  */
 public class SettingsActivity extends PreferenceActivity {
+
+    public static class ScreenPreferenceFragment extends PreferenceFragment {
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.screen_preferences);
+        }
+    }
+
+    public static class SoundPreferenceFragment extends PreferenceFragment {
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.sound_preferences);
+        }
+    }
+
 
     SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
         switch (key) {
@@ -63,7 +78,7 @@ public class SettingsActivity extends PreferenceActivity {
 
     @Override
     protected boolean isValidFragment(String fragmentName) {
-        return PreferenceFragment.class.getName().equals(fragmentName);
+        return true;
     }
 
 

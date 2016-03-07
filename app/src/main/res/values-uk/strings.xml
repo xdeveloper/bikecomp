@@ -65,4 +65,11 @@
     <string name="primaryScreen">Головний екран</string>
     <string name="secondaryScreen">Допоміжний екран</string>
     <string name="session_paused_resumed">Пауза / Продовжити</string>
+    <string name="sound">Звук</string>
+    <string name="sound_settings">Налаштування звуку</string>
+    <string name="sound_settings_summary">Налаштування звуку, сповіщень</string>
+    <string name="disableenable_sound_summary">Ввімк. / вимк. звук</string>
+    <string name="disableenable_sound_disabled_summary">Звук вимкнено</string>
+    <string name="disableenable_sound_enabled_summary">Звук ввімкнено</string>
+    <string name="disableenable_sound">Ввімк. / вимк. звук</string>
 </resources>

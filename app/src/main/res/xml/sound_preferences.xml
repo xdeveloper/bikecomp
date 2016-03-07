@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/sound_settings">
+
+        <SwitchPreference
+            android:disableDependentsState="true"
+            android:key="soundSettingsEnableDisableSoundKey"
+            android:summary="@string/disableenable_sound_summary"
+            android:summaryOff="@string/disableenable_sound_disabled_summary"
+            android:summaryOn="@string/disableenable_sound_enabled_summary"
+            android:title="@string/disableenable_sound" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<preference-headers
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
 
     <header
-        android:fragment="ua.com.abakumov.bikecomp.fragment.PreferenceFragment"
-        android:icon="@android:drawable/ic_menu_compass"
+        android:fragment="ua.com.abakumov.bikecomp.activity.settings.SettingsActivity$ScreenPreferenceFragment"
+        android:icon="@drawable/settings_display"
         android:title="@string/display_settings"
         android:summary="@string/display_settings_summary"
+        >
+    </header>
+
+    <header
+        android:fragment="ua.com.abakumov.bikecomp.activity.settings.SettingsActivity$SoundPreferenceFragment"
+        android:icon="@drawable/settings_sound"
+        android:title="@string/sound_settings"
+        android:summary="@string/sound_settings_summary"
         >
     </header>
 

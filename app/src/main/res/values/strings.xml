@@ -66,4 +66,11 @@
     <string name="secondaryScreen">Secondary screen</string>
     <string name="session_paused_resumed">Paused / Resumed</string>
     <string name="nothing" />
+    <string name="sound">Sound</string>
+    <string name="sound_settings">Sound Settings</string>
+    <string name="sound_settings_summary">Sound notifications, etc.</string>
+    <string name="disableenable_sound_summary">Enable / disable sound</string>
+    <string name="disableenable_sound_disabled_summary">Sound disabled</string>
+    <string name="disableenable_sound_enabled_summary">Sound enabled</string>
+    <string name="disableenable_sound">Enable / disable sound</string>
 </resources>
