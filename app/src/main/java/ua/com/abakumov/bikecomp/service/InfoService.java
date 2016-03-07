@@ -133,14 +133,13 @@ public class InfoService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         information("InfoService on start");
         runningService = true;
+        elapsedSecounds = 0;
         locationManager.requestLocationUpdates(
                 GPS_PROVIDER,
                 MS_IN_SECOND,
                 MINIMAL_DISTANCE_IN_METERS,
                 locationListener);
-
         UIHelper.startInForeground(this);
-
         super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
@@ -149,6 +148,8 @@ public class InfoService extends Service {
         information("Destroying ...");
         locationManager.removeUpdates(locationListener);
         EventBus.getDefault().unregister(this);
+        stopTimer();
+        runningService = false;
         super.onDestroy();
     }
 
