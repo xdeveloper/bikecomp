@@ -20,14 +20,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.activity.history.HistoryActivity;
 import ua.com.abakumov.bikecomp.activity.settings.SettingsActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.event.ReloadApplication;
-import ua.com.abakumov.bikecomp.event.SessionPaused;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
+import ua.com.abakumov.bikecomp.event.SessionPaused;
 import ua.com.abakumov.bikecomp.event.SessionRunning;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
@@ -40,17 +39,20 @@ import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
 import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.service.LocalBinder;
-import ua.com.abakumov.bikecomp.util.helper.EventBusHelper;
 import ua.com.abakumov.bikecomp.util.helper.Helper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
 import static ua.com.abakumov.bikecomp.R.id.action_history;
 import static ua.com.abakumov.bikecomp.R.id.action_quit;
 import static ua.com.abakumov.bikecomp.R.id.action_settings;
+import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
+import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.register;
+import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.unregister;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.restartActivity;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupBacklightStrategy;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showToast;
 
 
@@ -105,13 +107,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         viewPager.setCurrentItem(0);
+
+        register(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        UIHelper.setupBacklightStrategy(this.getWindow());
-        EventBus.getDefault().register(this);
+
+        setupBacklightStrategy(this.getWindow());
     }
 
     @Override
@@ -122,22 +126,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        EventBus.getDefault().unregister(this);
-
-        super.onStop();
-    }
-
-    @Override
     protected void onDestroy() {
         if (infoService.isSessionStopped()) {
             quitApplication();
         }
+
+        unregister(this);
 
         super.onDestroy();
     }
@@ -272,12 +266,12 @@ public class MainActivity extends AppCompatActivity {
 
                 // Running
                 if (infoService.isSessionRunning() && !infoService.isSessionPaused()) {
-                    EventBusHelper.post(new SessionRunning());
+                    post(new SessionRunning());
                 }
 
                 // Running
                 if (infoService.isSessionRunning() && infoService.isSessionPaused()) {
-                    EventBusHelper.post(new SessionPaused());
+                    post(new SessionPaused());
                 }
             }
 

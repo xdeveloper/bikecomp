@@ -1,5 +1,7 @@
 package ua.com.abakumov.bikecomp.util.helper;
 
+import android.app.Activity;
+
 import de.greenrobot.event.EventBus;
 import ua.com.abakumov.bikecomp.event.Event;
 
@@ -17,5 +19,13 @@ public class EventBusHelper {
      */
     public static void post(Event event) {
         EventBus.getDefault().post(event);
+    }
+
+    public static void register(Activity thiz) {
+        EventBus.getDefault().register(thiz);
+    }
+
+    public static void unregister(Activity thiz) {
+        EventBus.getDefault().unregister(thiz);
     }
 }

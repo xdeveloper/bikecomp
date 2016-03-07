@@ -107,18 +107,6 @@ public class UIHelper {
     }
 
     /**
-     * Goes to android "home" screen
-     *
-     * @param context context
-     */
-    public static void goHome(Context context) {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
-
-    /**
      * Go to Report screen (screen after ride is completed)
      *
      * @param context context
