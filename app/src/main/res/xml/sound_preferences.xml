@@ -4,6 +4,7 @@
 
         <SwitchPreference
             android:disableDependentsState="true"
+            android:defaultValue="true"
             android:key="soundSettingsEnableDisableSoundKey"
             android:summary="@string/disableenable_sound_summary"
             android:summaryOff="@string/disableenable_sound_disabled_summary"

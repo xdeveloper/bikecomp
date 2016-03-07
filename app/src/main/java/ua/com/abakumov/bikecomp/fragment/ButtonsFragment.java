@@ -1,8 +1,10 @@
 package ua.com.abakumov.bikecomp.fragment;
 
 import android.app.Fragment;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,14 +19,16 @@ import ua.com.abakumov.bikecomp.event.SessionRunning;
 import ua.com.abakumov.bikecomp.event.SessionStart;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.SessionStopRequest;
-import ua.com.abakumov.bikecomp.util.Constants;
 
 import static android.media.MediaPlayer.create;
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static ua.com.abakumov.bikecomp.R.id.buttonPause;
 import static ua.com.abakumov.bikecomp.R.id.buttonStart;
 import static ua.com.abakumov.bikecomp.R.id.buttonStop;
 import static ua.com.abakumov.bikecomp.R.raw.start;
 import static ua.com.abakumov.bikecomp.R.raw.stop;
+import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_SOUND_ENABLE_DISABLE_KEY;
 
 /**
  * <Class Name and Purpose>
@@ -43,25 +47,29 @@ public class ButtonsFragment extends Fragment {
 
     private boolean sessionPaused;
 
+    private boolean soundMute;
+
 
     // ----------- System --------------------------------------------------------------------------
 
-  /*  @Override
-    public void onSaveInstanceState(Bundle out) {
-        // Save state
-        out.putBoolean(Constants.SESS_ST, this.sessionStarted);
-    }
-*/
+    SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
+        switch (key) {
+            case SETTINGS_SOUND_ENABLE_DISABLE_KEY:
+                soundMute = !PreferenceManager.getDefaultSharedPreferences(this.getActivity()).getBoolean(key, true);
+                break;
+        }
+    };
+
     @Override
     public void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-       /* // Restore state
-        this.sessionStarted = bundle != null && bundle.getBoolean(Constants.SESS_ST);
-*/
         mediaPlayerStart = create(getActivity().getApplicationContext(), start);
         mediaPlayerStop = create(getActivity().getApplicationContext(), stop);
         mediaPlayerPause = create(getActivity().getApplicationContext(), stop);
+
+        soundMute = !PreferenceManager.getDefaultSharedPreferences(this.getActivity().getApplication()).getBoolean(SETTINGS_SOUND_ENABLE_DISABLE_KEY, true);
+        getDefaultSharedPreferences(this.getActivity()).registerOnSharedPreferenceChangeListener(listener);
     }
 
     @Override
@@ -69,21 +77,42 @@ public class ButtonsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_buttons, container, false);
 
         view.findViewById(buttonStart).setOnClickListener(view1 -> {
-            mediaPlayerStart.start();
-            EventBus.getDefault().post(new SessionStart());
+            playSound("start");
+            post(new SessionStart());
         });
 
         view.findViewById(buttonStop).setOnClickListener(view1 -> {
-            mediaPlayerStop.start();
-            EventBus.getDefault().post(new SessionStopRequest());
+            playSound("stop");
+            post(new SessionStopRequest());
         });
 
         view.findViewById(buttonPause).setOnClickListener(view1 -> {
-            mediaPlayerPause.start();
-            EventBus.getDefault().post(new SessionPauseResume());
+            playSound("pause");
+            post(new SessionPauseResume());
         });
 
         return view;
+    }
+
+    private void playSound(String what) {
+        if (soundMute) {
+            return;
+        }
+
+        switch (what) {
+            case "start":
+                mediaPlayerStart.start();
+                break;
+
+            case "pause":
+                mediaPlayerPause.start();
+                break;
+
+            case "stop":
+                mediaPlayerStop.start();
+                break;
+        }
+
     }
 
     @Override

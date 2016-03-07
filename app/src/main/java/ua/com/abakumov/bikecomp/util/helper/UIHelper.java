@@ -50,6 +50,7 @@ import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setScreenLock;
  */
 public class UIHelper {
     public static final String SETTINGS_THEME_KEY = "displaySettingsThemeKey";
+    public static final String SETTINGS_SOUND_ENABLE_DISABLE_KEY = "soundSettingsEnableDisableSoundKey";
 
     @FunctionalInterface
     private interface Callback {
