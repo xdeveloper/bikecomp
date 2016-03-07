@@ -61,8 +61,6 @@ import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showToast;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private boolean sessionIsRunning;
-
     private InfoService infoService;
 
     private ViewPager viewPager;
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        viewPager.setCurrentItem(1);
+        viewPager.setCurrentItem(0);
     }
 
     @Override
@@ -172,8 +170,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // ----------- Events handling -----------------------------------------------------------------
 
+    // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
     public void onEvent(Enabled event) {
@@ -193,8 +191,6 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStart event) {
-        this.sessionIsRunning = true;
-
         showToast(R.string.session_started, this);
     }
 
@@ -213,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
-        this.sessionIsRunning = false;
 
         showToast(R.string.session_stopped, this);
 
