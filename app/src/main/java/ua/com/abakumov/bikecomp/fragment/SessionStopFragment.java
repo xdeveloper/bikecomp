@@ -15,6 +15,7 @@ import ua.com.abakumov.bikecomp.event.SessionStop;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_HOW_LONG_DIALOG_TO_WAIT_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
 
 /**
  * Confirm dialog.
@@ -32,9 +33,16 @@ public class SessionStopFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        howLongDialogToWait = PreferenceManager.getDefaultSharedPreferences(
-                this.getActivity()).getLong(SETTINGS_HOW_LONG_DIALOG_TO_WAIT_KEY, 5);
-
+        String val =
+                PreferenceManager
+                        .getDefaultSharedPreferences(this.getActivity())
+                        .getString(SETTINGS_HOW_LONG_DIALOG_TO_WAIT_KEY, "5");
+        try {
+            howLongDialogToWait = Long.valueOf(val);
+        } catch (NumberFormatException e) {
+            warning("Can not load value from settings.");
+            warning(val + " is not long typed.");
+        }
     }
 
     @Override

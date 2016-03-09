@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Some measured value: speed, elapsed time etc. -->
     <style name="Indicator">
         <item name="android:textSize">100sp</item>
         <item name="android:textStyle">bold</item>
@@ -9,9 +10,12 @@
 
     <style name="NewToastOuter">
         <item name="android:layout_margin">5dp</item>
-
         <!-- TODO: uncomment later -->
         <!--<item name="android:background">@drawable/new_toast_drawable</item>-->
+    </style>
+
+    <style name="NewToastText">
+        <item name="android:layout_margin">5dp</item>
     </style>
 
     <style name="ReportFirstColumn">

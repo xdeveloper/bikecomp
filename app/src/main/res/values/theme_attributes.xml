@@ -2,5 +2,6 @@
 <resources>
     <attr name="Indicator" format="reference" />
     <attr name="NewToastOuter" format="reference" />
+    <attr name="NewToastText" format="reference" />
     <attr name="ButtonStandard" format="reference" />
 </resources>

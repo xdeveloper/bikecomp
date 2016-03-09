@@ -7,20 +7,19 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="127dp"
         android:layout_height="127dp"
         android:layout_gravity="center"
-        android:src="@android:drawable/ic_menu_gallery" />
+        android:src="@drawable/alert_icon" />
 
     <TextView
         android:id="@+id/new_toast_layout_text"
+        style="?attr/NewToastText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="The example of text" />
-
 
 </LinearLayout>
