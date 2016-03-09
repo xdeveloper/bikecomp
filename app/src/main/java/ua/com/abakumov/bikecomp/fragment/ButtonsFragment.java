@@ -166,7 +166,7 @@ public class ButtonsFragment extends Fragment {
         sessionPaused = !sessionPaused;
 
         ImageButton pauseButton = getPauseButton();
-        pauseButton.setImageResource(sessionPaused ? android.R.drawable.ic_media_play : android.R.drawable.ic_media_pause);
+        pauseButton.setImageResource(sessionPaused ? R.drawable.start_icon : R.drawable.pause_icon);
     }
 
 

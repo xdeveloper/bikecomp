@@ -10,7 +10,7 @@
         android:id="@+id/buttonStart"
         style="?attr/ButtonStandard"
         android:gravity="center_vertical|center_horizontal"
-        android:src="@android:drawable/ic_menu_compass"
+        android:src="@drawable/start_icon"
         android:text="@string/start" />
 
     <!-- Pause -->
@@ -18,7 +18,7 @@
         android:id="@+id/buttonPause"
         style="?attr/ButtonStandard"
         android:gravity="center_vertical|center_horizontal"
-        android:src="@android:drawable/ic_media_pause"
+        android:src="@drawable/pause_icon"
         android:text="@string/pause" />
 
     <!-- Stop -->
@@ -26,7 +26,7 @@
         android:id="@+id/buttonStop"
         style="?attr/ButtonStandard"
         android:gravity="center_vertical|center_horizontal"
-        android:src="@android:drawable/ic_menu_myplaces"
+        android:src="@drawable/finish_icon"
         android:text="@string/finish" />
 
 </LinearLayout>

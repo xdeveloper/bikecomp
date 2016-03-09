@@ -75,4 +75,5 @@
     <string name="general_settings">Загальні</string>
     <string name="general_settings_summary">Загальні налаштування</string>
     <string name="how_long_dialog_to_wait">Таймаут діалогу</string>
+    <string name="share">Поділитись</string>
 </resources>
