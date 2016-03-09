@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/general_settings">
+        <ListPreference
+            android:defaultValue="5"
+            android:entries="@array/how_long_dialog_to_wait_entries"
+            android:entryValues="@array/how_long_dialog_to_wait_entries_val"
+            android:key="generalSettingsHowLongDialogToWaitKey"
+            android:summary="%s"
+            android:title="@string/how_long_dialog_to_wait" />
+    </PreferenceCategory>
+</PreferenceScreen>

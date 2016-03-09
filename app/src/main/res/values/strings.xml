@@ -73,4 +73,7 @@
     <string name="disableenable_sound_disabled_summary">Sound disabled</string>
     <string name="disableenable_sound_enabled_summary">Sound enabled</string>
     <string name="disableenable_sound">Enable / disable sound</string>
+    <string name="general_settings">General</string>
+    <string name="general_settings_summary">General settings</string>
+    <string name="how_long_dialog_to_wait">Dialog\'s hiding timeout</string>
 </resources>

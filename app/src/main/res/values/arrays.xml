@@ -24,4 +24,22 @@
         <item>Night</item>
     </string-array>
 
+    <string-array name="how_long_dialog_to_wait_entries_val">
+        <item>3</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+
+    <string-array name="how_long_dialog_to_wait_entries">
+        <item>3 secounds</item>
+        <item>5 secounds</item>
+        <item>10 secounds</item>
+        <item>20 secounds</item>
+        <item>0.5 minute</item>
+        <item>1 minute</item>
+    </string-array>
+
 </resources>

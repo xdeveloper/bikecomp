@@ -11,4 +11,13 @@
         <item>Ніч</item>
     </string-array>
 
+    <string-array name="how_long_dialog_to_wait_entries">
+        <item>3 секунди</item>
+        <item>5 секунд</item>
+        <item>10 секунд</item>
+        <item>20 секунд</item>
+        <item>Пів хвилини</item>
+        <item>Хвилина</item>
+    </string-array>
+
 </resources>

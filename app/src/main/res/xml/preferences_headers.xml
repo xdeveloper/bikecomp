@@ -2,6 +2,14 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
 
     <header
+        android:fragment="ua.com.abakumov.bikecomp.activity.settings.SettingsActivity$GeneralPreferenceFragment"
+        android:icon="@drawable/settings_general"
+        android:title="@string/general_settings"
+        android:summary="@string/general_settings_summary"
+        >
+    </header>
+
+    <header
         android:fragment="ua.com.abakumov.bikecomp.activity.settings.SettingsActivity$ScreenPreferenceFragment"
         android:icon="@drawable/settings_display"
         android:title="@string/display_settings"

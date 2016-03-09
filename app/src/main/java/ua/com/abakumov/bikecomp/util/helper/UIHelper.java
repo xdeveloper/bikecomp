@@ -25,6 +25,7 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.activity.main.MainActivity;
 import ua.com.abakumov.bikecomp.activity.report.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
+import ua.com.abakumov.bikecomp.util.Constants;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static ua.com.abakumov.bikecomp.util.Constants.NOTIFICATION_TAG;
@@ -32,6 +33,7 @@ import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_KEEP_ON;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_MIDDLE;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_SYSTEM_DEFAULT;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_BACKLIGHT_STRATEGY_KEY;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
 import static ua.com.abakumov.bikecomp.util.helper.PreferencesHelper.getPreferenceByKey;
@@ -49,8 +51,6 @@ import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setScreenLock;
  * Created by Oleksandr Abakumov on 7/21/15.
  */
 public class UIHelper {
-    public static final String SETTINGS_THEME_KEY = "displaySettingsThemeKey";
-    public static final String SETTINGS_SOUND_ENABLE_DISABLE_KEY = "soundSettingsEnableDisableSoundKey";
 
     @FunctionalInterface
     private interface Callback {

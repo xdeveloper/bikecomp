@@ -27,8 +27,8 @@ import static ua.com.abakumov.bikecomp.R.id.buttonStart;
 import static ua.com.abakumov.bikecomp.R.id.buttonStop;
 import static ua.com.abakumov.bikecomp.R.raw.start;
 import static ua.com.abakumov.bikecomp.R.raw.stop;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_SOUND_ENABLE_DISABLE_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_SOUND_ENABLE_DISABLE_KEY;
 
 /**
  * <Class Name and Purpose>

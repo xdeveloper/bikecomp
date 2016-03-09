@@ -10,13 +10,14 @@ import java.util.List;
 import de.greenrobot.event.NoSubscriberEvent;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.ReloadApplication;
+import ua.com.abakumov.bikecomp.util.Constants;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.register;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.unregister;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.restartActivity;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
 
@@ -27,6 +28,13 @@ import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
  * Created by Oleksandr Abakumov on 6/28/15.
  */
 public class SettingsActivity extends PreferenceActivity {
+
+    public static class GeneralPreferenceFragment extends PreferenceFragment {
+        public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.general_preferences);
+        }
+    }
 
     public static class ScreenPreferenceFragment extends PreferenceFragment {
         public void onCreate(Bundle savedInstanceState) {
