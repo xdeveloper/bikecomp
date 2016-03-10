@@ -76,4 +76,5 @@
     <string name="general_settings_summary">Загальні налаштування</string>
     <string name="how_long_dialog_to_wait">Таймаут діалогу</string>
     <string name="share">Поділитись</string>
+    <string name="are_you_sure_exit_app">Вимкнути Велокомп?</string>
 </resources>

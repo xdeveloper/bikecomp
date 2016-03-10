@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:id="@+id/are_you_sure"
+        style="@android:style/TextAppearance.Large"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="@string/are_you_sure_exit_app" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/are_you_sure"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/cancel_button_dlg"
+            style="?attr/ButtonStandard"
+            android:layout_below="@id/are_you_sure"
+            android:text="@string/no" />
+
+        <Button
+            android:id="@+id/ok_button_dlg"
+            style="?attr/ButtonStandard"
+            android:layout_toRightOf="@id/ok_button_dlg"
+            android:text="@string/yes" />
+    </LinearLayout>
+
+</RelativeLayout>

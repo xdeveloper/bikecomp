@@ -77,4 +77,5 @@
     <string name="general_settings_summary">General settings</string>
     <string name="how_long_dialog_to_wait">Dialog\'s hiding timeout</string>
     <string name="share">Share</string>
+    <string name="are_you_sure_exit_app">Quit application</string>
 </resources>
