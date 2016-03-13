@@ -211,9 +211,6 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressWarnings(value = "unused")
     public void onEvent(SessionStop event) {
-
-        showToast(R.string.session_stopped, this);
-
         Date startDate = infoService.getStartDate();
         float distance = infoService.getDistance();
         float elapsedSecounds = infoService.getElapsedSecounds();
