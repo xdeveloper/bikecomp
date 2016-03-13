@@ -1,8 +1,10 @@
 package ua.com.abakumov.bikecomp.activity.report;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -133,14 +135,12 @@ public class ReportActivity extends AppCompatActivity {
         dbHelper.save(ride);
     }
 
-    private void stopService() {
-        stopService(new Intent(this, InfoService.class));
-    }
-
     private void quitApplication() {
-        hideNotification(this);
-        stopService();
-        finish();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        ComponentName cn = intent.getComponent();
+        Intent mainIntent = IntentCompat.makeRestartActivityTask(cn);
+        mainIntent.putExtra(MainActivity.EXIT_INTENT, true);
+        startActivity(mainIntent);
     }
 
 }

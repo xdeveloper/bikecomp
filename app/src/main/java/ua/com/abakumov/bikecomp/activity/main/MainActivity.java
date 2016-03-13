@@ -69,10 +69,16 @@ public class MainActivity extends AppCompatActivity {
 
     private ScreenSlidePagerAdapter viewPagerAdapter;
 
+    public static final String EXIT_INTENT = "exit";
+
     // ----------- System --------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (getIntent().getBooleanExtra(EXIT_INTENT, false)) {
+            quitApplication();
+        }
+
         UIHelper.setupTheme(this);
 
         super.onCreate(savedInstanceState);
@@ -127,8 +133,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (infoService.isSessionStopped()) {
-            quitApplication();
+        if (infoService != null) {
+            if (infoService.isSessionStopped()) {
+                quitApplication();
+            }
         }
 
         unregister(this);
