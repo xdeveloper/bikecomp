@@ -78,17 +78,17 @@ android:gravity="center"
     android:layout_height="wrap_content">
 
     <ImageButton
+        android:id="@+id/shareButton"
         android:layout_gravity="center"
         style="?attr/ButtonStandard"
         android:src="@drawable/share_icon"
         />
 
     <ImageButton
-        android:id="@+id/activity_report_exit_button"
+        android:id="@+id/activityReportExitButton"
         style="?attr/ButtonStandard"
         android:src="@drawable/exit_icon"
         />
-
 </LinearLayout>
 
 

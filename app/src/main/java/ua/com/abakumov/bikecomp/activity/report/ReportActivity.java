@@ -8,14 +8,12 @@ import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.activity.history.HistoryActivity;
 import ua.com.abakumov.bikecomp.activity.main.MainActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
-import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.util.helper.DBHelper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
@@ -23,7 +21,6 @@ import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDate;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatTime;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
 
 
 /**
@@ -49,13 +46,21 @@ public class ReportActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_report);
 
-        findViewById(R.id.activity_report_exit_button).setOnClickListener(v -> {
+        findViewById(R.id.shareButton).setOnClickListener(v -> {
+            // todo:!
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        });
+
+        findViewById(R.id.activityReportExitButton).setOnClickListener(v -> {
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.dialog_exitapp);
             dialog.findViewById(R.id.ok_button_dlg).setOnClickListener(v1 -> {
                 dialog.dismiss();
                 quitApplication();
-
             });
             dialog.findViewById(R.id.cancel_button_dlg).setOnClickListener(v2 -> dialog.dismiss());
             dialog.show();
