@@ -36,4 +36,5 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.annimon:stream:1.0.5'
+    compile 'com.facebook.android:facebook-android-sdk:[4,5)'
 }

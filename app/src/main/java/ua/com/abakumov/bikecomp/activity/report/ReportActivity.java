@@ -1,8 +1,10 @@
 package ua.com.abakumov.bikecomp.activity.report;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,14 @@ import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDate;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatTime;
+
+import com.facebook.FacebookActivity;
+import com.facebook.FacebookDialog;
+import com.facebook.FacebookSdk;
+import com.facebook.share.model.ShareContent;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.ShareOpenGraphContent;
+import com.facebook.share.widget.ShareDialog;
 
 
 /**
@@ -47,12 +57,19 @@ public class ReportActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report);
 
         findViewById(R.id.shareButton).setOnClickListener(v -> {
-            // todo:!
-            Intent sendIntent = new Intent();
-            sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
-            sendIntent.setType("text/plain");
-            startActivity(sendIntent);
+            FacebookSdk.sdkInitialize(this);
+            ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                    .setContentTitle("Hello Facebook")
+                    .setContentDescription(
+                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
+                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
+                    .build();
+
+
+
+            ShareDialog.show(this, linkContent);
+
+
         });
 
         findViewById(R.id.activityReportExitButton).setOnClickListener(v -> {
