@@ -4,7 +4,7 @@
 
         <!-- Backlight strategy-->
         <ListPreference
-            android:defaultValue="ALWAYS_ON_NORMAL"
+            android:defaultValue="SCREEN_KEEP_ON"
             android:entries="@array/display_backlight_settings"
             android:entryValues="@array/display_backlight_values"
             android:key="DISPLAY_SETTINGS_BACKLIGHT_STRATEGY_KEY"
@@ -29,6 +29,15 @@
             android:key="displaySettingsThemeKey"
             android:summary="%s"
             android:title="@string/theme_title" />
+
+        <!-- Rotate screens -->
+        <SwitchPreference
+            android:key="displaySettingsRotateScreens"
+            android:defaultValue="false"
+            android:summary="@string/rotatescreens_summary"
+            android:summaryOff="@string/rotatescreens_disabled_summary"
+            android:summaryOn="@string/rotatescreens_enabled_summary"
+            android:title="@string/rotatescreens_title" />
 
     </PreferenceCategory>
 </PreferenceScreen>

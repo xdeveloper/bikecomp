@@ -21,11 +21,11 @@ public class EventBusHelper {
         EventBus.getDefault().post(event);
     }
 
-    public static void register(Activity thiz) {
+    public static void registerEventBus(Activity thiz) {
         EventBus.getDefault().register(thiz);
     }
 
-    public static void unregister(Activity thiz) {
+    public static void unregisterEventBus(Activity thiz) {
         EventBus.getDefault().unregister(thiz);
     }
 }

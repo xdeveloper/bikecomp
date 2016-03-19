@@ -10,13 +10,12 @@ import java.util.List;
 import de.greenrobot.event.NoSubscriberEvent;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.ReloadApplication;
-import ua.com.abakumov.bikecomp.util.Constants;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
-import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.register;
-import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.unregister;
+import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.registerEventBus;
+import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.unregisterEventBus;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.restartActivity;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupTheme;
@@ -65,8 +64,9 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setupTheme(this);
-        register(this);
-        getDefaultSharedPreferences(getApplicationContext()).registerOnSharedPreferenceChangeListener(listener);
+        registerEventBus(this);
+        getDefaultSharedPreferences(getApplicationContext())
+                .registerOnSharedPreferenceChangeListener(listener);
 
         super.onCreate(savedInstanceState);
     }
@@ -74,7 +74,7 @@ public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onDestroy() {
         getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(listener);
-        unregister(this);
+        unregisterEventBus(this);
 
         super.onDestroy();
     }

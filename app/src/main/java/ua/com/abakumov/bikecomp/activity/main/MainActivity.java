@@ -5,8 +5,10 @@ import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -19,6 +21,8 @@ import android.widget.TextView;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.activity.history.HistoryActivity;
@@ -42,12 +46,15 @@ import ua.com.abakumov.bikecomp.service.LocalBinder;
 import ua.com.abakumov.bikecomp.util.helper.Helper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static ua.com.abakumov.bikecomp.R.id.action_history;
 import static ua.com.abakumov.bikecomp.R.id.action_quit;
 import static ua.com.abakumov.bikecomp.R.id.action_settings;
+import static ua.com.abakumov.bikecomp.util.Constants.*;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
-import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.register;
-import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.unregister;
+import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.registerEventBus;
+import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.unregisterEventBus;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
@@ -71,7 +78,17 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXIT_INTENT = "exit";
 
+    private ScheduledThreadPoolExecutor executor;
+
     // ----------- System --------------------------------------------------------------------------
+
+    SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
+        information("Settings have been changed");
+
+        if (SETTINGS_ROTATE_SCREENS_KEY.equals(key)) {
+            setupScreensRotation();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,10 +105,6 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            private void setCurrentScreenText(int rid) {
-                runOnUiThread(() -> ((TextView) findViewById(R.id.currentScreenText)).setText(rid));
-            }
-
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
@@ -112,9 +125,16 @@ public class MainActivity extends AppCompatActivity {
             public void onPageScrollStateChanged(int state) {
             }
         });
-        viewPager.setCurrentItem(0);
 
-        register(this);
+        viewPager.setCurrentItem(0);
+        setCurrentScreenText(R.string.primaryScreen);
+
+        setupScreensRotation();
+
+        registerEventBus(this);
+
+        getDefaultSharedPreferences(getApplicationContext())
+                .registerOnSharedPreferenceChangeListener(listener);
     }
 
     @Override
@@ -139,7 +159,13 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        unregister(this);
+        if (executor != null) {
+            executor.shutdown();
+        }
+
+        getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(listener);
+
+        unregisterEventBus(this);
 
         super.onDestroy();
     }
@@ -290,6 +316,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopService() {
         stopService(new Intent(MainActivity.this, InfoService.class));
+    }
+
+    private void setCurrentScreenText(int rid) {
+        runOnUiThread(() -> ((TextView) findViewById(R.id.currentScreenText)).setText(rid));
+    }
+
+    private void setupScreensRotation() {
+        boolean rotateScreens = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SETTINGS_ROTATE_SCREENS_KEY, true);
+
+        if (rotateScreens) {
+            executor = new ScheduledThreadPoolExecutor(1);
+            executor.scheduleAtFixedRate(() -> {
+                int currentItem = viewPager.getCurrentItem();
+                viewPager.setCurrentItem(currentItem == 0 ? 1 : 0);
+            }, 10, 10, TimeUnit.SECONDS);
+        } else {
+            if (executor != null) {
+                executor.shutdown();
+            }
+            viewPager.setCurrentItem(0);
+        }
     }
 
     /**

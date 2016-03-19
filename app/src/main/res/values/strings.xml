@@ -79,4 +79,8 @@
     <string name="how_long_dialog_to_wait">Dialog\'s hiding timeout</string>
     <string name="share">Share</string>
     <string name="are_you_sure_exit_app">Quit application</string>
+    <string name="rotatescreens_summary">Rotate screens</string>
+    <string name="rotatescreens_enabled_summary">Rotate screens</string>
+    <string name="rotatescreens_disabled_summary">Don\'t rotate screens</string>
+    <string name="rotatescreens_title">Rotate screens</string>
 </resources>
