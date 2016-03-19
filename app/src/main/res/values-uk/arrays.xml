@@ -20,4 +20,11 @@
         <item>Хвилина</item>
     </string-array>
 
+    <string-array name="screens_rotate_frequency_entries">
+        <item>3 секунди</item>
+        <item>5 секунд</item>
+        <item>10 секунд</item>
+        <item>Хвилина</item>
+    </string-array>
+
 </resources>

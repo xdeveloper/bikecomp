@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
         information("Settings have been changed");
 
-        if (SETTINGS_ROTATE_SCREENS_KEY.equals(key)) {
+        if (SETTINGS_ROTATE_SCREENS_KEY.equals(key) || SETTINGS_ROTATE_SCREENS_FREQ_KEY.equals(key)) {
             setupScreensRotation();
         }
     };
@@ -323,20 +323,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupScreensRotation() {
-        boolean rotateScreens = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(SETTINGS_ROTATE_SCREENS_KEY, true);
+        boolean rotateScreens = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(SETTINGS_ROTATE_SCREENS_KEY, true);
+        int freq = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(SETTINGS_ROTATE_SCREENS_FREQ_KEY, "5"));
 
         if (rotateScreens) {
+            if (executor != null) {
+                executor.shutdown();
+            }
             executor = new ScheduledThreadPoolExecutor(1);
             executor.scheduleAtFixedRate(() -> {
                 int currentItem = viewPager.getCurrentItem();
                 viewPager.setCurrentItem(currentItem == 0 ? 1 : 0);
-            }, 10, 10, TimeUnit.SECONDS);
-        } else {
+            }, freq, freq, TimeUnit.SECONDS);
+        } else
+
+        {
             if (executor != null) {
                 executor.shutdown();
             }
             viewPager.setCurrentItem(0);
         }
+
     }
 
     /**

@@ -39,5 +39,15 @@
             android:summaryOn="@string/rotatescreens_enabled_summary"
             android:title="@string/rotatescreens_title" />
 
+        <!-- Rotate screens Frequency -->
+        <ListPreference
+            android:dependency="displaySettingsRotateScreens"
+            android:defaultValue="5"
+            android:entries="@array/screens_rotate_frequency_entries"
+            android:entryValues="@array/screens_rotate_frequency_entries_val"
+            android:key="displaySettingsRotateScreensFrequency"
+            android:summary="%s"
+            android:title="@string/how_offen_screens_rotate" />
+
     </PreferenceCategory>
 </PreferenceScreen>

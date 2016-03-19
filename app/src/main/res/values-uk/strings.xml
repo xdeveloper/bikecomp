@@ -81,4 +81,5 @@
     <string name="rotatescreens_enabled_summary">Дозволено</string>
     <string name="rotatescreens_disabled_summary">Заборонено</string>
     <string name="rotatescreens_title">Міняти екрани</string>
+    <string name="how_offen_screens_rotate">Частота зміни екрану</string>
 </resources>
