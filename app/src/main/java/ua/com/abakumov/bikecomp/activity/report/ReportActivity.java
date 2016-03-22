@@ -198,8 +198,10 @@ public class ReportActivity extends AppCompatActivity {
         DBHelper dbHelper = new DBHelper(this);
         dbHelper.save(ride);
 
+        buildFitnessClient();
 
-        // Set a start and end time for our data, using a start time of 1 hour before this moment.
+
+       /* // Set a start and end time for our data, using a start time of 1 hour before this moment.
         Calendar cal = Calendar.getInstance();
         Date now = new Date();
         cal.setTime(now);
@@ -215,11 +217,11 @@ public class ReportActivity extends AppCompatActivity {
                 .setType(DataSource.TYPE_RAW)
                 .build();
 
-// Create a data set
+        // Create a data set
         int stepCountDelta = 950;
         DataSet dataSet = DataSet.create(dataSource);
-// For each data point, specify a start time, end time, and the data value -- in this case,
-// the number of new steps.
+        // For each data point, specify a start time, end time, and the data value -- in this case,
+        // the number of new steps.
         DataPoint dataPoint = dataSet.createDataPoint()
                 .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS);
         dataPoint.getValue(Field.FIELD_STEPS).setInt(stepCountDelta);
@@ -227,18 +229,14 @@ public class ReportActivity extends AppCompatActivity {
 
 
         // Then, invoke the History API to insert the data and await the result, which is
-// possible here because of the {@link AsyncTask}. Always include a timeout when calling
-// await() to prevent hanging that can occur from the service being shutdown because
-// of low memory or other conditions.
+        // possible here because of the {@link AsyncTask}. Always include a timeout when calling
+        // await() to prevent hanging that can occur from the service being shutdown because
+        // of low memory or other conditions.
         // Log.i(TAG, "Inserting the dataset in the History API.");
 
         //
-        Fitness.HistoryApi.insertData(mClient, dataSet).setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(Status status) {
-                information("!");
-            }
-        });
+        Fitness.HistoryApi.insertData(mClient, dataSet).await(1, TimeUnit.MINUTES);*/
+
 
 
 // Before querying the data, check to see if the insertion succeeded.
@@ -283,20 +281,13 @@ public class ReportActivity extends AppCompatActivity {
                                 }
                             }
                     )
-                    .enableAutoManage(this, 0, new GoogleApiClient.OnConnectionFailedListener() {
-                        @Override
-                        public void onConnectionFailed(ConnectionResult result) {
-                            /*Log.i(TAG, "Google Play services connection failed. Cause: " +
-                                    result.toString());
-                            Snackbar.make(
-                                    MainActivity.this.findViewById(R.id.main_activity_view),
-                                    "Exception while connecting to Google Play services: " +
-                                            result.getErrorMessage(),
-                                    Snackbar.LENGTH_INDEFINITE).show();*/
-                        }
+                    .enableAutoManage(this, 0, result -> {
+                        information("!");
                     })
                     .build();
         }
+
+        mClient.connect();
 
     }
 
