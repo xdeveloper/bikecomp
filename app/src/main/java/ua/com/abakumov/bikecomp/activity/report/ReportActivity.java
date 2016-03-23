@@ -2,15 +2,12 @@ package ua.com.abakumov.bikecomp.activity.report;
 
 import android.Manifest;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -27,14 +24,11 @@ import static ua.com.abakumov.bikecomp.util.helper.Helper.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatTime;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
 
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.common.api.internal.zzj;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataSet;
@@ -54,11 +48,11 @@ import java.util.concurrent.TimeUnit;
  */
 public class ReportActivity extends AppCompatActivity {
 
-    private static final String TAG = "dsdsd";
     private static final int SOME_FUCKING_MAGIC_NUMBER = 42;
+
     private Ride ride;
 
-    private GoogleApiClient mClient = null;
+    private GoogleApiClient googleApiClient = null;
 
     // ----------- System --------------------------------------------------------------------------
 
@@ -70,10 +64,7 @@ public class ReportActivity extends AppCompatActivity {
 
         ride = getIntent().getParcelableExtra(Ride.class.getCanonicalName());
 
-        /// ---------------- google fit -------------
-        // This method sets up our custom logger, which will print all log messages to the device
-        // screen, as well as to adb logcat.
-        buildFitnessClient();
+        buildGoogleFitnessClient();
 
         // When permissions are revoked the app is restarted so onCreate is sufficient to check for
         // permissions core to the Activity's functionality.
@@ -82,15 +73,20 @@ public class ReportActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.READ_CONTACTS},
                 SOME_FUCKING_MAGIC_NUMBER);
-        //}
-
-
-        saveSession(ride);
-
 
         setContentView(R.layout.activity_report);
-    }
 
+        findViewById(R.id.activityReportExitButton).setOnClickListener(v -> {
+            final Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.dialog_exitapp);
+            dialog.findViewById(R.id.ok_button_dlg).setOnClickListener(v1 -> {
+                dialog.dismiss();
+                quitApplication();
+            });
+            dialog.findViewById(R.id.cancel_button_dlg).setOnClickListener(v2 -> dialog.dismiss());
+            dialog.show();
+        });
+    }
 
     @Override
     protected void onStart() {
@@ -116,7 +112,7 @@ public class ReportActivity extends AppCompatActivity {
     protected void onResume() {
         // This ensures that if the user denies the permissions then uses Settings to re-enable
         // them, the app will start working.
-        buildFitnessClient();
+        buildGoogleFitnessClient();
 
         super.onResume();
     }
@@ -162,14 +158,17 @@ public class ReportActivity extends AppCompatActivity {
         view.setText(title);
     }
 
-    private void saveSession(Ride ride) {
+    private void saveRide() {
+        if (ride == null) {
+            warning("No ride object to save");
+            return;
+        }
+
         DBHelper dbHelper = new DBHelper(this);
         dbHelper.save(ride);
 
-        buildFitnessClient();
 
-
-       /* // Set a start and end time for our data, using a start time of 1 hour before this moment.
+        // Set a start and end time for our data, using a start time of 1 hour before this moment.
         Calendar cal = Calendar.getInstance();
         Date now = new Date();
         cal.setTime(now);
@@ -196,20 +195,9 @@ public class ReportActivity extends AppCompatActivity {
         dataSet.add(dataPoint);
 
 
-        // Then, invoke the History API to insert the data and await the result, which is
-        // possible here because of the {@link AsyncTask}. Always include a timeout when calling
-        // await() to prevent hanging that can occur from the service being shutdown because
-        // of low memory or other conditions.
-        // Log.i(TAG, "Inserting the dataset in the History API.");
+        information("Saving the ride into the Google");
 
-        //
-        Fitness.HistoryApi.insertData(mClient, dataSet).await(1, TimeUnit.MINUTES);*/
-
-
-
-// Before querying the data, check to see if the insertion succeeded.
-
-
+        Fitness.HistoryApi.insertData(googleApiClient, dataSet);
     }
 
     private void quitApplication() {
@@ -220,19 +208,18 @@ public class ReportActivity extends AppCompatActivity {
         startActivity(mainIntent);
     }
 
-
-    private void buildFitnessClient() {
-        if (mClient == null && checkPermissions()) {
-            mClient = new GoogleApiClient.Builder(this)
+    private void buildGoogleFitnessClient() {
+        if (googleApiClient == null && checkPermissions()) {
+            googleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Fitness.HISTORY_API)
                     .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
                     .addConnectionCallbacks(
                             new GoogleApiClient.ConnectionCallbacks() {
                                 @Override
                                 public void onConnected(Bundle bundle) {
-                                    Log.i(TAG, "Connected!!!");
+                                    information("Connected!!!");
                                     // Now you can make calls to the Fitness APIs.
-                                    findFitnessDataSources();
+                                    saveRide();
                                 }
 
                                 @Override
@@ -240,10 +227,10 @@ public class ReportActivity extends AppCompatActivity {
                                     // If your connection to the sensor gets lost at some point,
                                     // you'll be able to determine the reason and react to it here.
                                     if (i == GoogleApiClient.ConnectionCallbacks.CAUSE_NETWORK_LOST) {
-                                        Log.i(TAG, "Connection lost.  Cause: Network Lost.");
+                                        information("Connection lost.  Cause: Network Lost.");
                                     } else if (i
                                             == GoogleApiClient.ConnectionCallbacks.CAUSE_SERVICE_DISCONNECTED) {
-                                        Log.i(TAG,
+                                        information(
                                                 "Connection lost.  Reason: Service Disconnected");
                                     }
                                 }
@@ -255,11 +242,7 @@ public class ReportActivity extends AppCompatActivity {
                     .build();
         }
 
-        mClient.connect();
-
-    }
-
-    private void findFitnessDataSources() {
+        googleApiClient.connect();
 
     }
 
