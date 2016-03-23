@@ -28,13 +28,6 @@ import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatTime;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
 
-import com.facebook.FacebookActivity;
-import com.facebook.FacebookDialog;
-import com.facebook.FacebookSdk;
-import com.facebook.share.model.ShareContent;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.model.ShareOpenGraphContent;
-import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -96,31 +89,6 @@ public class ReportActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_report);
-
-        /*findViewById(R.id.shareButton).setOnClickListener(v -> {
-            FacebookSdk.sdkInitialize(this);
-            ShareLinkContent linkContent = new ShareLinkContent.Builder()
-                    .setContentTitle("Hello Facebook")
-                    .setContentDescription(
-                            "The 'Hello Facebook' sample  showcases simple Facebook integration")
-                    .setContentUrl(Uri.parse("http://developers.facebook.com/android"))
-                    .build();
-
-
-            ShareDialog.show(this, linkContent);
-        });
-
-        findViewById(R.id.activityReportExitButton).setOnClickListener(v -> {
-            final Dialog dialog = new Dialog(this);
-            dialog.setContentView(R.layout.dialog_exitapp);
-            dialog.findViewById(R.id.ok_button_dlg).setOnClickListener(v1 -> {
-                dialog.dismiss();
-                quitApplication();
-            });
-            dialog.findViewById(R.id.cancel_button_dlg).setOnClickListener(v2 -> dialog.dismiss());
-            dialog.show();
-        });*/
-
     }
 
 
