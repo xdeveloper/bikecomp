@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionPaused;
@@ -134,6 +136,7 @@ public class ButtonsFragment extends Fragment {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStart event) {
         this.sessionStarted = true;
 
@@ -141,6 +144,7 @@ public class ButtonsFragment extends Fragment {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionRunning event) {
         this.sessionStarted = true;
 
@@ -148,6 +152,7 @@ public class ButtonsFragment extends Fragment {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionPaused event) {
         this.sessionStarted = true;
 
@@ -155,6 +160,7 @@ public class ButtonsFragment extends Fragment {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStop event) {
         this.sessionStarted = false;
 
@@ -162,6 +168,7 @@ public class ButtonsFragment extends Fragment {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionPauseResume event) {
         sessionPaused = !sessionPaused;
 

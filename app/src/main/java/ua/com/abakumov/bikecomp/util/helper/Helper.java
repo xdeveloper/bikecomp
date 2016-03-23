@@ -1,20 +1,10 @@
 package ua.com.abakumov.bikecomp.util.helper;
 
-import android.app.Activity;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
-import ua.com.abakumov.bikecomp.R;
 
 /**
  * Useful utilities

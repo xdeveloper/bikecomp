@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -202,11 +204,13 @@ public class MainActivity extends AppCompatActivity {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(Enabled event) {
         showToast(R.string.enabled_gps_provider, this);
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(GpsTrouble event) {
         if (event instanceof Disabled) {
             showToast(R.string.disabled_gps_provider, this);
@@ -218,16 +222,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStart event) {
         showToast(R.string.session_started, this);
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionPauseResume event) {
         showToast(R.string.session_paused_resumed, this);
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStopRequest event) {
         SessionStopFragment sessionStopFragment = new SessionStopFragment();
         final FragmentTransaction fTransaction = getFragmentManager().beginTransaction();
@@ -236,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStop event) {
         Date startDate = infoService.getStartDate();
         float distance = infoService.getDistance();
@@ -255,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(ReloadApplication event) {
         restartActivity(this);
     }

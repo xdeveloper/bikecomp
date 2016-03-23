@@ -1,5 +1,7 @@
 package ua.com.abakumov.bikecomp.fragment.indicators;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionStop;
@@ -16,6 +18,7 @@ public class ElapsedTimeFragment extends IndicatorFragment {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(NewElapsedSecounds event) {
         elapsedTime = event.getElapsedSecounds();
 
@@ -23,6 +26,7 @@ public class ElapsedTimeFragment extends IndicatorFragment {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStop event) {
         this.elapsedTime = 0;
 

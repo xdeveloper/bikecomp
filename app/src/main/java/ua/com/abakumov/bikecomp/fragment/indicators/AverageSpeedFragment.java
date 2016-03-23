@@ -1,5 +1,7 @@
 package ua.com.abakumov.bikecomp.fragment.indicators;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionStart;
@@ -58,11 +60,13 @@ public class AverageSpeedFragment extends IndicatorFragment {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStart event) {
         resetAll();
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(NewElapsedSecounds event) {
         this.elapsedTime = event.getElapsedSecounds();
 
@@ -70,6 +74,7 @@ public class AverageSpeedFragment extends IndicatorFragment {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(NewDistance event) {
         this.distance = event.getDistance();
 
@@ -79,6 +84,7 @@ public class AverageSpeedFragment extends IndicatorFragment {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStop event) {
         resetAll();
     }

@@ -1,5 +1,7 @@
 package ua.com.abakumov.bikecomp.fragment.indicators;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.SessionStop;
 import ua.com.abakumov.bikecomp.event.gps.NewDistance;
@@ -20,6 +22,7 @@ public class DistanceFragment extends IndicatorFragment {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(NewDistance event) {
         distance = event.getDistance();
 
@@ -27,6 +30,7 @@ public class DistanceFragment extends IndicatorFragment {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStop event) {
         distance = 0;
 

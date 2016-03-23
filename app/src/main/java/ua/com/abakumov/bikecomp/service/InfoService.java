@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.NoSubscriberEvent;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Date;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import de.greenrobot.event.EventBus;
-import de.greenrobot.event.NoSubscriberEvent;
 import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
 import ua.com.abakumov.bikecomp.event.SessionStart;
@@ -223,6 +225,7 @@ public class InfoService extends Service {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStart event) {
         information("Session start");
 
@@ -236,6 +239,7 @@ public class InfoService extends Service {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionStop event) {
         Log.i(TAG, "Session stop");
 
@@ -246,6 +250,7 @@ public class InfoService extends Service {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(SessionPauseResume event) {
         Log.i(TAG, "Session pause / resume");
 
@@ -264,6 +269,7 @@ public class InfoService extends Service {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(NoSubscriberEvent event) {
         // Ignore
     }

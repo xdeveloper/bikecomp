@@ -2,7 +2,8 @@ package ua.com.abakumov.bikecomp.util.helper;
 
 import android.app.Activity;
 
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+
 import ua.com.abakumov.bikecomp.event.Event;
 
 /**

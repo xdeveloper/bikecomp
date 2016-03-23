@@ -1,13 +1,12 @@
 package ua.com.abakumov.bikecomp.fragment.indicators;
 
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Timer;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.event.NewElapsedSecounds;
 import ua.com.abakumov.bikecomp.event.gps.GpsTrouble;
 import ua.com.abakumov.bikecomp.event.gps.NewSpeed;
 
@@ -98,6 +97,7 @@ public class SpeedFragment extends IndicatorFragment {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(GpsTrouble event) {
         resetSpeed();
     }
@@ -108,6 +108,7 @@ public class SpeedFragment extends IndicatorFragment {
     }
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(NewSpeed event) {
         speed = event.getKmphSpeed();
         lastSpeedEventTime = event.getEventTime();

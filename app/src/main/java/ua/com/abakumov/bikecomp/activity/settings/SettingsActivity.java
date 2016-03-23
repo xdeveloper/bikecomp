@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 
+import org.greenrobot.eventbus.NoSubscriberEvent;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
-import de.greenrobot.event.NoSubscriberEvent;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.ReloadApplication;
 
@@ -93,6 +95,7 @@ public class SettingsActivity extends PreferenceActivity {
     // ----------- Events handling -----------------------------------------------------------------
 
     @SuppressWarnings(value = "unused")
+    @Subscribe
     public void onEvent(NoSubscriberEvent event) {
         // Just a stub
         information("Event came");
