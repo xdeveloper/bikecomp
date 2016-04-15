@@ -29,15 +29,20 @@ import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataSource;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
+import com.google.android.gms.fitness.request.DataReadRequest;
+import com.google.android.gms.fitness.result.DataReadResult;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -76,6 +81,12 @@ public class ReportActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_report);
 
+        // Share button
+        findViewById(R.id.activityReportShareButton).setOnClickListener(v -> {
+            loadRide();
+        });
+
+        // Exit application button
         findViewById(R.id.activityReportExitButton).setOnClickListener(v -> {
             final Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.dialog_exitapp);
@@ -158,46 +169,104 @@ public class ReportActivity extends AppCompatActivity {
         view.setText(title);
     }
 
-    private void saveRide() {
-        if (ride == null) {
-            warning("No ride object to save");
-            return;
+    private void loadRide() {
+        new Thread(() -> {
+            Calendar cal = Calendar.getInstance();
+            Date now = new Date();
+            cal.setTime(now);
+            long endTime = cal.getTimeInMillis();
+            cal.add(Calendar.WEEK_OF_YEAR, -1);
+            long startTime = cal.getTimeInMillis();
+
+            java.text.DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+
+            DataReadRequest readRequest = new DataReadRequest.Builder()
+                    // The data request can specify multiple data types to return, effectively
+                    // combining multiple data queries into one call.
+                    // In this example, it's very unlikely that the request is for several hundred
+                    // datapoints each consisting of a few steps and a timestamp.  The more likely
+                    // scenario is wanting to see how many steps were walked per day, for 7 days.
+                    .aggregate(DataType.TYPE_STEP_COUNT_DELTA, DataType.AGGREGATE_STEP_COUNT_DELTA)
+                    // Analogous to a "Group By" in SQL, defines how data should be aggregated.
+                    // bucketByTime allows for a time span, whereas bucketBySession would allow
+                    // bucketing by "sessions", which would need to be defined in code.
+                    .bucketByTime(1, TimeUnit.DAYS)
+                    .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
+                    .build();
+
+            DataReadResult dataReadResult =
+                    Fitness.HistoryApi.readData(googleApiClient, readRequest).await();
+
+            List<DataSet> dataSets = dataReadResult.getDataSets();
+            for (DataSet ds : dataSets) {
+                dumpDataSet(ds);
+            }
+        }).start();
+
+
+    }
+
+    private void dumpDataSet(DataSet ds) {
+        information("Data returned for Data type: " + ds.getDataType().getName());
+        java.text.DateFormat dateFormat = SimpleDateFormat.getDateInstance();
+
+        for (DataPoint dp : ds.getDataPoints()) {
+            information("Data point:");
+            information("\tType: " + dp.getDataType().getName());
+            information("\tStart: " + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)));
+            information("\tEnd: " + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
+            for (Field field : dp.getDataType().getFields()) {
+                information("\tField: " + field.getName() +
+                        " Value: " + dp.getValue(field));
+            }
         }
 
-        DBHelper dbHelper = new DBHelper(this);
-        dbHelper.save(ride);
+    }
+
+    private void saveRide() {
+        new Thread(() -> {
+            if (ride == null) {
+                warning("No ride object to save");
+                return;
+            }
+
+            DBHelper dbHelper = new DBHelper(this);
+            dbHelper.save(ride);
 
 
-        // Set a start and end time for our data, using a start time of 1 hour before this moment.
-        Calendar cal = Calendar.getInstance();
-        Date now = new Date();
-        cal.setTime(now);
-        long endTime = cal.getTimeInMillis();
-        cal.add(Calendar.HOUR_OF_DAY, -1);
-        long startTime = cal.getTimeInMillis();
+            // Set a start and end time for our data, using a start time of 1 hour before this moment.
+            Calendar cal = Calendar.getInstance();
+            Date now = new Date();
+            cal.setTime(now);
+            long endTime = cal.getTimeInMillis();
+            cal.add(Calendar.HOUR_OF_DAY, -1);
+            long startTime = cal.getTimeInMillis();
 
-        // Create a data source
-        DataSource dataSource = new DataSource.Builder()
-                .setAppPackageName(this)
-                .setDataType(DataType.TYPE_STEP_COUNT_DELTA)
-                .setStreamName("TAG" + " - step count")
-                .setType(DataSource.TYPE_RAW)
-                .build();
+            // Create a data source
+            DataSource dataSource = new DataSource.Builder()
+                    .setAppPackageName(this)
+                    .setDataType(DataType.TYPE_STEP_COUNT_DELTA)
+                    .setStreamName("" + " - step count")
+                    .setType(DataSource.TYPE_RAW)
+                    .build();
 
-        // Create a data set
-        int stepCountDelta = 950;
-        DataSet dataSet = DataSet.create(dataSource);
-        // For each data point, specify a start time, end time, and the data value -- in this case,
-        // the number of new steps.
-        DataPoint dataPoint = dataSet.createDataPoint()
-                .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS);
-        dataPoint.getValue(Field.FIELD_STEPS).setInt(stepCountDelta);
-        dataSet.add(dataPoint);
+            // Create a data set
+            int stepCountDelta = 950;
+            DataSet dataSet = DataSet.create(dataSource);
+            // For each data point, specify a start time, end time, and the data value -- in this case,
+            // the number of new steps.
+            DataPoint dataPoint = dataSet.createDataPoint()
+                    .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS);
+            dataPoint.getValue(Field.FIELD_STEPS).setInt(stepCountDelta);
+            dataSet.add(dataPoint);
 
 
-        information("Saving the ride into the Google");
+            information("Saving the ride into the Google");
 
-        Fitness.HistoryApi.insertData(googleApiClient, dataSet);
+            Status st = Fitness.HistoryApi.insertData(googleApiClient, dataSet).await(4, TimeUnit.SECONDS);
+
+            information(st.toString());
+        }).start();
     }
 
     private void quitApplication() {
@@ -213,6 +282,9 @@ public class ReportActivity extends AppCompatActivity {
             googleApiClient = new GoogleApiClient.Builder(this)
                     .addApi(Fitness.HISTORY_API)
                     .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
+                    .addOnConnectionFailedListener((l) -> {
+                        warning("Connection failed");
+                    })
                     .addConnectionCallbacks(
                             new GoogleApiClient.ConnectionCallbacks() {
                                 @Override
