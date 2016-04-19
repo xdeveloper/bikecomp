@@ -16,11 +16,11 @@
 
             <item
                 android:id="@+id/menuThisYear"
-                android:title="@string/thisyear" />
+                android:title="@string/this_year" />
 
             <item
                 android:id="@+id/menuNoLimits"
-                android:title="@string/nolimits" />
+                android:title="@string/no_limits" />
         </menu>
     </item>
 

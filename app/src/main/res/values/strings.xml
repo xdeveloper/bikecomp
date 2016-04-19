@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Bike Comp</string>
-    <string name="facebook_app_id">1242598425753857</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -11,7 +10,7 @@
     <string name="clock">Clock</string>
     <string name="elapsed_time">Elapsed Time</string>
     <string name="action_google_play">Google Play</string>
-    <string name="heartrate">Heart Rate</string>
+    <string name="heart_rate">Heart Rate</string>
     <string name="distance">Distance</string>
     <string name="km">(km)</string>
     <string name="enabled_gps_provider">GPS receiver on</string>
@@ -43,8 +42,8 @@
     <string name="statistics">Statistics</string>
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
-    <string name="thisyear">This year</string>
-    <string name="nolimits">No limits</string>
+    <string name="this_year">This year</string>
+    <string name="no_limits">No limits</string>
     <string name="clear">Clear</string>
     <string name="clear_all">Clear All</string>
     <string name="delete">Delete</string>
@@ -70,18 +69,22 @@
     <string name="sound">Sound</string>
     <string name="sound_settings">Sound Settings</string>
     <string name="sound_settings_summary">Sound notifications, etc.</string>
-    <string name="disableenable_sound_summary">Enable / disable sound</string>
-    <string name="disableenable_sound_disabled_summary">Sound disabled</string>
-    <string name="disableenable_sound_enabled_summary">Sound enabled</string>
-    <string name="disableenable_sound">Enable / disable sound</string>
+    <string name="disable_enable_sound_summary">Enable / disable sound</string>
+    <string name="disable_enable_sound_disabled_summary">Sound disabled</string>
+    <string name="disable_enable_sound_enabled_summary">Sound enabled</string>
+    <string name="disable_enable_sound">Enable / disable sound</string>
     <string name="general_settings">General</string>
     <string name="general_settings_summary">General settings</string>
     <string name="how_long_dialog_to_wait">Dialog\'s hiding timeout</string>
     <string name="share">Share</string>
     <string name="are_you_sure_exit_app">Quit application</string>
-    <string name="rotatescreens_summary">Rotate screens</string>
-    <string name="rotatescreens_enabled_summary">Rotate screens</string>
-    <string name="rotatescreens_disabled_summary">Don\'t rotate screens</string>
-    <string name="rotatescreens_title">Rotate screens</string>
-    <string name="how_offen_screens_rotate">Rotate Frequency</string>
+    <string name="rotate_screens_summary">Rotate screens</string>
+    <string name="rotate_screens_enabled_summary">Rotate screens</string>
+    <string name="rotate_screens_disabled_summary">Don\'t rotate screens</string>
+    <string name="rotate_screens_title">Rotate screens</string>
+    <string name="how_often_screens_rotate">Rotating Frequency</string>
+    <string name="no_internet_connection">No Internet connection</string>
+    <string name="sign_in_required">Sign In required</string>
+    <string name="ride_successfully_saved_to_google_fit">Your ride has been saved to Google Fit</string>
+    <string name="ride_not_successfully_saved_to_google_fit">Saving to Google Fit was failed</string>
 </resources>

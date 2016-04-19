@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -19,24 +20,31 @@ import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.helper.DBHelper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
+import static com.google.android.gms.fitness.request.SessionInsertRequest.*;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDate;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatTime;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showToast;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.fitness.FitnessActivities;
 import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataSet;
 import com.google.android.gms.fitness.data.DataSource;
 import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
+import com.google.android.gms.fitness.data.Session;
 import com.google.android.gms.fitness.request.DataReadRequest;
+import com.google.android.gms.fitness.request.SessionInsertRequest;
 import com.google.android.gms.fitness.result.DataReadResult;
 
 import java.text.SimpleDateFormat;
@@ -233,39 +241,61 @@ public class ReportActivity extends AppCompatActivity {
             DBHelper dbHelper = new DBHelper(this);
             dbHelper.save(ride);
 
+            // Data for Google Fit
+            long start = ride.getStartDate().getTime();
+            long finish = ride.getFinishDate().getTime();
 
-            // Set a start and end time for our data, using a start time of 1 hour before this moment.
-            Calendar cal = Calendar.getInstance();
-            Date now = new Date();
-            cal.setTime(now);
-            long endTime = cal.getTimeInMillis();
-            cal.add(Calendar.HOUR_OF_DAY, -1);
-            long startTime = cal.getTimeInMillis();
+            float avSpeed = Float.valueOf(String.valueOf(ride.getAverageSpeed()));
+
+            String distance = String.valueOf(ride.getDistance());
+
 
             // Create a data source
             DataSource dataSource = new DataSource.Builder()
                     .setAppPackageName(this)
-                    .setDataType(DataType.TYPE_STEP_COUNT_DELTA)
-                    .setStreamName("" + " - step count")
+                    .setDataType(DataType.TYPE_SPEED)
                     .setType(DataSource.TYPE_RAW)
                     .build();
 
             // Create a data set
-            int stepCountDelta = 950;
-            DataSet dataSet = DataSet.create(dataSource);
-            // For each data point, specify a start time, end time, and the data value -- in this case,
-            // the number of new steps.
-            DataPoint dataPoint = dataSet.createDataPoint()
-                    .setTimeInterval(startTime, endTime, TimeUnit.MILLISECONDS);
-            dataPoint.getValue(Field.FIELD_STEPS).setInt(stepCountDelta);
-            dataSet.add(dataPoint);
+            DataSet speedDataSet = DataSet.create(dataSource);
+
+            // Create a data point
+            DataPoint dataPoint = speedDataSet.createDataPoint()
+                    .setTimeInterval(
+                            start,
+                            finish,
+                            TimeUnit.MILLISECONDS);
+
+            dataPoint.getValue(Field.FIELD_SPEED).setFloat(avSpeed);
+            // dataPoint.getValue(Field.FIELD_DISTANCE).setString(distance);
+
+            speedDataSet.add(dataPoint);
 
 
-            information("Saving the ride into the Google");
+            Session session = new Session.Builder().setName("Bicycle " + ride.getStartDate())
+                    .setDescription("Test description")
+                    .setIdentifier("TEST " + " - " + ride.getStartDate())
+                    .setActivity(FitnessActivities.BIKING_ROAD)
+                    .setStartTime(start, TimeUnit.MILLISECONDS)
+                    .setEndTime(finish, TimeUnit.MILLISECONDS).build();
 
-            Status st = Fitness.HistoryApi.insertData(googleApiClient, dataSet).await(4, TimeUnit.SECONDS);
+            SessionInsertRequest insertRequest = new Builder()
+                    .setSession(session)
+                    .addDataSet(speedDataSet).build();
 
-            information(st.toString());
+            Status insertStatus = Fitness.SessionsApi
+                    .insertSession(googleApiClient, insertRequest)
+                    .await(15, TimeUnit.SECONDS);
+
+            runOnUiThread(() -> {
+                if (insertStatus.isSuccess()) {
+                    showToast(R.string.ride_successfully_saved_to_google_fit, this);
+                } else {
+                    showToast(R.string.ride_not_successfully_saved_to_google_fit, this);
+                }
+            });
+
         }).start();
     }
 
@@ -280,10 +310,20 @@ public class ReportActivity extends AppCompatActivity {
     private void buildGoogleFitnessClient() {
         if (googleApiClient == null && checkPermissions()) {
             googleApiClient = new GoogleApiClient.Builder(this)
-                    .addApi(Fitness.HISTORY_API)
+                    .addApi(Fitness.SESSIONS_API)
                     .addScope(new Scope(Scopes.FITNESS_ACTIVITY_READ_WRITE))
+                    .addScope(new Scope(Scopes.FITNESS_LOCATION_READ_WRITE))
+                    .addScope(new Scope(Scopes.PROFILE))
                     .addOnConnectionFailedListener((l) -> {
-                        warning("Connection failed");
+                        verbose("Connection failed listener " + l.toString());
+
+                        if (l.getErrorCode() == ConnectionResult.SIGN_IN_REQUIRED) {
+                            showToast(R.string.sign_in_required, this);
+                        }
+
+                        if (l.getErrorCode() == ConnectionResult.NETWORK_ERROR) {
+                            showToast(R.string.no_internet_connection, this);
+                        }
                     })
                     .addConnectionCallbacks(
                             new GoogleApiClient.ConnectionCallbacks() {

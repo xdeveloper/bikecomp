@@ -14,7 +14,7 @@ import org.greenrobot.eventbus.EventBus;
 import ua.com.abakumov.bikecomp.R;
 
 /**
- * Common for all indicators
+ * Ancestor for all indicators
  * Created by Oleksandr_Abakumov on 12/14/2015.
  */
 public abstract class IndicatorFragment extends android.support.v4.app.Fragment {

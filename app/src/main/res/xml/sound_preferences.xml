@@ -6,10 +6,10 @@
             android:disableDependentsState="true"
             android:defaultValue="true"
             android:key="soundSettingsEnableDisableSoundKey"
-            android:summary="@string/disableenable_sound_summary"
-            android:summaryOff="@string/disableenable_sound_disabled_summary"
-            android:summaryOn="@string/disableenable_sound_enabled_summary"
-            android:title="@string/disableenable_sound" />
+            android:summary="@string/disable_enable_sound_summary"
+            android:summaryOff="@string/disable_enable_sound_disabled_summary"
+            android:summaryOn="@string/disable_enable_sound_enabled_summary"
+            android:title="@string/disable_enable_sound" />
 
     </PreferenceCategory>
 </PreferenceScreen>
