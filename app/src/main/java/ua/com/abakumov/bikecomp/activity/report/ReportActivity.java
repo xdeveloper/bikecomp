@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.IntentCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +19,11 @@ import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.util.helper.DBHelper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
+import static com.google.android.gms.fitness.FitnessActivities.BIKING_ROAD;
 import static com.google.android.gms.fitness.request.SessionInsertRequest.*;
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static ua.com.abakumov.bikecomp.R.string.bicycle;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatDate;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatElapsedTime;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
@@ -186,8 +189,6 @@ public class ReportActivity extends AppCompatActivity {
             cal.add(Calendar.WEEK_OF_YEAR, -1);
             long startTime = cal.getTimeInMillis();
 
-            java.text.DateFormat dateFormat = SimpleDateFormat.getDateInstance();
-
             DataReadRequest readRequest = new DataReadRequest.Builder()
                     // The data request can specify multiple data types to return, effectively
                     // combining multiple data queries into one call.
@@ -199,7 +200,7 @@ public class ReportActivity extends AppCompatActivity {
                     // bucketByTime allows for a time span, whereas bucketBySession would allow
                     // bucketing by "sessions", which would need to be defined in code.
                     .bucketByTime(1, TimeUnit.DAYS)
-                    .setTimeRange(startTime, endTime, TimeUnit.MILLISECONDS)
+                    .setTimeRange(startTime, endTime, MILLISECONDS)
                     .build();
 
             DataReadResult dataReadResult =
@@ -221,8 +222,8 @@ public class ReportActivity extends AppCompatActivity {
         for (DataPoint dp : ds.getDataPoints()) {
             information("Data point:");
             information("\tType: " + dp.getDataType().getName());
-            information("\tStart: " + dateFormat.format(dp.getStartTime(TimeUnit.MILLISECONDS)));
-            information("\tEnd: " + dateFormat.format(dp.getEndTime(TimeUnit.MILLISECONDS)));
+            information("\tStart: " + dateFormat.format(dp.getStartTime(MILLISECONDS)));
+            information("\tEnd: " + dateFormat.format(dp.getEndTime(MILLISECONDS)));
             for (Field field : dp.getDataType().getFields()) {
                 information("\tField: " + field.getName() +
                         " Value: " + dp.getValue(field));
@@ -244,49 +245,26 @@ public class ReportActivity extends AppCompatActivity {
             // Data for Google Fit
             long start = ride.getStartDate().getTime();
             long finish = ride.getFinishDate().getTime();
-
             float avSpeed = Float.valueOf(String.valueOf(ride.getAverageSpeed()));
-
             String distance = String.valueOf(ride.getDistance());
 
 
-            // Create a data source
-            DataSource dataSource = new DataSource.Builder()
-                    .setAppPackageName(this)
-                    .setDataType(DataType.TYPE_SPEED)
-                    .setType(DataSource.TYPE_RAW)
+            Session session = new Session.Builder().setName(getString(bicycle))
+                    .setDescription("Test ride")
+                    .setActivity(BIKING_ROAD)
+                    .setStartTime(start, MILLISECONDS)
+                    .setEndTime(finish, MILLISECONDS)
                     .build();
-
-            // Create a data set
-            DataSet speedDataSet = DataSet.create(dataSource);
-
-            // Create a data point
-            DataPoint dataPoint = speedDataSet.createDataPoint()
-                    .setTimeInterval(
-                            start,
-                            finish,
-                            TimeUnit.MILLISECONDS);
-
-            dataPoint.getValue(Field.FIELD_SPEED).setFloat(avSpeed);
-            // dataPoint.getValue(Field.FIELD_DISTANCE).setString(distance);
-
-            speedDataSet.add(dataPoint);
-
-
-            Session session = new Session.Builder().setName("Bicycle " + ride.getStartDate())
-                    .setDescription("Test description")
-                    .setIdentifier("TEST " + " - " + ride.getStartDate())
-                    .setActivity(FitnessActivities.BIKING_ROAD)
-                    .setStartTime(start, TimeUnit.MILLISECONDS)
-                    .setEndTime(finish, TimeUnit.MILLISECONDS).build();
 
             SessionInsertRequest insertRequest = new Builder()
                     .setSession(session)
-                    .addDataSet(speedDataSet).build();
+                    .addDataSet(makeSpeedDataSet(start, finish, avSpeed))
+                    .addDataSet(makeDistanceDataSet(start, finish, distance))
+                    .build();
 
             Status insertStatus = Fitness.SessionsApi
                     .insertSession(googleApiClient, insertRequest)
-                    .await(15, TimeUnit.SECONDS);
+                    .await(1, MINUTES);
 
             runOnUiThread(() -> {
                 if (insertStatus.isSuccess()) {
@@ -297,6 +275,59 @@ public class ReportActivity extends AppCompatActivity {
             });
 
         }).start();
+    }
+
+    private DataSet makeDistanceDataSet(long start, long finish, String distance) {
+        // Create a data source
+        DataSource dataSource = new DataSource.Builder()
+                .setAppPackageName(this)
+                .setDataType(DataType.TYPE_DISTANCE_CUMULATIVE)
+                .setType(DataSource.TYPE_RAW)
+                .build();
+
+        // Create a data set
+        DataSet speedDataSet = DataSet.create(dataSource);
+
+        // Create a data point
+        DataPoint dataPoint = speedDataSet.createDataPoint()
+                .setTimeInterval(
+                        start,
+                        finish,
+                        MILLISECONDS);
+
+        dataPoint.getValue(Field.FIELD_DISTANCE).setFloat(Float.parseFloat(distance));
+
+        speedDataSet.add(dataPoint);
+
+        return speedDataSet;
+    }
+
+    private DataSet makeSpeedDataSet(long start, long finish, float avSpeed) {
+
+        // Create a data source
+        DataSource dataSource = new DataSource.Builder()
+                .setAppPackageName(this)
+                .setDataType(DataType.TYPE_SPEED)
+                .setType(DataSource.TYPE_RAW)
+                .build();
+
+        // Create a data set
+        DataSet speedDataSet = DataSet.create(dataSource);
+
+        // Create a data point
+        DataPoint dataPoint = speedDataSet.createDataPoint()
+                .setTimeInterval(
+                        start,
+                        finish,
+                        MILLISECONDS);
+
+        dataPoint.getValue(Field.FIELD_SPEED).setFloat(avSpeed);
+        // dataPoint.getValue(Field.FIELD_DISTANCE).setString(distance);
+
+        speedDataSet.add(dataPoint);
+
+        return speedDataSet;
+
     }
 
     private void quitApplication() {

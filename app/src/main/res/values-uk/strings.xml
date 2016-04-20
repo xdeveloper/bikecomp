@@ -86,4 +86,5 @@
     <string name="sign_in_required">Ввійдіть в Ваш обліковий запис</string>
     <string name="ride_successfully_saved_to_google_fit">Заїзд записано до Google Fit</string>
     <string name="ride_not_successfully_saved_to_google_fit">Не вдалось записати заїзд до Google Fit</string>
+    <string name="bicycle">Bicycle</string>
 </resources>
