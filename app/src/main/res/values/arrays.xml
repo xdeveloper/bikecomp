@@ -37,6 +37,7 @@
         <item>3</item>
         <item>5</item>
         <item>10</item>
+        <item>30</item>
         <item>60</item>
     </string-array>
 
@@ -53,6 +54,7 @@
         <item>3 secounds</item>
         <item>5 secounds</item>
         <item>10 secounds</item>
+        <item>30 secounds</item>
         <item>1 minute</item>
     </string-array>
 
