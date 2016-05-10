@@ -355,7 +355,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupScreensRotation() {
         boolean rotateScreens = preferencesHelper.get(SETTINGS_ROTATE_SCREENS_KEY, true);
-        int freq = preferencesHelper.get(SETTINGS_ROTATE_SCREENS_FREQ_KEY, 5);
+        int freq = Integer.valueOf(preferencesHelper.get(SETTINGS_ROTATE_SCREENS_FREQ_KEY, "5"));
 
         if (rotateScreens) {
             if (executor != null) {
