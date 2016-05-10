@@ -88,4 +88,5 @@
     <string name="ride_successfully_saved_to_google_fit">Your ride has been saved to Google Fit</string>
     <string name="ride_not_successfully_saved_to_google_fit">Saving to Google Fit was failed</string>
     <string name="bicycle">Bicycle</string>
+    <string name="theme_has_been_changed">Theme has been changed</string>
 </resources>

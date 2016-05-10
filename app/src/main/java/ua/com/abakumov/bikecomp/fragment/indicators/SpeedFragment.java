@@ -10,6 +10,7 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.gps.GpsTrouble;
 import ua.com.abakumov.bikecomp.event.gps.NewSpeed;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.formatSpeed;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 
@@ -27,12 +28,9 @@ public class SpeedFragment extends IndicatorFragment {
     // Kilometers per hour
     private double speed;
 
-    // private int countDownSecounds;
-
     private long lastSpeedEventTime;
 
     private ScheduledThreadPoolExecutor executor;
-
 
     @Override
     protected void afterStart() {
@@ -58,9 +56,8 @@ public class SpeedFragment extends IndicatorFragment {
                 resetSpeed();
             }
 
-        }, 0, COUNT_DOWN_MAXIMUM_SECOUNDS, TimeUnit.SECONDS);
+        }, 0, COUNT_DOWN_MAXIMUM_SECOUNDS, SECONDS);
     }
-
 
     @Override
     protected void beforeStop() {

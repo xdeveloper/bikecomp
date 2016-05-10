@@ -14,6 +14,7 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.event.ReloadApplication;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_BY_CALENDAR_KEY;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.registerEventBus;
@@ -51,11 +52,16 @@ public class SettingsActivity extends PreferenceActivity {
         }
     }
 
-
     SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
         switch (key) {
             case SETTINGS_THEME_KEY:
-                information("Changed application theme.Apply new theme.");
+                information("Changed application theme. Apply new theme.");
+                post(new ReloadApplication());
+                restartActivity(this);
+                break;
+
+            case SETTINGS_THEME_BY_CALENDAR_KEY:
+                information("Changed application theme. Apply new theme.");
                 post(new ReloadApplication());
                 restartActivity(this);
                 break;

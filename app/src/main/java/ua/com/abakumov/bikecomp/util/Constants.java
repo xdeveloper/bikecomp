@@ -14,6 +14,7 @@ public final class Constants {
     public static final String SCREEN_KEEP_ON = "SCREEN_KEEP_ON";
     public static final String SCREEN_MIDDLE = "SCREEN_MIDDLE";
     public static final String SETTINGS_THEME_KEY = "displaySettingsThemeKey";
+    public static final String SETTINGS_THEME_BY_CALENDAR_KEY = "displaySettingsThemeByCalendarKey";
     public static final String SETTINGS_ROTATE_SCREENS_KEY = "displaySettingsRotateScreens";
     public static final String SETTINGS_ROTATE_SCREENS_FREQ_KEY = "displaySettingsRotateScreensFrequency";
     public static final String SETTINGS_SOUND_ENABLE_DISABLE_KEY = "soundSettingsEnableDisableSoundKey";

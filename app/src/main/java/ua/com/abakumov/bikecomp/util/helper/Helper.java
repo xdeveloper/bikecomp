@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -119,5 +120,9 @@ public final class Helper {
         Date date = new Date();
         date.setTime(milliseconds);
         return date;
+    }
+
+    public static boolean inDaylightTime() {
+        return TimeZone.getDefault().inDaylightTime(new Date());
     }
 }

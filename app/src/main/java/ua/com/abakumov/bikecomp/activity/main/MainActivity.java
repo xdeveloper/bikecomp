@@ -8,7 +8,6 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -46,24 +45,30 @@ import ua.com.abakumov.bikecomp.fragment.SessionStopFragment;
 import ua.com.abakumov.bikecomp.service.InfoService;
 import ua.com.abakumov.bikecomp.service.LocalBinder;
 import ua.com.abakumov.bikecomp.util.helper.Helper;
+import ua.com.abakumov.bikecomp.util.helper.PreferencesHelper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static ua.com.abakumov.bikecomp.R.id.action_history;
 import static ua.com.abakumov.bikecomp.R.id.action_quit;
 import static ua.com.abakumov.bikecomp.R.id.action_settings;
-import static ua.com.abakumov.bikecomp.util.Constants.*;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_ROTATE_SCREENS_FREQ_KEY;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_ROTATE_SCREENS_KEY;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_BY_CALENDAR_KEY;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.registerEventBus;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.unregisterEventBus;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.inDaylightTime;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.Theme.Day;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.Theme.Night;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.restartActivity;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.setupBacklightStrategy;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.showToast;
-
 
 /**
  * Main activity
@@ -82,13 +87,29 @@ public class MainActivity extends AppCompatActivity {
 
     private ScheduledThreadPoolExecutor executor;
 
+    private ScheduledThreadPoolExecutor executorChangeTheme;
+
+    private PreferencesHelper preferencesHelper = new PreferencesHelper(this);
+
     // ----------- System --------------------------------------------------------------------------
 
     SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
         information("Settings have been changed");
 
+        // Screens rotation settings change
         if (SETTINGS_ROTATE_SCREENS_KEY.equals(key) || SETTINGS_ROTATE_SCREENS_FREQ_KEY.equals(key)) {
             setupScreensRotation();
+        }
+
+        // Change Theme by Calendar
+        if (SETTINGS_THEME_BY_CALENDAR_KEY.equals(key)) {
+            if (preferencesHelper.get(SETTINGS_THEME_BY_CALENDAR_KEY, false)) {
+                // By calendar
+                setupChangeThemeByCalendar();
+
+            } else {
+                restartActivity(this);
+            }
         }
     };
 
@@ -99,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         UIHelper.setupTheme(this);
+        setupChangeThemeByCalendar();
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -332,10 +354,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupScreensRotation() {
-        boolean rotateScreens = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(SETTINGS_ROTATE_SCREENS_KEY, true);
-        int freq = Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(SETTINGS_ROTATE_SCREENS_FREQ_KEY, "5"));
+        boolean rotateScreens = preferencesHelper.get(SETTINGS_ROTATE_SCREENS_KEY, true);
+        int freq = preferencesHelper.get(SETTINGS_ROTATE_SCREENS_FREQ_KEY, 5);
 
         if (rotateScreens) {
             if (executor != null) {
@@ -346,15 +366,42 @@ public class MainActivity extends AppCompatActivity {
                 int currentItem = viewPager.getCurrentItem();
                 viewPager.setCurrentItem(currentItem == 0 ? 1 : 0);
             }, freq, freq, TimeUnit.SECONDS);
-        } else
-
-        {
+        } else {
             if (executor != null) {
                 executor.shutdown();
             }
             viewPager.setCurrentItem(0);
         }
+    }
 
+    private void setupChangeThemeByCalendar() {
+        if (preferencesHelper.get(SETTINGS_THEME_BY_CALENDAR_KEY, true)) {
+            executorChangeTheme = new ScheduledThreadPoolExecutor(1);
+            executorChangeTheme.scheduleAtFixedRate(() -> {
+                // Change theme
+                String currentTheme = preferencesHelper.get(SETTINGS_THEME_KEY, Day.name());
+
+                if (inDaylightTime()) {
+                    if (Night.name().equals(currentTheme)) {
+                        switchThemeTo(Day);
+                    }
+                } else {
+                    if (Day.name().equals(currentTheme)) {
+                        switchThemeTo(Night);
+                    }
+                }
+            }, 0, 5, TimeUnit.MINUTES);
+        } else {
+            if (executorChangeTheme != null) {
+                executorChangeTheme.shutdown();
+            }
+        }
+    }
+
+    private void switchThemeTo(UIHelper.Theme to) {
+        preferencesHelper.setPreferenceByKey(SETTINGS_THEME_KEY, to.name());
+        runOnUiThread(() -> showToast(R.string.theme_has_been_changed, this));
+        restartActivity(this);
     }
 
     /**

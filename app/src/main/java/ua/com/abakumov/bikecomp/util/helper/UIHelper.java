@@ -7,10 +7,8 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +23,6 @@ import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.activity.main.MainActivity;
 import ua.com.abakumov.bikecomp.activity.report.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
-import ua.com.abakumov.bikecomp.util.Constants;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static ua.com.abakumov.bikecomp.util.Constants.NOTIFICATION_TAG;
@@ -97,8 +94,8 @@ public class UIHelper {
      * @param context context
      */
     public static void setupTheme(Context context) {
-        SharedPreferences defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        String themeName = defaultSharedPreferences.getString(SETTINGS_THEME_KEY, UIHelper.Theme.Day.name());
+        String themeName =
+                PreferencesHelper.getPreferenceByKey(SETTINGS_THEME_KEY, UIHelper.Theme.Day.name(), context);
 
         if (Theme.Day.name().equals(themeName)) {
             context.setTheme(R.style.BikeCompTheme_Light);
