@@ -1,11 +1,22 @@
 package ua.com.abakumov.bikecomp.util.helper;
 
+import android.content.Context;
+import android.location.LocationManager;
+
+import com.luckycatlabs.sunrisesunset.SunriseSunsetCalculator;
+import com.luckycatlabs.sunrisesunset.dto.Location;
+
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
+
+import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
 
 /**
  * Useful utilities
@@ -122,7 +133,51 @@ public final class Helper {
         return date;
     }
 
-    public static boolean inDaylightTime() {
-        return TimeZone.getDefault().inDaylightTime(new Date());
+    public static boolean isItDaylightTimeNow(Context context) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        // Try to detect by network, gps...
+        android.location.Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if (lastKnownLocation == null) {
+            lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
+
+        boolean usedLastKnown = false;
+        Location location;
+
+        if (lastKnownLocation == null) {
+            location = new Location("50.27", "30.31"); // Kyiv by default
+        } else {
+            usedLastKnown = true;
+            location = new Location(
+                    String.valueOf(lastKnownLocation.getLatitude()),
+                    String.valueOf(lastKnownLocation.getLongitude())
+            );
+        }
+
+
+        Calendar now = Calendar.getInstance();
+        TimeZone timeZone = now.getTimeZone();
+
+        SunriseSunsetCalculator calculator = new SunriseSunsetCalculator(location, timeZone);
+        Calendar officialSunrise = calculator.getOfficialSunriseCalendarForDate(now);
+        String officialSunriseStr = calculator.getOfficialSunriseForDate(now);
+        Calendar officialSunSet = calculator.getOfficialSunsetCalendarForDate(now);
+        String officialSunSetStr = calculator.getOfficialSunsetForDate(now);
+
+        boolean daylightTime = now.after(officialSunrise) && now.before(officialSunSet);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+
+        String messageToLog = "Now is - " + sdf.format(now.getTime()) +
+                ", timezone - " + timeZone.getID() +
+                ", sunrise - " + officialSunriseStr +
+                ", sunset - " + officialSunSetStr +
+                ", daylight time  - " + daylightTime +
+                ", used last known location  - " + usedLastKnown;
+
+        information(messageToLog);
+
+        return daylightTime;
     }
 }

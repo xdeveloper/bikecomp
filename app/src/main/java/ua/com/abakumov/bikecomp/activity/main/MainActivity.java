@@ -23,7 +23,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.activity.history.HistoryActivity;
@@ -49,6 +48,9 @@ import ua.com.abakumov.bikecomp.util.helper.PreferencesHelper;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static java.lang.Integer.valueOf;
+import static java.util.concurrent.TimeUnit.MINUTES;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static ua.com.abakumov.bikecomp.R.id.action_history;
 import static ua.com.abakumov.bikecomp.R.id.action_quit;
 import static ua.com.abakumov.bikecomp.R.id.action_settings;
@@ -59,11 +61,9 @@ import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.registerEventBus;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.unregisterEventBus;
-import static ua.com.abakumov.bikecomp.util.helper.Helper.inDaylightTime;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.Theme.Day;
-import static ua.com.abakumov.bikecomp.util.helper.UIHelper.Theme.Night;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.changeThemeByCalendar;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.goReportScreen;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.hideNotification;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.restartActivity;
@@ -81,8 +81,6 @@ public class MainActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
 
-    private ScreenSlidePagerAdapter viewPagerAdapter;
-
     public static final String EXIT_INTENT = "exit";
 
     private ScheduledThreadPoolExecutor executor;
@@ -98,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Screens rotation settings change
         if (SETTINGS_ROTATE_SCREENS_KEY.equals(key) || SETTINGS_ROTATE_SCREENS_FREQ_KEY.equals(key)) {
-            setupScreensRotation();
+            setupScreensChanging();
         }
 
         // Change Theme by Calendar
@@ -126,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
+        ScreenSlidePagerAdapter viewPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -153,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(0);
         setCurrentScreenText(R.string.primaryScreen);
 
-        setupScreensRotation();
+        setupScreensChanging();
 
         registerEventBus(this);
 
@@ -290,6 +288,7 @@ public class MainActivity extends AppCompatActivity {
         restartActivity(this);
     }
 
+
     // ----------- Utilities -----------------------------------------------------------------------
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -353,19 +352,20 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(() -> ((TextView) findViewById(R.id.currentScreenText)).setText(rid));
     }
 
-    private void setupScreensRotation() {
+    private void setupScreensChanging() {
         boolean rotateScreens = preferencesHelper.get(SETTINGS_ROTATE_SCREENS_KEY, true);
-        int freq = Integer.valueOf(preferencesHelper.get(SETTINGS_ROTATE_SCREENS_FREQ_KEY, "5"));
 
         if (rotateScreens) {
             if (executor != null) {
                 executor.shutdown();
             }
+
+            int frequency = valueOf(preferencesHelper.get(SETTINGS_ROTATE_SCREENS_FREQ_KEY, "5"));
             executor = new ScheduledThreadPoolExecutor(1);
             executor.scheduleAtFixedRate(() -> {
                 int currentItem = viewPager.getCurrentItem();
                 viewPager.setCurrentItem(currentItem == 0 ? 1 : 0);
-            }, freq, freq, TimeUnit.SECONDS);
+            }, frequency, frequency, SECONDS);
         } else {
             if (executor != null) {
                 executor.shutdown();
@@ -377,20 +377,8 @@ public class MainActivity extends AppCompatActivity {
     private void setupChangeThemeByCalendar() {
         if (preferencesHelper.get(SETTINGS_THEME_BY_CALENDAR_KEY, true)) {
             executorChangeTheme = new ScheduledThreadPoolExecutor(1);
-            executorChangeTheme.scheduleAtFixedRate(() -> {
-                // Change theme
-                String currentTheme = preferencesHelper.get(SETTINGS_THEME_KEY, Day.name());
-
-                if (inDaylightTime()) {
-                    if (Night.name().equals(currentTheme)) {
-                        switchThemeTo(Day);
-                    }
-                } else {
-                    if (Day.name().equals(currentTheme)) {
-                        switchThemeTo(Night);
-                    }
-                }
-            }, 0, 5, TimeUnit.MINUTES);
+            executorChangeTheme.scheduleAtFixedRate(() ->
+                    changeThemeByCalendar(this, this::switchThemeTo), 0, 5, MINUTES);
         } else {
             if (executorChangeTheme != null) {
                 executorChangeTheme.shutdown();

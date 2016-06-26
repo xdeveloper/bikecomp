@@ -31,6 +31,7 @@ import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_MIDDLE;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_SYSTEM_DEFAULT;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_BACKLIGHT_STRATEGY_KEY;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.isItDaylightTimeNow;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
 import static ua.com.abakumov.bikecomp.util.helper.PreferencesHelper.getPreferenceByKey;
@@ -41,6 +42,8 @@ import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.ALWAY
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.ScreenLock.SYS_DEFAULT;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setBrightness;
 import static ua.com.abakumov.bikecomp.util.helper.ScreenHelper.setScreenLock;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.Theme.Day;
+import static ua.com.abakumov.bikecomp.util.helper.UIHelper.Theme.Night;
 
 /**
  * UI specific utilities
@@ -181,6 +184,29 @@ public class UIHelper {
     public static void restartActivity(Activity activity) {
         activity.finish();
         activity.startActivity(activity.getIntent());
+    }
+
+
+    @FunctionalInterface
+    public interface CallbackChangeTheme {
+        void callback(Theme changeToTheme);
+    }
+
+    public static void changeThemeByCalendar(Activity activity, CallbackChangeTheme changeToTheme) {
+        PreferencesHelper preferencesHelper = new PreferencesHelper(activity);
+
+        // Change theme
+        String currentTheme = preferencesHelper.get(SETTINGS_THEME_KEY, Day.name());
+
+        if (isItDaylightTimeNow(activity.getApplicationContext())) {
+            if (Night.name().equals(currentTheme)) {
+                changeToTheme.callback(Day);
+            }
+        } else {
+            if (Day.name().equals(currentTheme)) {
+                changeToTheme.callback(Night);
+            }
+        }
     }
 
 }
