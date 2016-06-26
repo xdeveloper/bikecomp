@@ -1,0 +1,43 @@
+{
+  "project_info": {
+    "project_id": "ololo-1258",
+    "project_number": "521517527135",
+    "name": "OLOLO"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:521517527135:android:ea95f7c1021c9f77",
+        "client_id": "android:ua.com.abakumov.bikecomp",
+        "client_type": 1,
+        "android_client_info": {
+          "package_name": "ua.com.abakumov.bikecomp",
+          "certificate_hash": []
+        }
+      },
+      "oauth_client": [],
+      "api_key": [],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "cloud_messaging_service": {
+          "status": 1,
+          "apns_config": []
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "google_signin_service": {
+          "status": 1
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "client_info": [],
+  "ARTIFACT_VERSION": "1"
+}
