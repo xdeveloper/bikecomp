@@ -11,7 +11,7 @@ import ua.com.abakumov.bikecomp.util.Constants;
  */
 public class LogHelper {
 
-    public static final void verbose(String message) {
+    public static void verbose(String message) {
         Log.v(Constants.TAG, surround(message));
     }
 
@@ -24,6 +24,6 @@ public class LogHelper {
     }
 
     private static String surround(String message) {
-        return "**********************" + message + "**********************";
+        return "______________________________ " + message + " ___________________________________";
     }
 }

@@ -30,6 +30,7 @@ import ua.com.abakumov.bikecomp.event.gps.NewDistance;
 import ua.com.abakumov.bikecomp.event.gps.NewSpeed;
 import ua.com.abakumov.bikecomp.event.gps.OutOfService;
 import ua.com.abakumov.bikecomp.event.gps.TemporaryUnavailable;
+import ua.com.abakumov.bikecomp.util.Fp;
 import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
 import static android.location.LocationManager.GPS_PROVIDER;
@@ -291,5 +292,13 @@ public class InfoService extends Service {
         }
 
         executor.shutdown();
+    }
+
+    public static void stop(InfoService thiz, Fp.Callback callback) {
+        if (thiz != null) {
+            if (thiz.isSessionStopped()) {
+                callback.callback();
+            }
+        }
     }
 }

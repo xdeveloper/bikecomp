@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
@@ -179,5 +180,13 @@ public final class Helper {
         information(messageToLog);
 
         return daylightTime;
+    }
+
+    public static void shutdownExecutors(ExecutorService... executors) {
+        for (ExecutorService executor : executors) {
+            if (executor != null) {
+                executor.shutdown();
+            }
+        }
     }
 }

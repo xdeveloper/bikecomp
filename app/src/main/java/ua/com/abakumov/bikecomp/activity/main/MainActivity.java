@@ -49,7 +49,6 @@ import ua.com.abakumov.bikecomp.util.helper.UIHelper;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static java.lang.Integer.valueOf;
-import static java.util.concurrent.TimeUnit.MINUTES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static ua.com.abakumov.bikecomp.R.id.action_history;
 import static ua.com.abakumov.bikecomp.R.id.action_quit;
@@ -61,6 +60,7 @@ import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.registerEventBus;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.unregisterEventBus;
+import static ua.com.abakumov.bikecomp.util.helper.Helper.shutdownExecutors;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 import static ua.com.abakumov.bikecomp.util.helper.UIHelper.changeThemeByCalendar;
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String EXIT_INTENT = "exit";
 
-    private ScheduledThreadPoolExecutor executor;
+    private ScheduledThreadPoolExecutor executorScreenChanging;
 
     private ScheduledThreadPoolExecutor executorChangeTheme;
 
@@ -175,18 +175,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (infoService != null) {
-            if (infoService.isSessionStopped()) {
-                quitApplication();
-            }
-        }
-
-        if (executor != null) {
-            executor.shutdown();
-        }
-
+        shutdownExecutors(executorScreenChanging, executorChangeTheme);
+        InfoService.stop(infoService, this::quitApplication);
         getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(listener);
-
         unregisterEventBus(this);
 
         super.onDestroy();
@@ -338,14 +329,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
+                InfoService.stop(infoService, () -> {});
                 infoService = null;
 
             }
         }, BIND_AUTO_CREATE);
-    }
-
-    private void stopService() {
-        stopService(new Intent(MainActivity.this, InfoService.class));
     }
 
     private void setCurrentScreenText(int rid) {
@@ -356,19 +344,19 @@ public class MainActivity extends AppCompatActivity {
         boolean rotateScreens = preferencesHelper.get(SETTINGS_ROTATE_SCREENS_KEY, true);
 
         if (rotateScreens) {
-            if (executor != null) {
-                executor.shutdown();
+            if (executorScreenChanging != null) {
+                executorScreenChanging.shutdown();
             }
 
             int frequency = valueOf(preferencesHelper.get(SETTINGS_ROTATE_SCREENS_FREQ_KEY, "5"));
-            executor = new ScheduledThreadPoolExecutor(1);
-            executor.scheduleAtFixedRate(() -> {
+            executorScreenChanging = new ScheduledThreadPoolExecutor(1);
+            executorScreenChanging.scheduleAtFixedRate(() -> {
                 int currentItem = viewPager.getCurrentItem();
                 viewPager.setCurrentItem(currentItem == 0 ? 1 : 0);
             }, frequency, frequency, SECONDS);
         } else {
-            if (executor != null) {
-                executor.shutdown();
+            if (executorScreenChanging != null) {
+                executorScreenChanging.shutdown();
             }
             viewPager.setCurrentItem(0);
         }
@@ -378,7 +366,7 @@ public class MainActivity extends AppCompatActivity {
         if (preferencesHelper.get(SETTINGS_THEME_BY_CALENDAR_KEY, true)) {
             executorChangeTheme = new ScheduledThreadPoolExecutor(1);
             executorChangeTheme.scheduleAtFixedRate(() ->
-                    changeThemeByCalendar(this, this::switchThemeTo), 0, 5, MINUTES);
+                    changeThemeByCalendar(this, this::switchThemeTo), 0, 60, SECONDS);
         } else {
             if (executorChangeTheme != null) {
                 executorChangeTheme.shutdown();
@@ -397,7 +385,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void quitApplication() {
         hideNotification(this);
-        stopService();
+        stopService(new Intent(MainActivity.this, InfoService.class));
         finish();
     }
 }
