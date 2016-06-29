@@ -11,6 +11,14 @@
         <item>Ніч</item>
     </string-array>
 
+    <string-array name="calendar_time_offset">
+        <item>Вчасно</item>
+        <item>На півгодини</item>
+        <item>1 год.</item>
+        <item>1.5 год.</item>
+        <item>2 год.</item>
+    </string-array>
+
     <string-array name="how_long_dialog_to_wait_entries">
         <item>3 секунди</item>
         <item>5 секунд</item>

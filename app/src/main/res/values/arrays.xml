@@ -11,6 +11,13 @@
         <item>Night</item>
     </string-array>
 
+    <string-array name="calendar_time_offset">
+        <item>No offset</item>
+        <item>Half of hour</item>
+        <item>1 hour</item>
+        <item>1.5 hours</item>
+        <item>2 hours</item>
+    </string-array>
 
     <!-- Locale independent values-->
     <string-array name="display_backlight_values" translatable="false">
@@ -22,6 +29,14 @@
     <string-array name="display_theme_values" translatable="false">
         <item>Day</item>
         <item>Night</item>
+    </string-array>
+
+    <string-array name="calendar_time_offset_values" translatable="false">
+        <item>0</item>
+        <item>0.5</item>
+        <item>1</item>
+        <item>1.5</item>
+        <item>2</item>
     </string-array>
 
     <string-array name="how_long_dialog_to_wait_entries_val">

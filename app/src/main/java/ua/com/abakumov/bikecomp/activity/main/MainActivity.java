@@ -25,8 +25,6 @@ import java.util.Map;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import ua.com.abakumov.bikecomp.R;
-import ua.com.abakumov.bikecomp.activity.history.HistoryActivity;
-import ua.com.abakumov.bikecomp.activity.settings.SettingsActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 import ua.com.abakumov.bikecomp.event.ReloadApplication;
 import ua.com.abakumov.bikecomp.event.SessionPauseResume;
@@ -57,6 +55,8 @@ import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_ROTATE_SCREENS_FR
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_ROTATE_SCREENS_KEY;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_BY_CALENDAR_KEY;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
+import static ua.com.abakumov.bikecomp.util.Constants.UA_COM_ABAKUMOV_BIKECOMP_ACTION_HISTORY_MAIN;
+import static ua.com.abakumov.bikecomp.util.Constants.UA_COM_ABAKUMOV_BIKECOMP_ACTION_SETTINGS_MAIN;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.post;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.registerEventBus;
 import static ua.com.abakumov.bikecomp.util.helper.EventBusHelper.unregisterEventBus;
@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
     private InfoService infoService;
 
+    private ServiceConnection serviceConnection;
+
     private ViewPager viewPager;
 
     public static final String EXIT_INTENT = "exit";
@@ -90,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
     private PreferencesHelper preferencesHelper = new PreferencesHelper(this);
 
     // ----------- System --------------------------------------------------------------------------
-
     SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
         information("Settings have been changed");
 
@@ -176,6 +177,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         shutdownExecutors(executorScreenChanging, executorChangeTheme);
+        if (serviceConnection != null) {
+            unbindService(serviceConnection);
+        }
         InfoService.stop(infoService, this::quitApplication);
         getDefaultSharedPreferences(getApplicationContext()).unregisterOnSharedPreferenceChangeListener(listener);
         unregisterEventBus(this);
@@ -194,12 +198,12 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Go to History
             case action_history:
-                startActivity(new Intent(this, HistoryActivity.class));
+                startActivity(new Intent(UA_COM_ABAKUMOV_BIKECOMP_ACTION_HISTORY_MAIN));
                 break;
 
             // Go to Settings
             case action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                startActivity(new Intent(UA_COM_ABAKUMOV_BIKECOMP_ACTION_SETTINGS_MAIN));
                 break;
 
             // Quit application
@@ -305,7 +309,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void connectToService() {
-        bindService(new Intent(this, InfoService.class), new ServiceConnection() {
+       serviceConnection = new ServiceConnection() {
 
             @Override
             public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
@@ -329,11 +333,14 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
-                InfoService.stop(infoService, () -> {});
+                InfoService.stop(infoService, () -> {
+                });
                 infoService = null;
 
             }
-        }, BIND_AUTO_CREATE);
+        };
+
+        bindService(new Intent(this, InfoService.class), serviceConnection, BIND_AUTO_CREATE);
     }
 
     private void setCurrentScreenText(int rid) {

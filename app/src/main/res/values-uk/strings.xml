@@ -88,4 +88,5 @@
     <string name="ride_not_successfully_saved_to_google_fit">Не вдалось записати заїзд до Google Fit</string>
     <string name="bicycle">Велосипед</string>
     <string name="theme_has_been_changed">Тему змінено згідно календаря</string>
+    <string name="calendar_time_offset_title">Відхилення від календаря</string>
 </resources>

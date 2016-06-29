@@ -21,7 +21,6 @@ import com.annimon.stream.function.FunctionalInterface;
 
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.activity.main.MainActivity;
-import ua.com.abakumov.bikecomp.activity.report.ReportActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
@@ -31,6 +30,7 @@ import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_MIDDLE;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_SYSTEM_DEFAULT;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_BACKLIGHT_STRATEGY_KEY;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
+import static ua.com.abakumov.bikecomp.util.Constants.UA_COM_ABAKUMOV_BIKECOMP_ACTION_REPORT_MAIN;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.isItDaylightTimeNow;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.verbose;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.warning;
@@ -114,7 +114,7 @@ public class UIHelper {
      * @param ride    ride object
      */
     public static void goReportScreen(Context context, Ride ride) {
-        Intent intent = new Intent(context, ReportActivity.class);
+        Intent intent = new Intent(UA_COM_ABAKUMOV_BIKECOMP_ACTION_REPORT_MAIN);
         intent.putExtra(Ride.class.getCanonicalName(), ride);
         context.startActivity(intent);
     }

@@ -13,27 +13,39 @@
 
         <!-- Theme by calendar -->
         <SwitchPreference
+            android:id="@+id/displaySettingsThemeByCalendarId"
             android:disableDependentsState="true"
-            android:key="displaySettingsThemeByCalendarKey"
+            android:key="DISPLAY_SETTINGS_THEME_BY_CALENDAR_KEY"
             android:summary="@string/theme_by_calendar_summary"
             android:summaryOff="@string/theme_by_calendar_disabled_summary"
             android:summaryOn="@string/theme_by_calendar_enabled_summary"
             android:title="@string/theme_by_calendar" />
 
+
+        <!-- Calendar Time Offset -->
+        <ListPreference
+            android:id="@+id/displaySettingsCalendarTimeOffsetId"
+            android:defaultValue="0"
+            android:entries="@array/calendar_time_offset"
+            android:entryValues="@array/calendar_time_offset_values"
+            android:key="DISPLAY_SETTINGS_CALENDAR_TIME_OFFSET_KEY"
+            android:summary="%s"
+            android:title="@string/calendar_time_offset_title" />
+
         <!-- Theme -->
         <ListPreference
-            android:dependency="displaySettingsThemeByCalendarKey"
             android:defaultValue="Day"
+            android:dependency="DISPLAY_SETTINGS_THEME_BY_CALENDAR_KEY"
             android:entries="@array/display_theme"
             android:entryValues="@array/display_theme_values"
-            android:key="displaySettingsThemeKey"
+            android:key="DISPLAY_SETTINGS_THEME_KEY"
             android:summary="%s"
             android:title="@string/theme_title" />
 
         <!-- Rotate screens -->
         <SwitchPreference
-            android:key="displaySettingsRotateScreens"
             android:defaultValue="false"
+            android:key="DISPLAY_SETTINGS_ROTATE_SCREENS_KEY"
             android:summary="@string/rotate_screens_summary"
             android:summaryOff="@string/rotate_screens_disabled_summary"
             android:summaryOn="@string/rotate_screens_enabled_summary"
@@ -41,11 +53,11 @@
 
         <!-- Rotate screens Frequency -->
         <ListPreference
-            android:dependency="displaySettingsRotateScreens"
             android:defaultValue="5"
+            android:dependency="DISPLAY_SETTINGS_ROTATE_SCREENS_KEY"
             android:entries="@array/screens_rotate_frequency_entries"
             android:entryValues="@array/screens_rotate_frequency_entries_val"
-            android:key="displaySettingsRotateScreensFrequency"
+            android:key="DISPLAY_SETTINGS_ROTATE_SCREENS_FREQUENCY_KEY"
             android:summary="%s"
             android:title="@string/how_often_screens_rotate" />
 

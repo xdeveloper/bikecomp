@@ -5,7 +5,7 @@
             android:defaultValue="5"
             android:entries="@array/how_long_dialog_to_wait_entries"
             android:entryValues="@array/how_long_dialog_to_wait_entries_val"
-            android:key="generalSettingsHowLongDialogToWaitKey"
+            android:key="GENERAL_SETTINGS_HOW_LONG_DIALOG_TO_WAIT_KEY"
             android:summary="%s"
             android:title="@string/how_long_dialog_to_wait" />
     </PreferenceCategory>
