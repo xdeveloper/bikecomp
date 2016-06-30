@@ -17,6 +17,9 @@ import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import static android.content.Context.LOCATION_SERVICE;
+import static android.location.LocationManager.GPS_PROVIDER;
+import static android.location.LocationManager.NETWORK_PROVIDER;
 import static ua.com.abakumov.bikecomp.util.helper.LogHelper.information;
 
 /**
@@ -134,13 +137,13 @@ public final class Helper {
         return date;
     }
 
-    public static boolean isItDaylightTimeNow(Context context) {
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+    public static boolean isItDaylightTimeNow(Context context, int timeOffsetInMinutes) {
+        LocationManager locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 
         // Try to detect by network, gps...
-        android.location.Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        android.location.Location lastKnownLocation = locationManager.getLastKnownLocation(NETWORK_PROVIDER);
         if (lastKnownLocation == null) {
-            lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            lastKnownLocation = locationManager.getLastKnownLocation(GPS_PROVIDER);
         }
 
         boolean usedLastKnown = false;
@@ -165,6 +168,8 @@ public final class Helper {
         String officialSunriseStr = calculator.getOfficialSunriseForDate(now);
         Calendar officialSunSet = calculator.getOfficialSunsetCalendarForDate(now);
         String officialSunSetStr = calculator.getOfficialSunsetForDate(now);
+
+        now.add(Calendar.MINUTE, timeOffsetInMinutes);
 
         boolean daylightTime = now.after(officialSunrise) && now.before(officialSunSet);
 

@@ -22,6 +22,7 @@ import com.annimon.stream.function.FunctionalInterface;
 import ua.com.abakumov.bikecomp.R;
 import ua.com.abakumov.bikecomp.activity.main.MainActivity;
 import ua.com.abakumov.bikecomp.domain.Ride;
+import ua.com.abakumov.bikecomp.util.Constants;
 
 import static android.content.Context.NOTIFICATION_SERVICE;
 import static ua.com.abakumov.bikecomp.util.Constants.NOTIFICATION_TAG;
@@ -29,6 +30,7 @@ import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_KEEP_ON;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_MIDDLE;
 import static ua.com.abakumov.bikecomp.util.Constants.SCREEN_SYSTEM_DEFAULT;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_BACKLIGHT_STRATEGY_KEY;
+import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_CALENDAR_TIME_OFFSET_KEY;
 import static ua.com.abakumov.bikecomp.util.Constants.SETTINGS_THEME_KEY;
 import static ua.com.abakumov.bikecomp.util.Constants.UA_COM_ABAKUMOV_BIKECOMP_ACTION_REPORT_MAIN;
 import static ua.com.abakumov.bikecomp.util.helper.Helper.isItDaylightTimeNow;
@@ -198,7 +200,9 @@ public class UIHelper {
         // Change theme
         String currentTheme = preferencesHelper.get(SETTINGS_THEME_KEY, Day.name());
 
-        if (isItDaylightTimeNow(activity.getApplicationContext())) {
+        String offset = preferencesHelper.get(SETTINGS_CALENDAR_TIME_OFFSET_KEY, "0");
+
+        if (isItDaylightTimeNow(activity.getApplicationContext(), Integer.valueOf(offset))) {
             if (Night.name().equals(currentTheme)) {
                 changeToTheme.callback(Day);
             }

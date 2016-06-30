@@ -12,11 +12,13 @@
     </string-array>
 
     <string-array name="calendar_time_offset">
+        <item>1.5 (пізніше)</item>
+        <item>1 (пізніше)</item>
+        <item>0.5 (пізніше)</item>
         <item>Вчасно</item>
-        <item>На півгодини</item>
-        <item>1 год.</item>
-        <item>1.5 год.</item>
-        <item>2 год.</item>
+        <item>0.5 (раніше)</item>
+        <item>1 (раніше)</item>
+        <item>1.5 (раніше)</item>
     </string-array>
 
     <string-array name="how_long_dialog_to_wait_entries">
