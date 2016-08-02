@@ -1,0 +1,6 @@
+1. Enable development mode
+2. Setup debug token on device. See folder "BlackBerry Tools for Android Development-2.0.4"
+3. Connect to device using Blackberry ADB Proxy
+4. Run connect-adb.cmd to connect ADB to device
+
+
